@@ -14,6 +14,8 @@ class UploadyodaServiceProvider extends ServiceProvider {
     public function boot()
     {
         $this->package('quasimodal/uploadyoda');
+
+        include __DIR__.'/../../routes.php';
     }
 
 
@@ -26,7 +28,7 @@ class UploadyodaServiceProvider extends ServiceProvider {
 	{
 	    $this->app['uploadyoda'] = $this->app->share(function($app)
         {
-            return new Uploadyoda($app['config']);
+            return new Uploadyoda( $app['config'] );
         });    
 	}
 
