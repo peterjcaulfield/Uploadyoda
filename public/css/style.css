@@ -1,0 +1,18 @@
+@import url(http://reset5.googlecode.com/hg/reset.min.css);
+
+* { font-family: verdana; }
+
+body, html {
+
+    height: 100%;
+}
+
+#header { background-color: #000; color: #fff; }
+
+#logo-text { padding: 20px; margin-left: 50px;}
+
+#nav { background-color: #000;  color: #fff; min-width: 250px; height: 100%; float: left; }
+
+#container { overflow: auto; height: 100%; }
+
+#content {  width: 690px;  padding: 25px; float: left; }

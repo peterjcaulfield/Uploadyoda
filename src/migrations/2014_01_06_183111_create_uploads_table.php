@@ -16,8 +16,9 @@ class CreateUploadsTable extends Migration {
 		{
 			$table->increments('id');
             $table->string('name');
-            $table->string('type');
-            $table->string('size');
+            $table->string('path');
+            $table->string('mime_type');
+            $table->integer('size');
 			$table->timestamps();
 		});
 	}

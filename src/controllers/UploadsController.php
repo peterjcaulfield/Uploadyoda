@@ -1,6 +1,6 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use BaseController, View;
+use BaseController, View, Redirect, Uploadyoda;
 
 class UploadsController extends BaseController
 {
@@ -24,7 +24,11 @@ class UploadsController extends BaseController
 
     public function store()
     {
-       $this->upload->create( array('name' => 'test', 'type' => 'test', 'size' => '1000') ); 
+        $response = Uploadyoda::upload('file');
+
+        $this->upload->create( $response ); 
+
+        return Redirect::to('uploadyoda/upload')->with('success', 'uploaded successfully');
     }
 
     public function destroy($id)
