@@ -35,4 +35,9 @@ class UploadsController extends BaseController
     {
 
     }
+
+    public function test()
+    {
+        return View::make('uploadyoda::test');
+    }
 }

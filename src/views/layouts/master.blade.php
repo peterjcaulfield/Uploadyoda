@@ -5,17 +5,17 @@
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/main.js') }}"></script>
 </head>
 <body>
-    <div id="header">
-        <p id="logo-text">Uploadyoda</p>
-    </div>
-    <div id="container">
-        <div id="nav">
-        </div>
-        <div id="content">
-            <div id="content-inner">
+<div id="nav-back"></div>
+<div id="nav">Nav here</div>
+<div id="content">
+    <div id="header"></div>
+    <div id="body">
+        <div id="body-content">
+            <div class="wrap">
                 @yield('content')
-            <div>
+            </div>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -1,5 +1,9 @@
+<html>
+<head>
+</head>
+<body>
+<style>
 @import url(http://reset5.googlecode.com/hg/reset.min.css);
-
 html { padding-top: 32px; font-family: verdana; font-size: 14px;}
 body { background-color: #f1f1f1; }
 #nav-back { position: fixed; top: 0; left: 0; width: 160px; background: #222; height: 100%; }
@@ -10,3 +14,18 @@ body { background-color: #f1f1f1; }
 #body-content { padding-bottom: 65px; width: 100%; overflow: visible!important; background-color:#fff; }
 .wrap { margin: 10px 20px 0 2px; }
 #dummy { height: 1000px; }
+</style>
+<div id="nav-back"></div>
+<div id="nav">Nav here</div>
+<div id="content">
+    <div id="header"></div>
+    <div id="body">
+        <div id="body-content">
+            <div class="wrap">
+                <div id="dummy">content here</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
