@@ -11,6 +11,7 @@
     <div id="header"></div>
     <div id="body">
         <div id="body-content">
+            <h1>Upload</h1>
             <div class="wrap">
                 @yield('content')
             </div>

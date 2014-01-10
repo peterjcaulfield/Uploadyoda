@@ -7,6 +7,65 @@ body { background-color: #f1f1f1; }
 #content { margin-left: 180px; height: 100%; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #222; }
 #body { position: relative;  padding: 0 25px 65px 0; overflow: auto; min-width: 900px; }
-#body-content { padding-bottom: 65px; width: 100%; overflow: visible!important; background-color:#fff; }
-.wrap { margin: 10px 20px 0 2px; }
-#dummy { height: 1000px; }
+#body-content { width: 100%; overflow: visible!important; padding-top: 25px; }
+.wrap { margin: 10px 20px 0 2px; padding: 20px 20px 65px 20px; background-color: #fff; }
+
+/**
+ * Upload
+ */
+
+#drop-area { padding: 50px 0px 50px 0px; text-align: center; border: dashed 8px #ccc; color: #ccc; }
+.drop-hover { border: dashed 8px red!important; }
+#downloads { margin-top: 25px; }
+.download { position: relative;  padding: 5px 0px 5px 0px }
+.download-info { position: relative; z-index: 10; padding: 0px 0px 0px 15px; }
+.progress { position: absolute; top: 0; left: 0;  width: 100%; height: 24px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+.failedUpload { background-color: red; } 
+
+
+progress[value]::-webkit-progress-bar {
+    background-color: whiteSmoke;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+}
+
+progress[value]::-webkit-progress-value {
+
+    background-size: 35px 24px, 100% 100%, 100% 100%;
+    border-radius:3px;
+
+    /* Let's animate this */
+    animation: animate-stripes 5s linear infinite;
+}
+
+@keyframes animate-stripes { 100% { background-position: -100px 0; } }
+
+.progress::-webkit-progress-value  {
+    /* Gradient background with Stripes */
+    background-image:
+    -webkit-linear-gradient( 135deg,
+    transparent,
+    transparent 33%,
+    rgba(0,0,0,.1) 33%,
+    rgba(0,0,0,.1) 66%,
+    transparent 66%),
+    -webkit-linear-gradient( top,
+    rgba(255, 255, 255, .25),
+    rgba(0,0,0,.2)),
+    -webkit-linear-gradient( left, #09c, #f44);
+}                                                                                                                                                                                                                                                                                                                                                                                                     
+.progress::-moz-progress-bar {
+    /* Gradient background with Stripes */
+    background-image:
+    -moz-linear-gradient( 135deg,
+    transparent,
+    transparent 33%,
+    rgba(0,0,0,.1) 33%,
+    rgba(0,0,0,.1) 66%,
+    transparent 66%),
+    -moz-linear-gradient( top,
+    rgba(255, 255, 255, .25),
+    rgba(0,0,0,.2)),
+    -moz-linear-gradient( left, #09c, #f44);
+}
+
