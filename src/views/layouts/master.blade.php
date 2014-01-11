@@ -6,7 +6,14 @@
 </head>
 <body>
 <div id="nav-back"></div>
-<div id="nav">Nav here</div>
+<div id="nav">
+    <div id="nav-content">
+        <ul>
+        <li class="active"><a href="/uploadyoda">Home</a></li>
+        <li><a href="/uploadyoda/upload">Upload</a></li>
+        </ul>
+    </div>
+</div>
 <div id="content">
     <div id="header"></div>
     <div id="body">

@@ -4,13 +4,21 @@ totalFilesUploaded = 0;
 function getFileInfo(file, fileNumber)
 {
  console.log('adding file info');
- var fileInfo = '<p>Uploading: ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
+ var fileInfo = '<div id="file-info-' + fileNumber + '-inner" class="file-info-inner">Uploading: ' + file.name + ' Size:' + (file.size ? (file.size/1024|0) + 'K' : '') + '</div><div id="download-' + fileNumber + '-error"' + 'class="upload-error"></div>';
  var downloadsContainer = document.getElementById('downloads');
+ var downloadContainer = document.createElement('div');
+ var downloadPercentage = document.createElement('div');
  var download = document.createElement('div');
  var downloadInfo = document.createElement('div');
  var progress = document.createElement('progress');
+ downloadContainer.id = 'download-' + fileNumber + '-container';
+ downloadContainer.className = 'download-container';
+ downloadPercentage.id = 'download-' + fileNumber + '-percentage';
+ downloadPercentage.className = 'download-percentage';
+ downloadPercentage.innerHTML = '0%';
  download.id = "download-" + fileNumber;
  download.className = 'download';
+ downloadInfo.id = 'download-' + fileNumber + '-info';
  downloadInfo.className = 'download-info';
  progress.id = "download-" + fileNumber + '-progress';
  progress.className = "progress";
@@ -19,8 +27,9 @@ function getFileInfo(file, fileNumber)
  downloadInfo.innerHTML = fileInfo;
  download.appendChild(downloadInfo);
  download.appendChild(progress);
- downloadsContainer.appendChild(download);
- 
+ downloadContainer.appendChild(download);
+ downloadContainer.appendChild(downloadPercentage);
+ downloadsContainer.appendChild(downloadContainer);
 }
 
 function createOnloadFunction(requestObject)
@@ -32,6 +41,15 @@ function createOnloadFunction(requestObject)
       console.log('request no: ' + requestObject.requestNo + ' complete');
       if ( requestObject.xhr.responseText != 'success' ) 
       {
+        var progressBar = document.getElementById( 'download-' + requestObject.requestNo + '-progress' );
+        progressBar.value = 0;
+        progressBar.className += ' failedUpload';
+        var fileInfo = document.getElementById( 'file-info-' + requestObject.requestNo + '-inner');
+        fileInfo.innerHTML= 'Upload failed for: ' + requestObject.fileName;
+        var error = document.getElementById('download-' + requestObject.requestNo + '-error');
+        error.innerHTML = 'Error: ' + requestObject.xhr.responseText;
+        var percent = document.getElementById('download-' + requestObject.requestNo + '-percentage');
+        percent.innerHTML = 'failed';
        console.error('request no: ' + requestObject.requestNo + ' ' + requestObject.xhr.responseText ); 
       }
       else
@@ -51,6 +69,8 @@ function createUploadProgressFunction(requestObject)
         var complete = (e.loaded / e.total * 100 | 0);
         var progressBar = document.getElementById( 'download-' + requestObject.requestNo + '-progress' );
         progressBar.value = complete;
+        var percent = document.getElementById('download-' + requestObject.requestNo + '-percentage');
+        percent.innerHTML = complete + '%';
         console.log('progress for request no: ' + requestObject.requestNo + ' is ' + complete);
     }
   }
@@ -67,6 +87,8 @@ function readFiles(files)
     getFileInfo(files[i], totalFilesUploaded + 1);
 
     requests[i] = {};
+    requests[i].fileName = files[i].name;
+    requests[i].fileSize = files[i].size ? (files[i].size/1024|0) + 'K' : ''; 
     requests[i].requestNo = totalFilesUploaded + 1;
     requests[i].xhr = new XMLHttpRequest();
     requests[i].xhr.open('POST', '/uploadyoda/store');

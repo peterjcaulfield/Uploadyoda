@@ -3,7 +3,12 @@
 html { padding-top: 32px; font-family: verdana; font-size: 14px;}
 body { background-color: #f1f1f1; }
 #nav-back { position: fixed; top: 0; left: 0; width: 160px; background: #222; height: 100%; }
-#nav { position: fixed; width: 160px; background: #222;  color: #eee; }
+#nav { position: fixed; width: 160px; background: #222;  color: #eee; padding-top: 10px; }
+#nav-content { }
+#nav-content a { text-decoration: none; color: #ccc; }
+ li.active { background-color: #3b8dbd; }
+#nav-content ul { list-style: none; }
+#nav-content li { padding: 8px 0px 8px 15px; }
 #content { margin-left: 180px; height: 100%; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #222; }
 #body { position: relative;  padding: 0 25px 65px 0; overflow: auto; min-width: 900px; }
@@ -16,28 +21,35 @@ body { background-color: #f1f1f1; }
 
 #drop-area { padding: 50px 0px 50px 0px; text-align: center; border: dashed 8px #ccc; color: #ccc; }
 .drop-hover { border: dashed 8px red!important; }
-#downloads { margin-top: 25px; }
-.download { position: relative;  padding: 5px 0px 5px 0px }
-.download-info { position: relative; z-index: 10; padding: 0px 0px 0px 15px; }
-.progress { position: absolute; top: 0; left: 0;  width: 100%; height: 24px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
-.failedUpload { background-color: red; } 
+#downloads { margin-top: 25px;  overflow: auto; }
+.download { position: relative;  padding: 5px 0px 5px 0px; font-size: 12px; width: 96%; float: left;}
+.download-percentage { float: right; width: 3%;  font-size: 11px;}
+.download-info { position: relative; z-index: 10; padding: 0px 0px 0px 15px;  font-size: 11px; font-weight: bold; overflow: auto; }
+.file-info-inner { float: left; width: 80%; }
+.upload-error { float: right; min-width: 10%; max-width: 19%; }
+.progress { position: absolute; top: 0; left: 0;  width: 100%; height: 20px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+.progress::-webkit-progress-bar { background-color: whiteSmoke; }
+.failedUpload::-webkit-progress-bar { background-color: red; }
+
 
 
 progress[value]::-webkit-progress-bar {
-    background-color: whiteSmoke;
-    border-radius: 3px;
+        border-radius: 3px;
     box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
 }
 
 progress[value]::-webkit-progress-value {
 
-    background-size: 35px 24px, 100% 100%, 100% 100%;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
     border-radius:3px;
 
     /* Let's animate this */
     animation: animate-stripes 5s linear infinite;
+    -webkit-animation: animate-stripes 5s linear infinite;
+
 }
 
+@-webkit-keyframes animate-stripes { 100% { background-position: -100px 0px; } }
 @keyframes animate-stripes { 100% { background-position: -100px 0; } }
 
 .progress::-webkit-progress-value  {
