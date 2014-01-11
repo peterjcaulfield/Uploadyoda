@@ -53,7 +53,14 @@ function createOnloadFunction(requestObject)
        console.error('request no: ' + requestObject.requestNo + ' ' + requestObject.xhr.responseText ); 
       }
       else
+      {
         console.log( 'success for request no: ' + requestObject.requestNo );
+        var progressBar = document.getElementById( 'download-' + requestObject.requestNo + '-progress' );
+        progressBar.value = 0;
+        progressBar.className += ' succeededUpload';
+        var fileInfo = document.getElementById( 'file-info-' + requestObject.requestNo + '-inner');
+        fileInfo.innerHTML= 'Uploaded successfully: ' + requestObject.fileName;
+      }
     }
     else
       console.log('something went wrong for request no: ' + requestObject.requestNo);
