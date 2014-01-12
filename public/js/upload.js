@@ -1,24 +1,26 @@
 
 totalFilesUploaded = 0;
 
+function calculateFilesize(num_bytes)
+{
+  if ( num_bytes < 1000000 )
+    return (Math.ceil((num_bytes / 1000) * 100) / 100) + ' kB';
+  else return (Math.ceil((num_bytes / 1000000) * 100) / 100) + ' MB'; 
+}
+
 function getFileInfo(file, fileNumber)
 {
- console.log('adding file info');
-
-
  var downloadsContainer = document.getElementById('downloads');
  var tableRow = document.createElement('tr');
  tableRow.id = 'upload-' + fileNumber;
  var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner">' + file.name  + '</div></td>';
- var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ file.size + '</td>';
+ var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ calculateFilesize(file.size) + '</td>';
  var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></td>';
  var uploadCompleteTd = '<td id="upload-' + fileNumber + '-complete" class="upload-complete">0%</td>';
  var uploadStatusTd = '<td id="upload-' + fileNumber + '-status" class="upload-status">Uploading</td>';
 
  tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd + uploadCompleteTd + uploadStatusTd;
  downloadsContainer.appendChild(tableRow);
-
-
 }
 
 function createOnloadFunction(requestObject)
@@ -84,7 +86,7 @@ function readFiles(files)
 
     requests[i] = {};
     requests[i].fileName = files[i].name;
-    requests[i].fileSize = files[i].size ? (files[i].size/1024|0) + 'K' : ''; 
+    requests[i].fileSize = calculateFilesize(files[i].size); 
     requests[i].requestNo = totalFilesUploaded + 1;
     requests[i].xhr = new XMLHttpRequest();
     requests[i].xhr.open('POST', '/uploadyoda/store');

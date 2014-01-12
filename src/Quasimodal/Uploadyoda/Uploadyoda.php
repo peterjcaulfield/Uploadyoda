@@ -52,7 +52,15 @@ class Uploadyoda {
             $response['mime_type'] = Input::file($key)->getMimeType();
             $response['size'] = Input::file($key)->getSize();
 
+            if ( $response['size'] < 1000000 )
+             $response['size'] = ( ceil( ( $response['size'] / 1000 ) * 100 ) / 100 ) . ' kB';
+            else
+              $response['size'] = ( ceil( ( $response['size'] / 1000000 ) * 100 ) / 100 ) . ' MB';
+
+            
+
             // check response of move here
+
             Input::file( $key )->move( public_path() .'/' . $path, $name . '.' . $fileExt );
 
             return $response;
