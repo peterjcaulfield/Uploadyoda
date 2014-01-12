@@ -1,36 +1,65 @@
 @import url(http://reset5.googlecode.com/hg/reset.min.css);
 
 html { padding-top: 32px; font-family: verdana; font-size: 14px;}
-body { background-color: #f1f1f1; }
-#nav-back { position: fixed; top: 0; left: 0; width: 160px; background: #222; height: 100%; }
-#nav { position: fixed; width: 160px; background: #222;  color: #eee; padding-top: 10px; }
-#nav-content { }
-#nav-content a { text-decoration: none; color: #ccc; }
- li.active { background-color: #3b8dbd; }
+body { background-color: #fff; }
+#nav-back { position: fixed; top: 0; left: 0; width: 160px; background: #eeeeee; height: 100%; }
+#nav { position: fixed; width: 160px; background: #eeeeee;  color: #000; padding-top: 10px; }
+#nav-content { font-size: 12px; padding: 0 10px; }
+#nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
+ li.active { background-color: #22a6e5;}
+#nav-content .active a { color: #fff; }
 #nav-content ul { list-style: none; }
-#nav-content li { padding: 8px 0px 8px 15px; }
-#content { margin-left: 180px; height: 100%; }
+#nav-content li { margin-bottom: 5px; border-radius: 5px; }
+#content { margin-left: 160px; height: 100%; }
+h1 { margin-left: 10px; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #222; }
-#body { position: relative;  padding: 0 25px 65px 0; overflow: auto; width: 860px; }
+#body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; padding-top: 25px; }
-.wrap { margin: 10px 20px 0 2px; padding: 20px 20px 65px 20px; background-color: #fff; }
+.wrap { padding-top: 20px; border-radius: 3px; }
+
+/**
+ * Home page
+ */
+
+#uploads-index { overflow: auto; font-size: 12px; border-collapse: collapse; }
+#uploads-index th { padding: 5px 5px; background: #ccc; border-left: solid 2px #fff; border-right: solid 2px #fff; }
+#uploads-index th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
+#uploads-index th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
+#uploads-index tr { border-bottom: solid 2px #ccc; }
+#uploads-index td { padding: 5px 5px; }
+#size-header { width: 100px; }
+#type-header { width: 200px; }
+#created-header { width: 200px; }
+.upload-name { position: relative; white-space: nowrap; overflow: hidden; }
+.upload-name-inner { position: absolute; top: 5; left: 5; }
+
 
 /**
  * Upload
  */
 
-#drop-area { padding: 50px 0px 50px 0px; text-align: center; border: dashed 8px #ccc; color: #ccc; }
-.drop-hover { border: dashed 8px red!important; }
-#downloads { margin-top: 25px;  overflow: auto; }
-.download { position: relative;  padding: 5px 0px 5px 0px; font-size: 12px; width: 95%; float: left;}
-.download-percentage { float: right; width: 4%;  font-size: 11px; padding-top: 5px; color: #292929; }
-.download-info { position: relative; z-index: 10; padding: 0px 0px 0px 15px;  font-size: 11px; font-weight: bold; overflow: auto; }
-.file-info-inner { float: left; width: 80%; }
-.upload-error { float: right; min-width: 17%; max-width: 19%; }
-.progress { position: absolute; top: 0; left: 0;  width: 100%; height: 20px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+#drop-area { padding: 50px 0px 50px 0px; text-align: center; border: dashed 4px #ccc; color: #ccc; }
+.drop-hover { border: dashed 4px #d22000!important; color: #d22000!important; }
+#downloads { margin-top: 25px;  overflow: auto; font-size: 12px; border-collapse: collapse; }
+#downloads th { padding: 5px 5px; background: #ccc; border-left: solid 2px #fff; border-right: solid 2px #fff; }
+#downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
+#downloads th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
+#downloads tr { border-bottom: solid 2px #ccc; }
+#downloads td { padding: 5px 5px; }
+#size-header { width: 100px; }
+#progress-header { width: 100px; }
+#complete-header { width: 100px; }
+#status-header { width: 185px; }
+.upload-name { position: relative; white-space: nowrap; overflow: hidden; }
+.upload-name-inner { position: absolute; top: 5; left: 5; }
+/*.upload-size { width: 100px; }
+.upload-progress { width: 100px; }
+.upload-complete { width: 100px; }
+.upload-status { width: 185px; }*/
+.progress { width: 100%; height: 10px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
 .progress::-webkit-progress-bar { background-color: whiteSmoke; }
-.failedUpload::-webkit-progress-bar { background-color: red; }
-.succeededUpload::-webkit-progress-bar { background-color: green; }
+.failedUpload::-webkit-progress-bar { background-color: #d22000; color: #fff; }
+.succeededUpload::-webkit-progress-bar { background-color: #73ac3a; }
 
 
 
@@ -56,7 +85,7 @@ progress[value]::-webkit-progress-value {
 .progress::-webkit-progress-value  {
     /* Gradient background with Stripes */
     background-image:
-    -webkit-linear-gradient( 135deg,
+    /*-webkit-linear-gradient( 135deg,
     transparent,
     transparent 33%,
     rgba(0,0,0,.1) 33%,
@@ -65,7 +94,11 @@ progress[value]::-webkit-progress-value {
     -webkit-linear-gradient( top,
     rgba(255, 255, 255, .25),
     rgba(0,0,0,.2)),
-    -webkit-linear-gradient( left, #09c, #f44);
+    -webkit-linear-gradient( left, #09c, #f44);*/
+
+-webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
+-webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
+-webkit-linear-gradient(left, #ba7448, #c4672d);
 }                                                                                                                                                                                                                                                                                                                                                                                                     
 .progress::-moz-progress-bar {
     /* Gradient background with Stripes */

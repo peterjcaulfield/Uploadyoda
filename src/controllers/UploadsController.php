@@ -14,12 +14,12 @@ class UploadsController extends BaseController
 
     public function index()
     {
-        return View::make('uploadyoda::home');
+        return View::make('uploadyoda::home')->with(array('uploads'=>$this->upload->all(), 'pageTitle'=>'Uploads'));
     }
 
     public function create()
     {
-        return View::make('uploadyoda::upload');
+        return View::make('uploadyoda::upload')->with('pageTitle', 'Upload file');
     }
 
     public function store()

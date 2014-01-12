@@ -14,9 +14,15 @@
 <div id="content-inner">
 
     <div id="drop-area">
-       Drop files here 
+       Drop files to upload here 
     </div>
-    <div id="downloads"></div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads">
+    <th id="name-header" align="left">Name</th>
+    <th id="size-header" align="left">Size</th>
+    <th id="progress-header" align="left">Progress</th>
+    <th id="complete-header" align="left">Complete</th>
+    <th id="status-header" align="left">Status</th>
+    </table>
 
 </div>
 
