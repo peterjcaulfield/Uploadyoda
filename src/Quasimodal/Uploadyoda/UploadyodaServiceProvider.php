@@ -28,7 +28,7 @@ class UploadyodaServiceProvider extends ServiceProvider {
 	{
 	    $this->app['uploadyoda'] = $this->app->share(function($app)
         {
-            return new Uploadyoda( $app['config'] );
+            return new Uploadyoda( $app['config'], new Upload() );
         });    
 	}
 

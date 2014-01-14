@@ -1,12 +1,14 @@
 @import url(http://reset5.googlecode.com/hg/reset.min.css);
 
-html { padding-top: 32px; font-family: verdana; font-size: 14px;}
+a { text-decoration: none; }
+
+html { padding-top: 32px; font-family: sans-serif; font-size: 14px;}
 body { background-color: #fff; }
 #nav-back { position: fixed; top: 0; left: 0; width: 160px; background: #eeeeee; height: 100%; }
 #nav { position: fixed; width: 160px; background: #eeeeee;  color: #000; padding-top: 10px; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
- li.active { background-color: #22a6e5;}
+#nav-content li.active { background-color: #22a6e5;}
 #nav-content .active a { color: #fff; }
 #nav-content ul { list-style: none; }
 #nav-content li { margin-bottom: 5px; border-radius: 5px; }
@@ -16,6 +18,7 @@ h1 { margin-left: 10px; }
 #body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; padding-top: 25px; }
 .wrap { padding-top: 20px; border-radius: 3px; }
+.wrap p { padding: 20px 0 5px 0;  font-size: 12px; }
 
 /**
  * Home page
@@ -32,15 +35,18 @@ h1 { margin-left: 10px; }
 #created-header { width: 200px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; }
 .upload-name-inner { position: absolute; top: 5; left: 5; }
+.pagination { margin-top: 10px; }
+.pagination li { display: inline; }
+.pagination a, span { display: inline-block; padding: 0 10px 0 10px; }
 
 
 /**
  * Upload
  */
 
-#drop-area { padding: 50px 0px 50px 0px; text-align: center; border: dashed 4px #ccc; color: #ccc; }
-.drop-hover { border: dashed 4px #d22000!important; color: #d22000!important; }
-#downloads { margin-top: 25px;  overflow: auto; font-size: 12px; border-collapse: collapse; }
+#drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 4px #ccc; color: #ccc; }
+.drop-hover { border: dashed 4px #73ac3a!important; color: #73ac3a!important; }
+#downloads { overflow: auto; font-size: 12px; border-collapse: collapse; }
 #downloads th { padding: 5px 5px; background: #ccc; border-left: solid 2px #fff; border-right: solid 2px #fff; }
 #downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
 #downloads th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
@@ -83,22 +89,12 @@ progress[value]::-webkit-progress-value {
 @keyframes animate-stripes { 100% { background-position: -100px 0; } }
 
 .progress::-webkit-progress-value  {
-    /* Gradient background with Stripes */
-    background-image:
-    /*-webkit-linear-gradient( 135deg,
-    transparent,
-    transparent 33%,
-    rgba(0,0,0,.1) 33%,
-    rgba(0,0,0,.1) 66%,
-    transparent 66%),
-    -webkit-linear-gradient( top,
-    rgba(255, 255, 255, .25),
-    rgba(0,0,0,.2)),
-    -webkit-linear-gradient( left, #09c, #f44);*/
+background-image:
+-webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%), /* adds stripe */
+-webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)), /* adds detail */ 
+-webkit-linear-gradient(left, #22a6e5, #22a6e5); /* controls gradient colour */
 
--webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
--webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
--webkit-linear-gradient(left, #ba7448, #c4672d);
+
 }                                                                                                                                                                                                                                                                                                                                                                                                     
 .progress::-moz-progress-bar {
     /* Gradient background with Stripes */

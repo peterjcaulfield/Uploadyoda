@@ -14,7 +14,7 @@ class UploadsController extends BaseController
 
     public function index()
     {
-        return View::make('uploadyoda::home')->with(array('uploads'=>$this->upload->all(), 'pageTitle'=>'Uploads'));
+        return View::make('uploadyoda::home')->with(array('uploads'=>$this->upload->paginate(10), 'pageTitle'=>'Uploads'));
     }
 
     public function create()
@@ -32,7 +32,7 @@ class UploadsController extends BaseController
             return 'success';
         }
         else
-            return $response;    
+            return $response;
 
     }
 

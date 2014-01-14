@@ -19,5 +19,6 @@
 
 <?php } ?>
 </table>
-
+<?php echo $uploads->links(); ?>
+    
 @stop

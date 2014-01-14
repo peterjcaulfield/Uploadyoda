@@ -16,6 +16,7 @@
     <div id="drop-area">
        Drop files to upload here 
     </div>
+    <p><i class=" fa fa-upload"></i>&nbsp;&nbsp;File uploads</p>
     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads">
     <th id="name-header" align="left">Name</th>
     <th id="size-header" align="left">Size</th>
