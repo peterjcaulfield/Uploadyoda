@@ -1,24 +1,31 @@
 @extends('uploadyoda::layouts.master')
 
 @section('content')
-<table id="uploads-index" border="0" cellpadding="0" cellspacing="0" width="100%">
-<tr>
-<th id="name-header" align="left">Name</th>
-<th id="size-header" align="left">Size</th>
-<th id="type-header" align="left">Type</th>
-<th id="created-header" align="left">Created</th>
-<tr>
-<?php foreach($uploads as $upload){ ?> 
 
-    <tr>
-    <td class="upload-name"><div class="upload-inner"><?php echo $upload->name; ?></div></td>
-    <td><?php echo $upload->size; ?></td>
-    <td><?php echo $upload->mime_type; ?></td>
-    <td><?php echo $upload->created_at; ?></td>
-    <tr>
+<div id="uploads-index">
 
-<?php } ?>
-</table>
+    <div id="header-container">
+        <div id="thumbnail-header" class="header"><div class="header-text">Name</div></div>
+        <div id="name-header" class="header"><div class="header-text">Name</div></div>
+        <div id="size-header" class="header"><div class="header-text">Size</div></div>
+        <div id="type-header" class="header"><div class="header-text">Type</div></div>
+        <div id="created-header" class="header"><div class="header-text">Created</div></div>
+    </div>
+
+    <?php foreach($uploads as $upload){ ?> 
+        
+        <div class="row" style="position: relative">
+            <div class="thumbnail"><?php echo Uploadyoda::generateThumbnail($upload->name, $upload->mime_type); ?></div>
+            <div class="upload-name row-text"><div class="upload-inner"><?php echo $upload->name; ?></div></div>
+            <div class="size"><div class="row-text"><?php echo $upload->size; ?></div></div>
+            <div class="mime"><div class="row-text"><?php echo $upload->mime_type; ?></div></div>
+            <div class="created"><div class="row-text"><?php echo $upload->created_at; ?></div></div>
+        </div>
+
+    <?php } ?>
+
+</div>
+
 <?php echo $uploads->links(); ?>
     
 @stop

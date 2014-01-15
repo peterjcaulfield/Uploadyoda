@@ -17,28 +17,37 @@ h1 { margin-left: 10px; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #222; }
 #body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; padding-top: 25px; }
-.wrap { padding-top: 20px; border-radius: 3px; }
+.wrap { padding-top: 20px; border-radius: 3px; position: relative; }
 .wrap p { padding: 20px 0 5px 0;  font-size: 12px; }
 
 /**
  * Home page
  */
 
-#uploads-index { overflow: auto; font-size: 12px; border-collapse: collapse; }
-#uploads-index th { padding: 5px 5px; background: #ccc; border-left: solid 2px #fff; border-right: solid 2px #fff; }
-#uploads-index th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
-#uploads-index th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
-#uploads-index tr { border-bottom: solid 2px #ccc; }
-#uploads-index td { padding: 5px 5px; }
-#size-header { width: 100px; }
-#type-header { width: 200px; }
-#created-header { width: 200px; }
+#uploads-index { font-size: 12px; }
+#header-container { display: table; border-spacing: 0; width: 100%; }
+#header-container div {  display: table-cell; }
+.header { background: #ccc; }
+.header-text { padding: 5px 0 10px 5px; font-weight: bold; }
+.row { display: table; border-spacing: 0; width: 100%; border-bottom: solid 2px #ccc; }
+.row div { display: table-cell; vertical-align: top; } 
+.row-text { padding: 5px; }
+#thumbnail-header { width: 113px; border-right: solid 2px #fff; }
+#name-header { border-right: solid 2px #fff; }
+#size-header { width: 98px; border-right: solid 2px #fff; }
+#type-header { width: 118px; border-right: solid 2px #fff; }
+#created-header { width: 100px; }
+.thumbnail { width: 115px; }
+.size { width: 100px; }
+.mime { width: 120px; }
+.created { width: 100px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; }
-.upload-name-inner { position: absolute; top: 5; left: 5; }
+.upload-inner { position: absolute; top: 5; left: 5; }
+.preview-container { padding: 5px 0 5px 15px; }
+.thumb { height: 85px; width: 85px; overflow: hidden; }
 .pagination { margin-top: 10px; }
 .pagination li { display: inline; }
 .pagination a, span { display: inline-block; padding: 0 10px 0 10px; }
-
 
 /**
  * Upload

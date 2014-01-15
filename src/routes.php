@@ -12,8 +12,11 @@ Route::get('uploadyoda/func', function(){
 
 Route::get('uploadyoda/func', function(){
 
-        $filename = 'Addison.Wesley.Growin.Object.Oriented.Software.Guided.by.Test.Oct.2009 (1)-';
-        $ext = 'pdf';    
+        $filename = 'keypad-2';
+        $ext = 'png';    
+        // first we replace any spaces with hyphens
+
+        $filename = preg_replace('/\s+/', '-', $filename);
 
         if ( DB::table('uploads')->where( 'name', '=', $filename . '.' . $ext )->count() )
         {   // if filename ends in hyphen(s) or hyphen(s) with number(s) remove these and add a single hyphen at the end 
@@ -24,22 +27,25 @@ Route::get('uploadyoda/func', function(){
             
             // check if there is a versioned filename in the database already and retrieve the highest versioned filename 
             $existing_versioned = DB::table('uploads')->select('name')
-                ->where( 'name', 'like', $filename . '%' ) // wildcards appended to query for one or more characters after the hyphen
+                ->where( 'name', 'like', $filename . '_%.%' ) // wildcards appended to query for one or more characters after the hyphen
                 ->orderBy('name', 'desc')
                 ->take(1)
                 ->get();
-
-            // if there is a versioned filename retrieve its version and increment to version new filename
-            if ( count( $existing_versioned ) )
+            // check for 
+            if ( count( $existing_versioned ) && preg_match('/\d+$/', pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME ) ) )
             {
                 $last_versioned = pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME );
                 preg_match('/\d+$/', $last_versioned, $match );
-                $version_number = ++$match[0];
+                if ( count( $match ) ){
+                    $version_number = ++$match[0];
 
-                return $filename . $version_number;
+                    return $filename . $version_number;
+                }
             }
             else // no versioned filenames exist yet so we can create the first
                 return $filename . 1;
         }// no record exists with current filename to return it for db insertion
-       return $filename; 
+        
+        return $filename; 
+
 });

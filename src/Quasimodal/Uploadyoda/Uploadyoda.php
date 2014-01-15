@@ -35,6 +35,10 @@ class Uploadyoda {
 
     public function createUniqueFilename( $filename, $ext ) 
     {
+        // first we replace any spaces with hyphens
+
+        $filename = preg_replace('/\s+/', '-', $filename);
+
         if ( $this->upload->where( 'name', '=', $filename . '.' . $ext )->count() )
         {   // if filename ends in hyphen(s) or hyphen(s) with number(s) remove these and add a single hyphen at the end 
             if ( preg_match( '/-+(\d+)?$/', $filename, $match ) )
@@ -49,7 +53,7 @@ class Uploadyoda {
                 ->take(1)
                 ->get();
             // check for 
-            if ( count( $existing_versioned ) )
+            if ( count( $existing_versioned ) && preg_match('/\d+$/', pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME ) ) )
             {
                 $last_versioned = pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME );
                 preg_match('/\d+$/', $last_versioned, $match );
@@ -132,5 +136,16 @@ class Uploadyoda {
 
             return $response;
         }
+    }
+
+    static function generateThumbnail($filename, $mime)
+    {
+        // check if image
+        if (preg_match('/image/', $mime))
+            return '<div class="preview-container"><div class="thumb" style="background-image:url(/packages/quasimodal/uploadyoda/uploads/' . $filename . '); background-size: contain"/></div></div>';
+        // check if pdf
+        if (preg_match('/pdf/', $mime))
+            return '<div class="preview-container"/><i class="fa fa-5x fa-file-text"></i></div>';
+
     }
 }
