@@ -160,7 +160,47 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('File exceeds max server filesize', $uploadResponse);
     }
 
-    public function testUploadReturnsErrorIfMimeTypeIsInvalid()
+    public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnConfig()
+    {
+        $fileMock = m::mock('fileMock');        
+        $_FILES['file'] = array('file' => $fileMock); 
+
+        $mockRequest = m::mock('\Illuminate\Http\Request');
+        $mockRequest->shouldReceive('hasFile')->andReturn(true);
+        $mockRequest->shouldReceive('file')->andReturn($fileMock);
+
+        Config::set('uploadyoda::allowed_mime_types', array('jpg'));
+        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.xyz');
+        Input::swap($mockRequest);
+
+        $response = Uploadyoda::upload('file');
+
+        $this->assertEquals('Invalid file type: xyz', $response);        
+    }  
+    
+    public function testUploadReturnsErrorIfFilesizeExceedsMaxSizeBasedOnConfig()
+    {
+        $fileMock = m::mock('fileMock');        
+        $_FILES['file'] = array('file' => $fileMock); 
+
+        $mockRequest = m::mock('\Illuminate\Http\Request');
+        $mockRequest->shouldReceive('hasFile')->andReturn(true);
+        $mockRequest->shouldReceive('file')->andReturn($fileMock);
+
+        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
+        Config::set('uploadyoda::max_file_size', 1);
+        $fileMock->shouldReceive('getSize')->andReturn(2);
+        Input::swap($mockRequest);
+
+        $response = Uploadyoda::upload('file');
+
+        $this->assertEquals("File size exceeds the application's maximum filesize", $response);        
+    }  
+    
+    /**
+     * Test uploadyoda's upload helper using passed in params
+     */    
+    public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnArgs()
     {
         $fileMock = m::mock('fileMock');        
         $_FILES['file'] = array('file' => $fileMock); 
@@ -172,12 +212,12 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.xyz');
         Input::swap($mockRequest);
 
-        $response = Uploadyoda::upload('file');
+        $response = Uploadyoda::upload('file', array('jpg'));
 
         $this->assertEquals('Invalid file type: xyz', $response);        
     }  
     
-    public function testUploadReturnsErrorIfFilesizeExceedsMaxSize()
+    public function testUploadReturnsErrorIfFileSizeExceedsMaxSizeBasedOnArgs()
     {
         $fileMock = m::mock('fileMock');        
         $_FILES['file'] = array('file' => $fileMock); 
@@ -187,11 +227,55 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $mockRequest->shouldReceive('file')->andReturn($fileMock);
 
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
-        $fileMock->shouldReceive('getSize')->andReturn(Config::get('uploadyoda::max_file_size') + 1);
+        $fileMock->shouldReceive('getSize')->andReturn(2);
         Input::swap($mockRequest);
 
-        $response = Uploadyoda::upload('file');
+        $response = Uploadyoda::upload('file', null, 1);
 
         $this->assertEquals("File size exceeds the application's maximum filesize", $response);        
     }  
+
+    public function testUploadCorrectlyAcceptsUserDefinedFilename()
+    {
+        $fileMock = m::mock('fileMock');        
+        $_FILES['file'] = array('file' => $fileMock); 
+
+        $mockRequest = m::mock('\Illuminate\Http\Request');
+        $mockRequest->shouldReceive('hasFile')->andReturn(true);
+        $mockRequest->shouldReceive('file')->andReturn($fileMock);
+
+        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
+        $fileMock->shouldReceive('getSize')->andReturn(1);
+
+        $fileMock->shouldReceive('getMimeType')->andReturn('mime');
+        $fileMock->shouldReceive('move');
+
+        Input::swap($mockRequest);
+
+        $response = Uploadyoda::upload('file', null, 1, null, 'custom_filename' );
+        
+        $this->assertEquals('custom_filename.jpg', $response['name']);
+    }
+    
+    public function testUploadCorrectlyAcceptsUserDefinedUploadPath()
+    {
+        $fileMock = m::mock('fileMock');        
+        $_FILES['file'] = array('file' => $fileMock); 
+
+        $mockRequest = m::mock('\Illuminate\Http\Request');
+        $mockRequest->shouldReceive('hasFile')->andReturn(true);
+        $mockRequest->shouldReceive('file')->andReturn($fileMock);
+
+        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
+        $fileMock->shouldReceive('getSize')->andReturn(1);
+
+        $fileMock->shouldReceive('getMimeType')->andReturn('mime');
+        $fileMock->shouldReceive('move');
+
+        Input::swap($mockRequest);
+
+        $response = Uploadyoda::upload('file', null, 1, 'my_custom_folder', null );
+        
+        $this->assertEquals('my_custom_folder', $response['path']);
+    }
 }

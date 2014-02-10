@@ -107,7 +107,9 @@ class Uploadyoda {
             if ( !$maxFileSize )
                 $maxFileSize = $this->config->get('uploadyoda::max_file_size');
 
-            if ( $uploadedFile->getSize() > $maxFileSize )
+            $fileSize = $uploadedFile->getSize();
+
+            if ( $fileSize > $maxFileSize )
                 return "File size exceeds the application's maximum filesize"; // this will be changed to proper error behaviour eventually
 
             // we should change this to check the uploads table for the filename collisions and append a numeric if needs be 
@@ -124,7 +126,7 @@ class Uploadyoda {
             $response['name'] = $name . '.' . $fileExt;
             $response['path'] = $path;
             $response['mime_type'] = $uploadedFile->getMimeType();
-            $response['size'] = $uploadedFile->getSize();
+            $response['size'] = $fileSize;
 
             if ( $response['size'] < 1000000 )
              $response['size'] = ( ceil( ( $response['size'] / 1000 ) * 100 ) / 100 ) . ' kB';
