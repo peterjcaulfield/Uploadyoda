@@ -10,7 +10,7 @@ function calculateFilesize(num_bytes)
 
 function getFileInfo(file, fileNumber)
 {
- var downloadsContainer = document.getElementById('downloads');
+ var downloadsContainer = document.getElementById('downloadsBody');
  var tableRow = document.createElement('tr');
  tableRow.id = 'upload-' + fileNumber;
  var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner">' + file.name  + '</div></td>';
