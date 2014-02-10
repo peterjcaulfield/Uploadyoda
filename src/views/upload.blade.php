@@ -1,5 +1,4 @@
 @extends('uploadyoda::layouts.master')
-<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/upload.js') }}"></script>
 
 @section('content')
 
@@ -23,4 +22,8 @@
 
 </div>
 
+@stop
+
+@section('footer')
+<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/upload.js') }}"></script>
 @stop
