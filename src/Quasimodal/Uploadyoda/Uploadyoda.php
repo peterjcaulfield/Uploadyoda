@@ -71,9 +71,6 @@ class Uploadyoda {
 
     public function upload( $key, $allowedMimeTypes=null, $maxFileSize=null, $path=null, $name=null )
     {
-        // first check for conditions which cause $_FILES to be empty 
-       // $file_max = ini_get('upload_max_filesize');
-
         if ( empty($_FILES) )
         {
             /**
@@ -82,24 +79,26 @@ class Uploadyoda {
              * that will cover all these causes
              */
 
-            return 'Server error';
+            return 'server error';
         }
         // check for server errors that would be recorded in the $_FILES array
         if ( !empty($_FILES) && isset($_FILES['file']['error']) )
         {
             if ( $_FILES['file']['error'] != 0 )
-                return $php_upload_errors[$_FILES['file']['error'] - 1];
+                return $this->php_upload_errors[$_FILES['file']['error'] - 1];
         }
 
         if ( Input::hasFile( $key  ) )
         {
             $response  = array();
-            
+
+            $uploadedFile = Input::file( $key );
+
             // check Mime Type is valid 
             if ( !$allowedMimeTypes )
                 $allowedMimeTypes = $this->config->get('uploadyoda::allowed_mime_types');
 
-            $fileExt = pathinfo(Input::file( $key )->getClientOriginalName(), PATHINFO_EXTENSION);
+            $fileExt = pathinfo( $uploadedFile->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if ( !in_array( $fileExt, $allowedMimeTypes ) )
                 return 'Invalid file type: ' . $fileExt; 
@@ -108,12 +107,12 @@ class Uploadyoda {
             if ( !$maxFileSize )
                 $maxFileSize = $this->config->get('uploadyoda::max_file_size');
 
-            if ( Input::file( $key )->getSize() > $maxFileSize )
+            if ( $uploadedFile->getSize() > $maxFileSize )
                 return "File size exceeds the application's maximum filesize"; // this will be changed to proper error behaviour eventually
 
             // we should change this to check the uploads table for the filename collisions and append a numeric if needs be 
             if ( !$name )
-               $name = pathinfo(Input::file($key)->getClientOriginalName(), PATHINFO_FILENAME);
+               $name = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
 
             $name = $this->createUniqueFilename( $name, $fileExt );
 
@@ -124,15 +123,15 @@ class Uploadyoda {
 
             $response['name'] = $name . '.' . $fileExt;
             $response['path'] = $path;
-            $response['mime_type'] = Input::file($key)->getMimeType();
-            $response['size'] = Input::file($key)->getSize();
+            $response['mime_type'] = $uploadedFile->getMimeType();
+            $response['size'] = $uploadedFile->getSize();
 
             if ( $response['size'] < 1000000 )
              $response['size'] = ( ceil( ( $response['size'] / 1000 ) * 100 ) / 100 ) . ' kB';
             else
               $response['size'] = ( ceil( ( $response['size'] / 1000000 ) * 100 ) / 100 ) . ' MB';
 
-            Input::file( $key )->move( public_path() .'/' . $path, $name . '.' . $fileExt );
+            $uploadedFile->move( public_path() .'/' . $path, $name . '.' . $fileExt );
 
             return $response;
         }

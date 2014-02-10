@@ -11,6 +11,16 @@
         "php": ">=5.3.0",
         "illuminate/support": "4.1.x"
     },
+    "require-dev" : {
+        "orchestra/testbench" : "2.1.*",
+        "mockery/mockery": "0.8.0"
+    },
+    "repositories": [
+            {
+                "type": "vcs",
+                "url": "git://github.com/orchestral/phpseclib.git"
+            }
+        ],
     "autoload": {
         "psr-0": {
             "Quasimodal\\Uploadyoda": "src/"
