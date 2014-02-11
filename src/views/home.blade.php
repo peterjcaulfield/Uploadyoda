@@ -5,7 +5,7 @@
 <div id="uploads-index">
 
     <div id="header-container">
-        <div id="thumbnail-header" class="header"><div class="header-text">Name</div></div>
+        <div id="thumbnail-header" class="header"><div class="header-text"></div></div>
         <div id="name-header" class="header"><div class="header-text">Name</div></div>
         <div id="size-header" class="header"><div class="header-text">Size</div></div>
         <div id="type-header" class="header"><div class="header-text">Type</div></div>

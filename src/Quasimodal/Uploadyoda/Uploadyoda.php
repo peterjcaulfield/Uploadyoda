@@ -1,10 +1,4 @@
 <?php namespace Quasimodal\Uploadyoda;
-/**
- * TODO
- *
- * change validation to use laravels validation helper
- * make uploads complete via ajax
- */
 
 use Illuminate\Config\Repository;
 use Input;
@@ -36,7 +30,6 @@ class Uploadyoda {
     public function createUniqueFilename( $filename, $ext ) 
     {
         // first we replace any spaces with hyphens
-
         $filename = preg_replace('/\s+/', '-', $filename);
 
         if ( $this->upload->where( 'name', '=', $filename . '.' . $ext )->count() )
@@ -78,44 +71,36 @@ class Uploadyoda {
              * we return an error string that communicates a generic description
              * that will cover all these causes
              */
-
-            return 'server error';
+            throw new UploadyodaException( 'server error', 1 );
         }
         // check for server errors that would be recorded in the $_FILES array
         if ( !empty($_FILES) && isset($_FILES['file']['error']) )
         {
             if ( $_FILES['file']['error'] != 0 )
-                return $this->php_upload_errors[$_FILES['file']['error'] - 1];
+                throw new UploadyodaException( $this->php_upload_errors[$_FILES['file']['error'] - 1], 1 );
         }
 
         if ( Input::hasFile( $key  ) )
         {
             $response  = array();
-
             $uploadedFile = Input::file( $key );
 
             // check Mime Type is valid 
             $allowedMimeTypes = isset( $allowedMimeTypes ) ? $allowedMimeTypes : $this->config->get('uploadyoda::allowed_mime_types');
-
             $fileExt = pathinfo( $uploadedFile->getClientOriginalName(), PATHINFO_EXTENSION);
-
             if ( !in_array( $fileExt, $allowedMimeTypes ) )
-                return 'Invalid file type: ' . $fileExt; 
+                throw new UploadyodaException( 'Invalid file type: ' . $fileExt, 1 );
 
             // check file size is valid
             $maxFileSize = isset( $maxFileSize ) ? $maxFileSize : $this->config->get('uploadyoda::max_file_size');
-
             $fileSize = $uploadedFile->getSize();
-
             if ( $fileSize > $maxFileSize )
-                return "File size exceeds the application's maximum filesize"; // this will be changed to proper error behaviour eventually
+                throw new UploadyodaException( "File size exceeds the application's maximum filesize", 1 );
 
             // create unique filename
             $name = isset( $name ) ? $name : pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-
             $name = $this->createUniqueFilename( $name, $fileExt );
 
-            
             // set the upload directory path
             $path = isset( $path ) ? $path : $this->config->get('uploadyoda::uploads_directory');
 
@@ -123,18 +108,21 @@ class Uploadyoda {
             $response['name'] = $name . '.' . $fileExt;
             $response['path'] = $path;
             $response['mime_type'] = $uploadedFile->getMimeType();
-            $response['size'] = $fileSize;
+            $response['size'] = $this::formatFilesize($fileSize);
 
-            if ( $response['size'] < 1000000 )
-             $response['size'] = ( ceil( ( $response['size'] / 1000 ) * 100 ) / 100 ) . ' kB';
-            else
-              $response['size'] = ( ceil( ( $response['size'] / 1000000 ) * 100 ) / 100 ) . ' MB';
-            
             // upload the file
             $uploadedFile->move( public_path() .'/' . $path, $name . '.' . $fileExt );
 
             return $response;
         }
+    }
+
+    static function formatFilesize($fileSize)
+    {
+        if ( $fileSize < 1000000 )
+            return ( ceil( ( $fileSize / 1000 ) * 100 ) / 100 ) . ' kB';
+        else
+            return ( ceil( ( $fileSize / 1000000 ) * 100 ) / 100 ) . ' MB';
     }
 
     static function generateThumbnail($filename, $mime)
@@ -145,6 +133,5 @@ class Uploadyoda {
         // check if pdf
         if (preg_match('/pdf/', $mime))
             return '<div class="preview-container"/><i class="fa fa-5x fa-file-text"></i></div>';
-
     }
 }

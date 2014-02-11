@@ -24,15 +24,16 @@ class UploadsController extends BaseController
 
     public function store()
     {
-        $response = Uploadyoda::upload('file');
-
-        if ( is_array( $response ) )
+        try 
         {
+            $response = Uploadyoda::upload('file');
             $this->upload->create( $response ); 
             return 'success';
         }
-        else
-            return $response;
+        catch ( UploadyodaException $e )
+        {
+            return $e->getMessage();
+        }
 
     }
 

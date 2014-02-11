@@ -1,7 +1,8 @@
-<?php
+<?php 
 
 use Mockery as m;
 use \Quasimodal\Uploadyoda\Upload as Upload;
+
 
 class UploadYodaTest extends Orchestra\Testbench\TestCase 
 {
@@ -146,20 +147,30 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
    /**
     * Tests of uploadyoda's upload helper function using packages config
     */
-    
+
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage server error
+     */ 
     public function testUploadReturnsServerErrorWhenFilesArrayIsEmpty()
     {
         $uploadResponse = Uploadyoda::upload('file');
-        $this->assertEquals('server error', $uploadResponse);
     }
 
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage File exceeds max server filesize
+     */ 
     public function testUploadReturnsPHPErrorIfPresent()
     {
         $_FILES['file']['error'] = 1;
         $uploadResponse = Uploadyoda::upload('file');
-        $this->assertEquals('File exceeds max server filesize', $uploadResponse);
     }
 
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage Invalid file type: xyz
+     */ 
     public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnConfig()
     {
         $fileMock = m::mock('fileMock');        
@@ -174,10 +185,12 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         Input::swap($mockRequest);
 
         $response = Uploadyoda::upload('file');
-
-        $this->assertEquals('Invalid file type: xyz', $response);        
     }  
     
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage File size exceeds the application's maximum filesize
+     */ 
     public function testUploadReturnsErrorIfFilesizeExceedsMaxSizeBasedOnConfig()
     {
         $fileMock = m::mock('fileMock');        
@@ -193,13 +206,16 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         Input::swap($mockRequest);
 
         $response = Uploadyoda::upload('file');
-
-        $this->assertEquals("File size exceeds the application's maximum filesize", $response);        
     }  
     
     /**
      * Test uploadyoda's upload helper using passed in params
      */    
+    
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage Invalid file type: xyz
+     */ 
     public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnArgs()
     {
         $fileMock = m::mock('fileMock');        
@@ -213,10 +229,12 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         Input::swap($mockRequest);
 
         $response = Uploadyoda::upload('file', array('jpg'));
-
-        $this->assertEquals('Invalid file type: xyz', $response);        
     }  
     
+    /**
+     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
+     * @expectedExceptionMessage File size exceeds the application's maximum filesize
+     */ 
     public function testUploadReturnsErrorIfFileSizeExceedsMaxSizeBasedOnArgs()
     {
         $fileMock = m::mock('fileMock');        
@@ -231,8 +249,6 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         Input::swap($mockRequest);
 
         $response = Uploadyoda::upload('file', null, 1);
-
-        $this->assertEquals("File size exceeds the application's maximum filesize", $response);        
     }  
 
     public function testUploadCorrectlyAcceptsUserDefinedFilename()
