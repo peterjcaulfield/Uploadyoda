@@ -95,8 +95,7 @@ class Uploadyoda {
             $uploadedFile = Input::file( $key );
 
             // check Mime Type is valid 
-            if ( !$allowedMimeTypes )
-                $allowedMimeTypes = $this->config->get('uploadyoda::allowed_mime_types');
+            $allowedMimeTypes = isset( $allowedMimeTypes ) ? $allowedMimeTypes : $this->config->get('uploadyoda::allowed_mime_types');
 
             $fileExt = pathinfo( $uploadedFile->getClientOriginalName(), PATHINFO_EXTENSION);
 
@@ -104,25 +103,23 @@ class Uploadyoda {
                 return 'Invalid file type: ' . $fileExt; 
 
             // check file size is valid
-            if ( !$maxFileSize )
-                $maxFileSize = $this->config->get('uploadyoda::max_file_size');
+            $maxFileSize = isset( $maxFileSize ) ? $maxFileSize : $this->config->get('uploadyoda::max_file_size');
 
             $fileSize = $uploadedFile->getSize();
 
             if ( $fileSize > $maxFileSize )
                 return "File size exceeds the application's maximum filesize"; // this will be changed to proper error behaviour eventually
 
-            // we should change this to check the uploads table for the filename collisions and append a numeric if needs be 
-            if ( !$name )
-               $name = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // create unique filename
+            $name = isset( $name ) ? $name : pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
 
             $name = $this->createUniqueFilename( $name, $fileExt );
 
             
+            // set the upload directory path
+            $path = isset( $path ) ? $path : $this->config->get('uploadyoda::uploads_directory');
 
-            if ( !$path )
-                $path = $this->config->get('uploadyoda::uploads_directory');
-
+            // format the response
             $response['name'] = $name . '.' . $fileExt;
             $response['path'] = $path;
             $response['mime_type'] = $uploadedFile->getMimeType();
@@ -132,7 +129,8 @@ class Uploadyoda {
              $response['size'] = ( ceil( ( $response['size'] / 1000 ) * 100 ) / 100 ) . ' kB';
             else
               $response['size'] = ( ceil( ( $response['size'] / 1000000 ) * 100 ) / 100 ) . ' MB';
-
+            
+            // upload the file
             $uploadedFile->move( public_path() .'/' . $path, $name . '.' . $fileExt );
 
             return $response;
