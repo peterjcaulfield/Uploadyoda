@@ -1,4 +1,4 @@
-@import url(http://reset5.googlecode.com/hg/reset.min.css);
+/*@import url(http://reset5.googlecode.com/hg/reset.min.css);*/
 
 a { text-decoration: none; }
 
@@ -8,15 +8,12 @@ body { background-color: #fff; margin: 0; }
 #nav { position: fixed; width: 140px; background: #eeeeee;  color: #000; padding-top: 10px; left: 0; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
-#nav-content li.active { background-color: #22a6e5;}
 #nav-content .active a { color: #fff; }
-#nav-content ul { list-style: none; padding: 0; }
-#nav-content li { margin-bottom: 5px; border-radius: 5px; }
 #content { margin-left: 140px; height: 100%; }
-h1 { margin-left: 10px; }
+h3 { margin: 16px 0 0 10px; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #222; }
 #body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
-#body-content { width: 100%; overflow: visible!important; padding-top:22px; }
+#body-content { width: 100%; overflow: visible!important; }
 .wrap { padding-top: 20px; border-radius: 3px; position: relative; }
 .wrap p { padding: 20px 0 5px 4px;  font-size: 12px; }
 
@@ -26,52 +23,50 @@ h1 { margin-left: 10px; }
 
 #uploads-index { font-size: 12px; }
 #header-container { display: table; border-spacing: 0; width: 100%; }
-#header-container div {  display: table-cell; }
 .header { background: #ccc; }
-.header-text { padding: 5px 0 10px 5px; font-weight: bold; }
+.header-text { font-weight: bold; }
 .row { display: table; border-spacing: 0; width: 100%; border-bottom: solid 2px #ccc; }
-.row div { display: table-cell; vertical-align: top; } 
 .row-text { padding: 5px; }
 #thumbnail-header { width: 113px; border-right: solid 2px #fff; }
 #name-header { border-right: solid 2px #fff; }
 #size-header { width: 98px; border-right: solid 2px #fff; }
 #type-header { width: 118px; border-right: solid 2px #fff; }
 #created-header { width: 100px; }
-.thumbnail { width: 115px; }
+.preview { width: 115px; text-align: center; }
 .size { width: 100px; }
 .mime { width: 120px; }
 .created { width: 100px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; }
 .upload-inner { position: absolute; top: 5; left: 5; }
 .preview-container { padding: 5px 0 5px 15px;}
-.thumb { height: 85px; width: 85px; overflow: hidden; }
-.pagination { margin-top: 10px; }
+.thumb { height: 85px; width: 85px; overflow: hidden; margin: 0 auto; }
+.pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
 .pagination a, span { display: inline-block; padding: 0 10px 0 10px; }
+td { border-bottom: 1px solid #ddd; }
 
 /**
  * Upload
  */
 
-#drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 4px #ccc; color: #ccc; }
-.drop-hover { border: dashed 4px #73ac3a!important; color: #73ac3a!important; }
+#drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 2px #ccc; color: #ccc; }
+.drop-hover { border: dashed 2px #73ac3a!important; color: #73ac3a!important; }
 #downloads { overflow: auto; font-size: 12px; border-collapse: collapse; }
 #downloads th { padding: 5px 5px; background: #ccc; border-left: solid 2px #fff; border-right: solid 2px #fff; }
 #downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
 #downloads th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
-#downloads tr { border-bottom: solid 2px #ccc; }
 #downloads td { padding: 5px 5px; }
 #size-header { width: 100px; }
 #progress-header { width: 100px; }
-#complete-header { width: 100px; }
+#complete-header { width: 80px; }
 #status-header { width: 250px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; }
 .upload-name-inner { position: absolute; top: 5; left: 5; }
 .upload-size { width: 100px; }
 .upload-progress { width: 100px; }
-.upload-complete { width: 100px; }
+.upload-complete { width: 80px; text-align: center; }
 .upload-status { width: 250px; }
-.progress { width: 100%; height: 10px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+.progress { margin: 0; width: 100%; height: 10px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
 .progress::-webkit-progress-bar { background-color: whiteSmoke; }
 .failedUpload::-webkit-progress-bar { background-color: #d22000; color: #fff; }
 .succeededUpload::-webkit-progress-bar { background-color: #73ac3a; }
