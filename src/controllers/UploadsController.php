@@ -1,25 +1,30 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use BaseController, Input, View, Redirect, Uploadyoda;
+use BaseController, Input, View, Redirect, Config, Uploadyoda;
 
 class UploadsController extends BaseController
 {
 
     protected $upload;
+    public $layout;
 
     public function __construct( Upload $upload )
     {
         $this->upload = $upload;
+        $this->layout = Config::get('uploadyoda::layout');
     }
 
     public function index()
     {
-        return View::make('uploadyoda::home')->with(array('uploads'=>$this->upload->paginate(10), 'pageTitle'=>'Uploads', 'icon' => 'fa-home'));
+        $uploads = $this->upload->paginate(10);
+        View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home'));
+        $this->layout->content = View::make('uploadyoda::home');
     }
 
     public function create()
     {
-        return View::make('uploadyoda::upload')->with(array('pageTitle' => 'Upload file', 'icon' => 'fa-upload'));
+        $this->layout->with(array('pageTitle' => 'Upload file', 'icon' => 'fa-upload'));
+        $this->layout->content = View::make('uploadyoda::upload');
     }
 
     public function store()

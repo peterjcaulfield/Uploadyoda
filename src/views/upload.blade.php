@@ -1,4 +1,3 @@
-@extends('uploadyoda::layouts.master')
 
 @section('content')
 
