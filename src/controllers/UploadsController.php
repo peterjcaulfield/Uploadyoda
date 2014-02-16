@@ -5,6 +5,7 @@ use BaseController, Input, View, Redirect, Config, Uploadyoda;
 class UploadsController extends BaseController
 {
 
+    protected $softDelete = true;
     protected $upload;
     public $layout;
 
@@ -16,7 +17,7 @@ class UploadsController extends BaseController
 
     public function index()
     {
-        $uploads = $this->upload->paginate(10);
+        $uploads = $this->upload->orderBy('created_at', 'desc')->paginate(10);
         View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home'));
         $this->layout->content = View::make('uploadyoda::home');
     }
@@ -42,9 +43,12 @@ class UploadsController extends BaseController
 
     }
 
-    public function destroy($id)
+    public function destroy()
     {
-
+        $recordsToTrash = json_decode(Input::get('itemsToTrash'));
+        if (count($recordsToTrash))
+            $this->upload->destroy($recordsToTrash);
+        return Redirect::back();
     }
 
     public function test()

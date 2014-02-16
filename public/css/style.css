@@ -9,14 +9,16 @@ body { background-color: #ebebeb; margin: 0; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
 #nav-content .active a { color: #fff; }
-#content { margin-left: 140px; height: 100%; }
+#content { margin-left: 140px; height: 100%; overflow-x: hidden; }
 h3 { margin: 16px 0 0 10px; }
 #header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #444444; }
 #body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; }
-.wrap { padding-top: 20px; border-radius: 3px; position: relative; }
+.wrap { position: relative; }
 .wrap p { padding: 20px 0 5px 4px;  font-size: 12px; }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
+#sectionHeaderContainer { margin: 15px 0 25px 0; overflow: auto;}
+.sectionText { margin: 0 10px 0 0; float: left; }
 /**
  * Home page
  */
@@ -40,6 +42,11 @@ h3 { margin: 16px 0 0 10px; }
 .upload-inner { position: absolute; top: 5; left: 5; }
 .preview-container { padding: 5px 0 5px 15px;}
 .thumb { height: 85px; width: 85px; overflow: hidden; margin: 0 auto; }
+.uploadCheckbox { float: left; margin: 0; }
+input[type=checkbox] { margin: 0; }
+#uploadCheckboxBatch { margin-top: 3px; }
+#uploadSelectBatch { display: inline-block; margin: 0 10px 0 0; }
+#uploadBatchOptions { margin-bottom: 5px; clear: both; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
 .pagination a, span { display: inline-block; padding: 0 10px 0 10px; }

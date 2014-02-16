@@ -1,6 +1,8 @@
 
 @section('content')
-
+<div id="sectionHeaderContainer">
+    <h3 class="sectionText"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload</h3>
+</div>
 <div id="content-inner">
 
     <div id="drop-area">
