@@ -6,6 +6,11 @@ use Input;
 
 class Uploadyoda {
 
+    protected static $mimes = array(
+        'image' => array('image/jpeg', 'image/png'),
+        'video' => array('video/mp4')
+    );
+
     protected $config;
 
     protected $upload;
@@ -19,6 +24,11 @@ class Uploadyoda {
         'Failed to write to disk',
         'PHP extension stopped the file upload'
     );
+
+    public static function getMimes()
+    {
+        return self::$mimes;
+    }
 
     public function __construct( Repository $config, Upload $upload )
     {

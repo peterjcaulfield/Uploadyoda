@@ -56,6 +56,33 @@
         </select> 
         <button id="applyBatch" class="btn btn-xs">Apply</button>
     </div>
+    <div id="filters">
+        <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
+            <select name="type" id="filter" class="uploadInput">
+                <option value="0">all types</option>
+                <option value="image">images</option>
+                <option value="video">video</option>
+            </select> 
+            <select name="date" id="filterDate" class="uploadInput">
+                <option value="0">all dates</option>
+                <option value="1" >january</option>
+                <option value="2">feburary</option>
+                <option value="3">march</option>
+                <option value="4">april</option>
+                <option value="5" >may</option>
+                <option value="6">june</option>
+                <option value="7" >july</option>
+                <option value="8">august</option>
+                <option value="9">september</option>
+                <option value="10">october</option>
+                <option value="11">november</option>
+                <option value="12">december</option>
+            </select> 
+            <button id="applyFilter" class="btn btn-xs">Filter</button>
+                <input name="search" type="text" name="search" id="searchBox" class="uploadInput">
+                <button id="applySearch" class="btn btn-xs">Search</button>
+        </form>
+    </div>
     <table id="header-container" class="table table-condensed table-bordered">
         <th id="thumbnail-header" class="header"><div class="header-text"><input type="checkbox" id="uploadCheckboxBatch" class=""></div></th>
         <th id="name-header" class="header"><div class="header-text">Name</div></th>
@@ -78,7 +105,11 @@
     <?php } ?>
 
     </table>
+<?php 
 
-<?php echo $uploads->links(); ?>
+    $queryString = Request::query();
+    unset($queryString['page']);
+?>
+<?php echo $uploads->appends($queryString)->links(); ?>
 
 @stop

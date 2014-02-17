@@ -19,10 +19,10 @@ h3 { margin: 16px 0 0 10px; }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
 #sectionHeaderContainer { margin: 15px 0 25px 0; overflow: auto;}
 .sectionText { margin: 0 10px 0 0; float: left; }
+
 /**
  * Home page
  */
-
 #uploads-index { font-size: 12px; }
 #header-container { display: table; border-spacing: 0; width: 100%; }
 .header { background: #444444; color: #fdf7ef;  }
@@ -46,7 +46,8 @@ h3 { margin: 16px 0 0 10px; }
 input[type=checkbox] { margin: 0; }
 #uploadCheckboxBatch { margin-top: 3px; }
 #uploadSelectBatch { display: inline-block; margin: 0 10px 0 0; }
-#uploadBatchOptions { margin-bottom: 5px; clear: both; }
+#uploadBatchOptions { margin-bottom: 5px; clear: both; float: left; width: 200px;}
+#filters { float: right; width: 428px; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
 .pagination a, span { display: inline-block; padding: 0 10px 0 10px; }
@@ -54,6 +55,7 @@ td { border-bottom: 1px solid #ddd; }
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus { background-color: #f0523f;  color: #fdf7ef; border-color: #f0523f;  }
 .pagination>li>a, .pagination>li>span { background-color: #444444; color: #fdf7ef; }
 .pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {background-color: #444444; color: #fdf7ef;}
+.uploadInput { margin: 0 0 0 10px; display: inline-block; }
 
 /**
  * Upload

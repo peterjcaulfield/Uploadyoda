@@ -1,6 +1,6 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use BaseController, Input, View, Redirect, Config, Uploadyoda;
+use BaseController, Input, View, Redirect, Config, Request, Uploadyoda;
 
 class UploadsController extends BaseController
 {
@@ -17,9 +17,40 @@ class UploadsController extends BaseController
 
     public function index()
     {
-        $uploads = $this->upload->orderBy('created_at', 'desc')->paginate(10);
-        View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home'));
-        $this->layout->content = View::make('uploadyoda::home');
+        if ( count(Request::query()) > 1 )
+        {
+            $filters = Input::all();
+
+            if ( $filters['date'] )
+            {
+                $start = \Carbon\Carbon::create(null, $filters['date'], 1, 0, 0, 0)->toDateTimeString(); 
+                $end = \Carbon\Carbon::create(null, $filters['date'], 1, 0, 0, 0)->addMonth()->toDateTimeString();
+            }
+            else
+            {
+                $start = \Carbon\Carbon::create(1970, 1, 1, 0, 0, 0)->toDateTimeString(); 
+                $end = \Carbon\Carbon::now()->toDateTimeString();
+            }
+            
+            $searchQuery = $filters['search'];
+            $mimes = $filters['type'] === "0" ? array_reduce(array_values(Uploadyoda::getMimes()), "array_merge", array()) : Uploadyoda::getMimes()[$filters['type']];
+
+            $uploads = $this->upload->where('name', 'LIKE', '%' . $searchQuery . '%')
+                ->whereIn('mime_type', $mimes)
+                ->where('created_at', '>=', $start)
+                ->where('created_at', '<=', $end)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+            
+            View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
+            $this->layout->content = View::make('uploadyoda::home');
+        }
+        else
+        {
+            $uploads = $this->upload->orderBy('created_at', 'desc')->paginate(10);
+            View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
+            $this->layout->content = View::make('uploadyoda::home');
+        }
     }
 
     public function create()
