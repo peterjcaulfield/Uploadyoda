@@ -21,6 +21,15 @@ h3 { margin: 16px 0 0 10px; }
 .sectionText { margin: 0 10px 0 0; float: left; }
 
 /**
+ * Welcome page
+ */
+
+#form-signup { width: 400px; margin: 40px auto 0 auto; }
+.form-control { margin-bottom: 5px; }
+
+
+
+/**
  * Home page
  */
 #uploads-index { font-size: 12px; }
@@ -62,7 +71,7 @@ td { border-bottom: 1px solid #ddd; }
  */
 
 #drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 2px #ccc; color: #ccc; }
-.drop-hover { border: dashed 2px #73ac3a!important; color: #73ac3a!important; }
+.drop-hover { border: dashed 2px #f0523f!important; color: #f0523f!important; }
 #downloads { overflow: auto; font-size: 12px; border-collapse: collapse; }
 #downloads th { padding: 5px 5px; background: #444444 !important; border-left: solid 2px #fff; border-right: solid 2px #fff; color: #fdf7ef; }
 #downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
