@@ -47,14 +47,14 @@
 </script>
 <div id="uploads-index">
     <div id="sectionHeaderContainer">
-        <h3 class="sectionText"><i class="fa fa-home"></i>&nbsp;&nbsp;Uploads</h3>
+        <h1 class="sectionText"><i class="fa fa-home"></i>&nbsp;&nbsp;Uploads</h1>
     </div>
     <div id="uploadBatchOptions">
         <select id="uploadSelectBatch">
             <option value="0">Batch options</option>
             <option value="1" id="uploadBatchApply">Move to trash</option>
         </select> 
-        <button id="applyBatch" class="btn btn-xs">Apply</button>
+        <button id="applyBatch" class="btn btn-xs btn-primary">Apply</button>
     </div>
     <div id="filters">
         <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
@@ -78,9 +78,9 @@
                 <option value="11">november</option>
                 <option value="12">december</option>
             </select> 
-            <button id="applyFilter" class="btn btn-xs">Filter</button>
+            <button id="applyFilter" class="btn btn-xs btn-primary">Filter</button>
                 <input name="search" type="text" name="search" id="searchBox" class="uploadInput">
-                <button id="applySearch" class="btn btn-xs">Search</button>
+                <button id="applySearch" class="btn btn-xs btn-primary">Search</button>
         </form>
     </div>
     <table id="header-container" class="table table-condensed table-bordered">

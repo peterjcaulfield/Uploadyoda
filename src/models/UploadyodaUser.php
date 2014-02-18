@@ -11,10 +11,10 @@ class UploadyodaUser extends Eloquent implements UserInterface, RemindableInterf
 
     protected $fillable = array( 'firstname', 'lastname', 'email', 'password' );
 
-    public static $rules = array(
+    public $rules = array(
         'firstname'=>'required|alpha|min:2',
         'lastname'=>'required|alpha|min:2',
-        'email'=>'required|email|unique:users',
+        'email'=>'required|email|unique:uploadyoda_users',
         'password'=>'required|alpha_num|between:6,12|confirmed',
         'password_confirmation'=>'required|alpha_num|between:6,12'
     );
@@ -55,4 +55,9 @@ class UploadyodaUser extends Eloquent implements UserInterface, RemindableInterf
 	{
 		return $this->email;
 	}
+
+    public function setPassword($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 }

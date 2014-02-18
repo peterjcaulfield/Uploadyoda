@@ -9,23 +9,43 @@ body { background-color: #ebebeb; margin: 0; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
 #nav-content .active a { color: #fff; }
-#content { margin-left: 140px; height: 100%; overflow-x: hidden; }
+#content { height: 100%; overflow-x: hidden; padding-top: 47px; }
 h3 { margin: 16px 0 0 10px; }
-#header { height: 32px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #444444; }
+#header { height: 64px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #444444; }
 #body { position: relative;  padding: 0 0 65px 0; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; }
 .wrap { position: relative; }
 .wrap p { padding: 20px 0 5px 4px;  font-size: 12px; }
+.nav { float: left; margin: 12px 0 0 5px; }
+.nav li { margin-right: 8px; }
+.nav li a { color: #fdf7ef; }
+.nav li a:hover { background-color: none; color: #f0523f; }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
 #sectionHeaderContainer { margin: 15px 0 25px 0; overflow: auto;}
 .sectionText { margin: 0 10px 0 0; float: left; }
+#logout { display: inline-block; float: right; padding: 22px 20px 0 0; }
+#logout a { text-decoration: none; color: #fdf7ef; }
+
+.form-alert { position: absolute; top: 0; width: 100%; }
+
 
 /**
  * Welcome page
  */
 
+.welcome #content { margin: 0; }
+.welcome .wrap { position: static; }
 #form-signup { width: 400px; margin: 40px auto 0 auto; }
 .form-control { margin-bottom: 5px; }
+.welcome #body { min-width: 100%; }
+.formInput { position: relative; }
+.inputError { position: absolute; left: 100%; color: red; display: block; top: 0; padding: 5px 0 0 5px; width: 300px; font-size: 12px; }
+.welcome #body { overflow: hidden; }
+
+/**
+ * Login page
+ */
+#form-login { width: 400px; margin: 100px auto 0 auto; }
 
 
 
@@ -59,7 +79,6 @@ input[type=checkbox] { margin: 0; }
 #filters { float: right; width: 428px; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
-.pagination a, span { display: inline-block; padding: 0 10px 0 10px; }
 td { border-bottom: 1px solid #ddd; }
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus { background-color: #f0523f;  color: #fdf7ef; border-color: #f0523f;  }
 .pagination>li>a, .pagination>li>span { background-color: #444444; color: #fdf7ef; }

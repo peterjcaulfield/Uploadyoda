@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/main.js') }}"></script>
 </head>
-<body>
+<body class="welcome">
 <div id="content">
     <div id="header"></div>
     <div id="body">

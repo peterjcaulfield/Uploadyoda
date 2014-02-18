@@ -1,7 +1,7 @@
 
 @section('content')
 <div id="sectionHeaderContainer">
-    <h3 class="sectionText"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload</h3>
+    <h1 class="sectionText"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload</h1>
 </div>
 <div id="content-inner">
 
