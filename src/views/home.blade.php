@@ -46,42 +46,50 @@
     })
 </script>
 <div id="uploads-index">
-    <div id="sectionHeaderContainer">
+    <!--<div id="sectionHeaderContainer">
         <h1 class="sectionText"><i class="fa fa-home"></i>&nbsp;&nbsp;Uploads</h1>
-    </div>
-    <div id="uploadBatchOptions">
-        <select id="uploadSelectBatch">
-            <option value="0">Batch options</option>
-            <option value="1" id="uploadBatchApply">Move to trash</option>
-        </select> 
-        <button id="applyBatch" class="btn btn-xs btn-primary">Apply</button>
-    </div>
-    <div id="filters">
-        <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
-            <select name="type" id="filter" class="uploadInput">
-                <option value="0">all types</option>
-                <option value="image">images</option>
-                <option value="video">video</option>
+    </div>-->
+    <div id="tableActions">
+        <div id="uploadBatchOptions">
+            <select id="uploadSelectBatch" class="form-control">
+                <option value="0">Actions</option>
+                <option value="1" id="uploadBatchApply">Move to trash</option>
             </select> 
-            <select name="date" id="filterDate" class="uploadInput">
-                <option value="0">all dates</option>
-                <option value="1" >january</option>
-                <option value="2">feburary</option>
-                <option value="3">march</option>
-                <option value="4">april</option>
-                <option value="5" >may</option>
-                <option value="6">june</option>
-                <option value="7" >july</option>
-                <option value="8">august</option>
-                <option value="9">september</option>
-                <option value="10">october</option>
-                <option value="11">november</option>
-                <option value="12">december</option>
-            </select> 
-            <button id="applyFilter" class="btn btn-xs btn-primary">Filter</button>
-                <input name="search" type="text" name="search" id="searchBox" class="uploadInput">
-                <button id="applySearch" class="btn btn-xs btn-primary">Search</button>
-        </form>
+            <button id="applyBatch" class="btn btn-sm btn-primary">Apply</button>
+        </div>
+        <div id="filters">
+            <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
+                <select name="type" id="filter" class="uploadInput form-control">
+                    <option value="0">all types</option>
+                    <option value="image">images</option>
+                    <option value="video">video</option>
+                </select> 
+                <select name="date" id="filterDate" class="uploadInput form-control">
+                    <option value="0">all dates</option>
+                    <option value="1" >january</option>
+                    <option value="2">feburary</option>
+                    <option value="3">march</option>
+                    <option value="4">april</option>
+                    <option value="5" >may</option>
+                    <option value="6">june</option>
+                    <option value="7" >july</option>
+                    <option value="8">august</option>
+                    <option value="9">september</option>
+                    <option value="10">october</option>
+                    <option value="11">november</option>
+                    <option value="12">december</option>
+                </select> 
+                <div class="input-group" id="searchContainer">
+                    <input type="text" class="form-control" name="search">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                    </span>
+                </div>
+                <button id="applyFilter" class="btn btn-sm btn-primary">Filter</button>
+                    <!--<input name="search" type="text" name="search" id="searchBox" class="uploadInput">
+                    <button id="applySearch" class="btn btn-xs btn-primary">Search</button>-->
+            </form>
+        </div>
     </div>
     <table id="header-container" class="table table-condensed table-bordered">
         <th id="thumbnail-header" class="header"><div class="header-text"><input type="checkbox" id="uploadCheckboxBatch" class=""></div></th>
@@ -105,6 +113,7 @@
     <?php } ?>
 
     </table>
+    <!--<div id="tableEndBorder"></div>-->
 <?php 
 
     $queryString = Request::query();
