@@ -11,7 +11,7 @@ class UploadyodaUser extends Eloquent implements UserInterface, RemindableInterf
 
     protected $fillable = array( 'firstname', 'lastname', 'email', 'password' );
 
-    public $rules = array(
+    public static $rules = array(
         'firstname'=>'required|alpha|min:2',
         'lastname'=>'required|alpha|min:2',
         'email'=>'required|email|unique:uploadyoda_users',

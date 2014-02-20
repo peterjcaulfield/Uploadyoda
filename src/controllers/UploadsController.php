@@ -4,7 +4,6 @@ use Input, View, Redirect, Config, Request, Uploadyoda, Quasimodal\Uploadyoda\El
 
 class UploadsController extends BaseController
 {
-
     protected $softDelete = true;
     protected $upload;
     public $layout;
@@ -54,7 +53,6 @@ class UploadsController extends BaseController
         {
             return $e->getMessage();
         }
-
     }
 
     public function destroy()

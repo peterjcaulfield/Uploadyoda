@@ -1,6 +1,6 @@
 <?php namespace Quasimodal\Uploadyoda;
 
-use BaseController, Input, View, Redirect, Config, Request, Validator, Hash, Auth, Uploadyoda;
+use Input, View, Redirect, Config, Request, Validator, Hash, Auth, Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository as UploadyodaUser;
 
 class UploadyodaUsersController extends BaseController 
 {
@@ -20,7 +20,7 @@ class UploadyodaUsersController extends BaseController
 
     public function store()
     {
-        $validator = Validator::make(Input::all(), $this->uploadyodaUser->rules);
+        $validator = Validator::make(Input::all(), $this->uploadyodaUser->getValidatorRules());
         if ( $validator->passes() )
         {
             $user = Input::all();
