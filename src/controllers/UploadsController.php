@@ -1,6 +1,6 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use BaseController, Input, View, Redirect, Config, Request, Uploadyoda;
+use Input, View, Redirect, Config, Request, Uploadyoda;
 
 class UploadsController extends BaseController
 {
@@ -23,24 +23,16 @@ class UploadsController extends BaseController
         {
             $filters = Input::all();
 
-            if ( $filters['date'] )
-            {
-                $start = \Carbon\Carbon::create(null, $filters['date'], 1, 0, 0, 0)->toDateTimeString(); 
-                $end = \Carbon\Carbon::create(null, $filters['date'], 1, 0, 0, 0)->addMonth()->toDateTimeString();
-            }
-            else
-            {
-                $start = \Carbon\Carbon::create(1970, 1, 1, 0, 0, 0)->toDateTimeString(); 
-                $end = \Carbon\Carbon::now()->toDateTimeString();
-            }
-            
+            $searchDates = Upload::getSearchDates($filters['date']);
+
+            $mimes = Upload::getMimeTypes($filters['type'] );
+
             $searchQuery = $filters['search'];
-            $mimes = $filters['type'] === "0" ? array_reduce(array_values(Uploadyoda::getMimes()), "array_merge", array()) : Uploadyoda::getMimes()[$filters['type']];
 
             $uploads = $this->upload->where('name', 'LIKE', '%' . $searchQuery . '%')
                 ->whereIn('mime_type', $mimes)
-                ->where('created_at', '>=', $start)
-                ->where('created_at', '<=', $end)
+                ->where('created_at', '>=', $searchDates['start'])
+                ->where('created_at', '<=', $searchDates['end'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             
