@@ -1,6 +1,6 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use Input, View, Redirect, Config, Request, Uploadyoda;
+use Input, View, Redirect, Config, Request, Uploadyoda, Quasimodal\Uploadyoda\EloquentUploadRepository as Upload;
 
 class UploadsController extends BaseController
 {
@@ -23,25 +23,14 @@ class UploadsController extends BaseController
         {
             $filters = Input::all();
 
-            $searchDates = Upload::getSearchDates($filters['date']);
-
-            $mimes = Upload::getMimeTypes($filters['type'] );
-
-            $searchQuery = $filters['search'];
-
-            $uploads = $this->upload->where('name', 'LIKE', '%' . $searchQuery . '%')
-                ->whereIn('mime_type', $mimes)
-                ->where('created_at', '>=', $searchDates['start'])
-                ->where('created_at', '<=', $searchDates['end'])
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+            $uploads = $this->upload->getAllUploadsWithFilter($filters);
             
             View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
             $this->layout->content = View::make('uploadyoda::home');
         }
         else
         {
-            $uploads = $this->upload->orderBy('created_at', 'desc')->paginate(10);
+            $uploads = $this->upload->getAllUploads();
             View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
             $this->layout->content = View::make('uploadyoda::home');
         }
@@ -78,6 +67,6 @@ class UploadsController extends BaseController
 
     public function test()
     {
-        return View::make('uploadyoda::test');
+        dd($this->upload->getAllUploads());
     }
 }
