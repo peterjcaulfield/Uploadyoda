@@ -24,7 +24,6 @@ class UploadyodaUsersController extends BaseController
         if ( $validator->passes() )
         {
             $user = Input::all();
-            $user['password'] = Hash::make($user['password']);
             $this->uploadyodaUser->create($user);
             return Redirect::to('uploadyoda_user/login')->with('success', 'You have registered successfully! You will be able to login as soon as your account has been activated.');
         }

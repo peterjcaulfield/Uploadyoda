@@ -1,5 +1,7 @@
 <?php namespace Quasimodal\Uploadyoda;
 
+use Hash;
+
 class EloquentUploadyodaUserRepository implements UploadyodaUserRepositoryInterface
 {
     public function __construct( UploadyodaUser $model )
@@ -14,6 +16,8 @@ class EloquentUploadyodaUserRepository implements UploadyodaUserRepositoryInterf
     
     public function create($user)
     {
+       $user['password'] = Hash::make($user['password']);
+
        $this->model->create($user); 
     }
 }

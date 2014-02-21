@@ -1,6 +1,11 @@
 <?php namespace Quasimodal\Uploadyoda; 
 
-use Input, View, Redirect, Config, Request, Uploadyoda, Quasimodal\Uploadyoda\EloquentUploadRepository as Upload;
+use Input, 
+    View, 
+    Redirect, 
+    Config, 
+    Request, 
+    Uploadyoda; 
 
 class UploadsController extends BaseController
 {
@@ -8,7 +13,7 @@ class UploadsController extends BaseController
     protected $upload;
     public $layout;
 
-    public function __construct( Upload $upload )
+    public function __construct( EloquentUploadRepository $upload )
     {
         $this->upload = $upload;
         $this->layout = Config::get('uploadyoda::layout');
