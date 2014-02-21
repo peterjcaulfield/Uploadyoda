@@ -8,6 +8,16 @@ class UploadyodaUserTest extends \Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
+        
+        $artisan = $this->app->make('artisan');
+
+        $artisan->call('migrate', [
+            '--database' => 'uploadyoda',
+            '--path' => '../src/migrations'      
+        ]);
+
+        $this->uploadyodaUser = new EloquentUploadyodaUserRepository(new UploadyodaUser());
+        $this->upload = new Upload();
     }
 
     public function tearDown()
@@ -25,6 +35,13 @@ class UploadyodaUserTest extends \Orchestra\Testbench\TestCase
     {
         // reset base path to point to our package's src directory
         $app['path.base'] = __DIR__ . '/../../src';
+        
+        $app['config']->set('database.default', 'uploadyoda');
+        $app['config']->set('database.connections.uploadyoda', array(
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ));
     }    
 
     /**
@@ -56,23 +73,32 @@ class UploadyodaUserTest extends \Orchestra\Testbench\TestCase
             'Uploadyoda' => 'Quasimodal\Uploadyoda\Facades\Uploadyoda'
         );
     }
+    
+    /**
+     * Test running migration.
+     *
+     * @test
+     */
+    public function testRunningMigration()
+    {
+        $upload = array('name' => 'test.jpg', 'path' => 'test', 'mime_type' => 'image/jpg', 'size' => '100kb');
+        $this->upload->create($upload);
+        $uploads = $this->upload->count();
+        $this->assertEquals(1, $uploads);
+    } 
 
     public function testUserPasswordIsHashedOnCreate()
     {
-        $user = array('firstname' => 'optimus', 'lastname' => 'prime', 'password' => 'mysupersecurepassword');
-        $hashedUser = array('firstname' => 'optimus', 'lastname' => 'prime', 'password' => Hash::make('mysupersecurepassword'));
-
-        $uploadyodaUserMock = m::mock('Quasimodal\Uploadyoda\UploadyodaUser');
-        $uploadyodaUser = new EloquentUploadyodaUserRepository($uploadyodaUserMock);
+        $user = array('firstname' => 'optimus', 'lastname' => 'prime', 'password' => 'mysupersecurepassword', 'email' => 'optimus@prime.com', 'activated' => 0);
 
         Hash::shouldReceive('make')
                 ->once()
                 ->andReturn('hashed');
 
-        $uploadyodaUserMock->shouldReceive('create')
-                ->once()
-                ->with($hashedUser);
+        $this->uploadyodaUser->create($user);  
+        
+        $userPass = UploadyodaUser::where('id', '=', 1)->pluck('password');
 
-        $uploadyodaUser->create($user);    
+        $this->assertEquals('hashed', $userPass);
     }
 }
