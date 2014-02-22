@@ -30,6 +30,10 @@ class UploadyodaServiceProvider extends ServiceProvider {
         {
             return new Uploadyoda( $app['config'], new Upload() );
         });    
+
+        // now we bind our repository interface implementations
+        $this->app->bind('Quasimodal\Uploadyoda\UploadRepositoryInterface', 'Quasimodal\Uploadyoda\EloquentUploadRepository');
+        $this->app->bind('Quasimodal\Uploadyoda\UploadyodaUserRepositoryInterface', 'Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository');
 	}
 
 	/**

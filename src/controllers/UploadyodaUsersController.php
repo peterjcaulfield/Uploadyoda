@@ -1,13 +1,20 @@
 <?php namespace Quasimodal\Uploadyoda;
 
-use Input, View, Redirect, Config, Request, Validator, Hash, Auth, Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository as UploadyodaUser;
+use Input, 
+    View, 
+    Redirect, 
+    Config, 
+    Request, 
+    Validator, 
+    Hash, 
+    Auth;
 
 class UploadyodaUsersController extends BaseController 
 {
     protected $uploadyodaUser;
     public $layout;
 
-    public function __construct( UploadyodaUser $uploadyodaUser )
+    public function __construct( UploadyodaUserRepositoryInterface $uploadyodaUser )
     {
         $this->uploadyodaUser = $uploadyodaUser;
         $this->layout = 'uploadyoda::layouts.welcome';

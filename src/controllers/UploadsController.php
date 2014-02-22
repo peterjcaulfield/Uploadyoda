@@ -13,7 +13,7 @@ class UploadsController extends BaseController
     protected $upload;
     public $layout;
 
-    public function __construct( EloquentUploadRepository $upload )
+    public function __construct( UploadRepositoryInterface $upload )
     {
         $this->upload = $upload;
         $this->layout = Config::get('uploadyoda::layout');
