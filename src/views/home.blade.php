@@ -1,8 +1,27 @@
 @extends('uploadyoda::layouts.master')
 
 @section('content')
+<?php 
+    
+    $queryString = Request::query();
+    unset($queryString['page']);
+    $typeSelect = isset($queryString['type']) ? $queryString['type'] : '';
+    $dateSelect = isset($queryString['date']) ? $queryString['date'] : '';
+    $searchQuery = isset($queryString['search']) ? $queryString['search'] : '';
+?>
 <script>
     $(document).ready(function(){
+
+        var typeSelect = "<?php echo $typeSelect; ?>"; 
+        var dateSelect = "<?php echo $dateSelect; ?>"; 
+        var searchQuery = "<?php echo $searchQuery; ?>"; 
+
+        if ( typeSelect )
+            $("#filter option[value='" + typeSelect + "']").attr('selected', 'selected');
+        if ( dateSelect )
+            $("#filterDate option[value='" + dateSelect + "']").attr('selected', 'selected');
+
+        $('#searchFilter').val(searchQuery);
 
         $('#uploadCheckboxBatch').on('click', function(e){ 
             var checked = $('#uploadCheckboxBatch:checked').length > 0; 
@@ -80,7 +99,7 @@
                     <option value="12">december</option>
                 </select> 
                 <div class="input-group" id="searchContainer">
-                    <input type="text" class="form-control" name="search">
+                    <input id="searchFilter" type="text" class="form-control" name="search">
                     <span class="input-group-btn">
                         <button class="btn btn-sm btn-primary" type="submit">Search</button>
                     </span>
