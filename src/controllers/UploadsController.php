@@ -28,15 +28,12 @@ class UploadsController extends BaseController
             $filters = Input::all();
 
             $uploads = $this->upload->getAllUploadsWithFilter($filters);
-            
-            View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
-            $this->layout->content = View::make('uploadyoda::home');
+            return View::make('uploadyoda::home', array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
         }
         else
         {
             $uploads = $this->upload->getAllUploads();
-            View::share(array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
-            $this->layout->content = View::make('uploadyoda::home');
+            return View::make('uploadyoda::home', array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
         }
     }
 

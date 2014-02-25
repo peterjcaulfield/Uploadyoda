@@ -116,8 +116,10 @@
         <th id="size-header" class="header"><div class="header-text">Size</div></th>
         <th id="type-header" class="header"><div class="header-text">Type</div></th>
         <th id="created-header" class="header"><div class="header-text">Created</div></th>
-    
-    <?php foreach($uploads as $upload){ ?> 
+    <?php 
+    if ( $uploads->count() )     
+    {
+        foreach($uploads as $upload){ ?> 
            <tr> 
             <td class="preview">
                 <input type="checkbox" class="uploadCheckbox" value="<?php echo $upload->id; ?>">
@@ -128,16 +130,16 @@
             <td class="mime"><div class="row-text"><?php echo $upload->mime_type; ?></div></td>
             <td class="created"><div class="row-text"><?php echo $upload->created_at; ?></div></td>
           </tr>
-    
-    <?php } ?>
-
-    </table>
-    <!--<div id="tableEndBorder"></div>-->
-<?php 
-
-    $queryString = Request::query();
-    unset($queryString['page']);
-?>
-<?php echo $uploads->appends($queryString)->links(); ?>
+    <?php } // end loop ?>
+        </table>
+    <?php 
+        $queryString = Request::query();
+        unset($queryString['page']);
+        echo $uploads->appends($queryString)->links();
+    } // end if
+    else
+    { ?> 
+        </table> 
+    <?php }// end else ?>
 
 @stop
