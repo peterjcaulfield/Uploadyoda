@@ -14,7 +14,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->uploadMock = m::mock('Quasimodal\Uploadyoda\EloquentUploadRepository'); 
+        $this->uploadMock = m::mock('Quasimodal\Uploadyoda\repositories\EloquentUploadRepository'); 
     }
 
     public function tearDown()
@@ -73,7 +73,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
 
     public function testIndexMethodPassesAllUploadsToViewWhenNoQueryStringPresent()
     {
-        $this->app->instance('Quasimodal\Uploadyoda\UploadRepositoryInterface', $this->uploadMock);
+        $this->app->instance('Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface', $this->uploadMock);
 
         $paginatedCollection = m::mock('paginatedCollection');
 
@@ -96,7 +96,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
 
     public function testIndexMethodAppliesFilterIfQueryStringIsPresentAndPassesUploadsToView()
     {
-        $this->app->instance('Quasimodal\Uploadyoda\UploadRepositoryInterface', $this->uploadMock);
+        $this->app->instance('Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface', $this->uploadMock);
 
         $paginatedCollection = m::mock('paginatedCollection');
 

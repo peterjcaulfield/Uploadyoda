@@ -1,9 +1,9 @@
-<?php namespace Quasimodal\Uploadyoda; 
+<?php 
 
 use Mockery as m;
 
 
-class UploadYodaTest extends \Orchestra\Testbench\TestCase 
+class UploadyodaUsersControllerTest extends \Orchestra\Testbench\TestCase 
 {
 
     protected $uploader;
@@ -14,7 +14,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->uploadMock = m::mock('Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository'); 
+        //$this->uploadMock = m::mock('Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository'); 
     }
 
     public function tearDown()
@@ -73,9 +73,9 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
 
     public function testIndexMethodPassesAllUploadsToViewWhenNoQueryStringPresent()
     {
-        $this->app->instance('Quasimodal\Uploadyoda\UploadyodaUserRepositoryInterface', $this->uploadMock);
+        //$this->app->instance('Quasimodal\Uploadyoda\UploadyodaUserRepositoryInterface', $this->uploadMock);
 
-        $response = $this->call('GET', '/uploadyoda');
+        //$response = $this->call('GET', '/uploadyoda');
     }
 
 }

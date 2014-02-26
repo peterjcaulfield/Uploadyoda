@@ -1,7 +1,7 @@
 <?php 
 
-use Mockery as m;
-use \Quasimodal\Uploadyoda\Upload as Upload;
+use Mockery as m,
+    Quasimodal\Uploadyoda\models\Upload as Upload;
 
 
 class UploadYodaTest extends Orchestra\Testbench\TestCase 

@@ -23,15 +23,9 @@
             }
         ],
     "autoload": {
-        "psr-0": {
-            "Quasimodal\\Uploadyoda": "src/"
-        },
-        "classmap" : [ 
-            "src/migrations",
-            "src/controllers",
-            "src/models",
-            "src/repositories"
-        ]
+        "psr-4" : {
+            "Quasimodal\\Uploadyoda\\" : "src/"
+        }
     },
     "minimum-stability": "dev"
 }

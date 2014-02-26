@@ -1,7 +1,6 @@
-<?php namespace Quasimodal\Uploadyoda; 
+<?php 
 
-use Hash,
-    Mockery as m;
+use Mockery as m;
 
 class UploadyodaUserTest extends \Orchestra\Testbench\TestCase 
 {
@@ -16,8 +15,8 @@ class UploadyodaUserTest extends \Orchestra\Testbench\TestCase
             '--path' => '../src/migrations'      
         ]);
 
-        $this->uploadyodaUser = new EloquentUploadyodaUserRepository(new UploadyodaUser());
-        $this->upload = new Upload();
+        $this->uploadyodaUser = new Quasimodal\Uploadyoda\repositories\EloquentUploadyodaUserRepository(new Quasimodal\Uploadyoda\models\UploadyodaUser());
+        $this->upload = new Quasimodal\Uploadyoda\models\Upload();
     }
 
     public function tearDown()
@@ -97,7 +96,7 @@ class UploadyodaUserTest extends \Orchestra\Testbench\TestCase
 
         $this->uploadyodaUser->create($user);  
         
-        $userPass = UploadyodaUser::where('id', '=', 1)->pluck('password');
+        $userPass = Quasimodal\Uploadyoda\models\UploadyodaUser::where('id', '=', 1)->pluck('password');
 
         $this->assertEquals('hashed', $userPass);
     }

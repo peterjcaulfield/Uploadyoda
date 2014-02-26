@@ -1,4 +1,4 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\controllers;
 
 use Input, 
     View, 
@@ -7,7 +7,8 @@ use Input,
     Request, 
     Validator, 
     Hash, 
-    Auth;
+    Auth,
+    Quasimodal\Uploadyoda\repositories\UploadyodaUserRepositoryInterface as UploadyodaUserRepositoryInterface;
 
 class UploadyodaUsersController extends BaseController 
 {

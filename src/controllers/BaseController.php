@@ -1,4 +1,4 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\controllers;
 
 use View;
 

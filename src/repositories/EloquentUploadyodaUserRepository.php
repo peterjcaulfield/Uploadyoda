@@ -1,6 +1,7 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\repositories;
 
-use Hash;
+use Hash,
+    Quasimodal\Uploadyoda\models\UploadyodaUser as UploadyodaUser;
 
 class EloquentUploadyodaUserRepository implements UploadyodaUserRepositoryInterface
 {

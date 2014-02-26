@@ -1,9 +1,9 @@
-<?php namespace Quasimodal\Uploadyoda; 
+<?php 
 
 use Mockery as m;
 
 
-class UploadYodaTest extends \Orchestra\Testbench\TestCase 
+class UploadTest extends \Orchestra\Testbench\TestCase 
 {
 
     protected $upload;
@@ -14,8 +14,8 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->upload = new EloquentUploadRepository(new Upload());
-        $this->uploadMock = m::mock('\Quasimodal\Uploadyoda\Upload');
+        $this->upload = new Quasimodal\Uploadyoda\repositories\EloquentUploadRepository(new Quasimodal\Uploadyoda\models\Upload());
+        $this->uploadMock = m::mock('\Quasimodal\Uploadyoda\models\Upload');
 
         $artisan = $this->app->make('artisan');
 
@@ -95,7 +95,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
     public function testGetSearchDatesCreatesDateRangeIfNoMonthIsPassed()
     {
         $month = null;
-        $dates = Upload::getSearchDates($month);
+        $dates = Quasimodal\Uploadyoda\models\Upload::getSearchDates($month);
         $this->assertEquals('1970-01-01 00:00:00', $dates['start']);
         $this->assertEquals(\Carbon\Carbon::now()->toDateTimeString(), $dates['end']);
     }
@@ -103,7 +103,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
     public function testGetSearchWithMonthSpecifier()
     {
         $month = 1; 
-        $dates = Upload::getSearchDates($month);
+        $dates = Quasimodal\Uploadyoda\models\Upload::getSearchDates($month);
         $this->assertEquals('2014-01-01 00:00:00', $dates['start']);
         $this->assertEquals('2014-02-01 00:00:00', $dates['end']);
     }

@@ -1,6 +1,7 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\models;
 
-use Eloquent;
+use Eloquent,
+    Quasimodal\Uploadyoda\Uploadyoda as Uploadyoda;
 
 class Upload extends Eloquent
 {

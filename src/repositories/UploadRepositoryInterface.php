@@ -1,4 +1,4 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\repositories;
 
 interface UploadRepositoryInterface
 {
@@ -9,5 +9,7 @@ interface UploadRepositoryInterface
     public function count();
 
     public function create($upload);
+
+    public function destroy($id);
 
 }

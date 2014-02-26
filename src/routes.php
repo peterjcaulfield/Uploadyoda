@@ -1,7 +1,7 @@
 <?php
 
 Route::filter(Config::get('uploadyoda::auth'), function(){
-    if ( Quasimodal\Uploadyoda\UploadyodaUser::count() )
+    if ( Quasimodal\Uploadyoda\models\UploadyodaUser::count() )
     {
         if ( Auth::guest() ) return Redirect::guest('uploadyoda_user/login');
     }
@@ -10,17 +10,17 @@ Route::filter(Config::get('uploadyoda::auth'), function(){
 });
 
 
-Route::get('uploadyoda_user/welcome', 'Quasimodal\Uploadyoda\UploadyodaUsersController@welcome');
-Route::get('uploadyoda_user/create', 'Quasimodal\Uploadyoda\UploadyodaUsersController@create');
-Route::post('uploadyoda_user/store', 'Quasimodal\Uploadyoda\UploadyodaUsersController@store');
-Route::get('uploadyoda_user/login', 'Quasimodal\Uploadyoda\UploadyodaUsersController@login');
-Route::post('uploadyoda_user/login', 'Quasimodal\Uploadyoda\UploadyodaUsersController@attemptLogin');
-Route::get('uploadyoda_user/logout', 'Quasimodal\Uploadyoda\UploadyodaUsersController@logout');
+Route::get('uploadyoda_user/welcome', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@welcome');
+Route::get('uploadyoda_user/create', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@create');
+Route::post('uploadyoda_user/store', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@store');
+Route::get('uploadyoda_user/login', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@login');
+Route::post('uploadyoda_user/login', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@attemptLogin');
+Route::get('uploadyoda_user/logout', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@logout');
 
 
 
-Route::get('uploadyoda', array('as' => 'uploadyodaHome', 'uses' => 'Quasimodal\Uploadyoda\UploadsController@index'));
-Route::get('uploadyoda/upload', array('as' => 'uploadyodaUpload', 'uses' => 'Quasimodal\Uploadyoda\UploadsController@create'));
-Route::post('uploadyoda/store', 'Quasimodal\Uploadyoda\UploadsController@store');
-Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\UploadsController@test');
-Route::post('uploadyoda/delete', 'Quasimodal\Uploadyoda\UploadsController@destroy');
+Route::get('uploadyoda', array('as' => 'uploadyodaHome', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@index'));
+Route::get('uploadyoda/upload', array('as' => 'uploadyodaUpload', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@create'));
+Route::post('uploadyoda/store', 'Quasimodal\Uploadyoda\controllers\UploadsController@store');
+Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\controllers\UploadsController@test');
+Route::post('uploadyoda/delete', 'Quasimodal\Uploadyoda\controllers\UploadsController@destroy');

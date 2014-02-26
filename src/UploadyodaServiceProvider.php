@@ -1,6 +1,7 @@
 <?php namespace Quasimodal\Uploadyoda;
 
 use Illuminate\Support\ServiceProvider;
+use Quasimodal\Uploadyoda\models\Upload as Upload;
 
 class UploadyodaServiceProvider extends ServiceProvider {
 
@@ -13,9 +14,10 @@ class UploadyodaServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->package('quasimodal/uploadyoda');
+        // load the app resources views/config etc
+        $this->package('quasimodal/uploadyoda', null, __DIR__);
 
-        include __DIR__.'/../../routes.php';
+        include 'routes.php';
     }
 
 
@@ -32,8 +34,8 @@ class UploadyodaServiceProvider extends ServiceProvider {
         });    
 
         // now we bind our repository interface implementations
-        $this->app->bind('Quasimodal\Uploadyoda\UploadRepositoryInterface', 'Quasimodal\Uploadyoda\EloquentUploadRepository');
-        $this->app->bind('Quasimodal\Uploadyoda\UploadyodaUserRepositoryInterface', 'Quasimodal\Uploadyoda\EloquentUploadyodaUserRepository');
+        $this->app->bind('Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface', 'Quasimodal\Uploadyoda\repositories\EloquentUploadRepository');
+        $this->app->bind('Quasimodal\Uploadyoda\repositories\UploadyodaUserRepositoryInterface', 'Quasimodal\Uploadyoda\repositories\EloquentUploadyodaUserRepository');
 	}
 
 	/**

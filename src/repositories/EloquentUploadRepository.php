@@ -1,4 +1,6 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\repositories;
+
+use Quasimodal\Uploadyoda\models\Upload as Upload;
 
 class EloquentUploadRepository implements UploadRepositoryInterface
 {
@@ -11,6 +13,11 @@ class EloquentUploadRepository implements UploadRepositoryInterface
     public function create($upload)
     {
        $this->model->create($upload); 
+    }
+
+    public function destroy($id)
+    {
+        $this->model->destroy($id);
     }
 
     public function getAllUploads()

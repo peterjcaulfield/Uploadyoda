@@ -1,4 +1,4 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\repositories;
 
 interface UploadyodaUserRepositoryInterface
 {

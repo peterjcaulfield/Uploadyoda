@@ -1,11 +1,12 @@
-<?php namespace Quasimodal\Uploadyoda; 
+<?php namespace Quasimodal\Uploadyoda\controllers; 
 
 use Input, 
     View, 
     Redirect, 
     Config, 
     Request, 
-    Uploadyoda; 
+    Uploadyoda, 
+    Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface as UploadRepositoryInterface;
 
 class UploadsController extends BaseController
 {

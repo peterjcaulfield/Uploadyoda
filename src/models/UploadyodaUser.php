@@ -1,9 +1,8 @@
-<?php namespace Quasimodal\Uploadyoda;
+<?php namespace Quasimodal\Uploadyoda\models;
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
-use Eloquent;
+use Illuminate\Auth\UserInterface,
+    Illuminate\Auth\Reminders\RemindableInterface,
+    Eloquent;
 
 class UploadyodaUser extends Eloquent implements UserInterface, RemindableInterface
 {

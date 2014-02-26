@@ -1,7 +1,8 @@
 <?php namespace Quasimodal\Uploadyoda;
 
-use Illuminate\Config\Repository;
-use Input;
+use Illuminate\Config\Repository,
+    Input,
+    Quasimodal\Uploadyoda\models\Upload as Upload;
 
 
 class Uploadyoda {
@@ -52,10 +53,10 @@ class Uploadyoda {
             // check if there is a versioned filename in the database already and retrieve the highest versioned filename 
             $existing_versioned = $this->upload->select('name')
                 ->where( 'name', 'like', $filename . '_%.%' ) // wildcards appended to query for one or more characters after the hyphen
-                ->orderBy('name', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->take(1)
                 ->get();
-            // check for 
+            
             if ( count( $existing_versioned ) && preg_match('/\d+$/', pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME ) ) )
             {
                 $last_versioned = pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME );
