@@ -26,6 +26,16 @@ abstract class AbstractValidator implements ValidableInterface
         return $this;
     }
 
+    public function valid($action=null)
+    {    
+        if (isset($this->$action) && is_callable($this->$action))
+        {
+            return call_user_func_array($this->$action);
+        }
+        else
+            $this->passes(); 
+    }
+
     public function passes()
     {
         $validator = $this->validator->make(
