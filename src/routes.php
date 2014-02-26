@@ -1,6 +1,6 @@
 <?php
 
-Route::filter(Config::get('uploadyoda::auth'), function(){
+Route::filter('uploadyodaAuth', function(){
     if ( Quasimodal\Uploadyoda\models\UploadyodaUser::count() )
     {
         if ( Auth::guest() ) return Redirect::guest('uploadyoda_user/login');

@@ -8,6 +8,7 @@
     <div class="alert alert-success form-alert">{{ Session::get('success') }}</div>
 @endif
 {{ Form::open(array('url'=>'uploadyoda_user/login', 'id' => 'form-login')) }}
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
     <h2 class="form-signin-heading">Uploadyoda Login</h2>
  
     <p>Don't have an account already? Click <a href="/uploadyoda_user/welcome">here</a> to register.</p>

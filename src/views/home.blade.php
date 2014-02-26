@@ -57,6 +57,10 @@
                 input.name = 'itemsToTrash';
                 input.value = JSON.stringify(uploadsToTrash);
                 form.appendChild(input);
+                var inputToken = document.createElement('input');
+                inputToken.name = '_token';
+                inputToken.value = "<?php echo csrf_token(); ?>";
+                form.appendChild(inputToken);
                 form.style.display = 'none';
                 document.body.appendChild(form);
                 form.submit();

@@ -2,6 +2,7 @@
 
 @section('content')
 {{ Form::open(array('url'=>'uploadyoda_user/store', 'id'=>'form-signup')) }}
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
     <h2 class="form-signup-heading">Welcome to Uploadyoda</h2>
     <p>You are seeing this welcome screen as you are running uploadyoda's default route filter.
     To use your own filter with uploadyoda, just change the key/value in the packages config:</p>

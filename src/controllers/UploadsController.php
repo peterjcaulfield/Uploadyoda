@@ -18,8 +18,8 @@ class UploadsController extends BaseController
     {
         $this->upload = $upload;
         $this->layout = Config::get('uploadyoda::layout');
-        //$this->beforeFilter('csrf', array('on'=>'post'));
-        $this->beforeFilter('uploadyodaAuth');
+        $this->beforeFilter(Config::get('uploadyoda::auth'));
+        $this->beforeFilter('csrf', array('on'=>'post'));
     }
 
     public function index()
