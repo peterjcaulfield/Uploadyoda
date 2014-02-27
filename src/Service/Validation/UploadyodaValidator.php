@@ -14,6 +14,11 @@ class UploadyodaValidator extends AbstractValidator
         'Failed to write to disk',
         'PHP extension stopped the file upload'
     );
+
+    public function getPHPUploadError($errorCode)
+    {
+        return $this->php_upload_errors[$errorCode - 1];
+    }
     
     public function upload()
     {

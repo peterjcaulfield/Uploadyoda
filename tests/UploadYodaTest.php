@@ -148,117 +148,37 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
     * Tests of uploadyoda's upload helper function using packages config
     */
 
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage server error
-     */ 
     public function testUploadReturnsServerErrorWhenFilesArrayIsEmpty()
     {
-        $uploadResponse = Uploadyoda::upload('file');
     }
 
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage File exceeds max server filesize
-     */ 
     public function testUploadReturnsPHPErrorIfPresent()
     {
-        $_FILES['file']['error'] = 1;
-        $uploadResponse = Uploadyoda::upload('file');
     }
 
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage Invalid file type: xyz
-     */ 
     public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnConfig()
     {
-        $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
-
-        Config::set('uploadyoda::allowed_mime_types', array('jpg'));
-        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.xyz');
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file');
     }  
     
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage File size exceeds the application's maximum filesize
-     */ 
     public function testUploadReturnsErrorIfFilesizeExceedsMaxSizeBasedOnConfig()
     {
-        $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
-
-        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
-        Config::set('uploadyoda::max_file_size', 1);
-        $fileMock->shouldReceive('getSize')->andReturn(2);
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file');
     }  
     
     /**
      * Test uploadyoda's upload helper using passed in params
      */    
     
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage Invalid file type: xyz
-     */ 
     public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnArgs()
     {
-        $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
-
-        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.xyz');
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file', array('jpg'));
     }  
     
-    /**
-     * @expectedException Quasimodal\Uploadyoda\UploadyodaException
-     * @expectedExceptionMessage File size exceeds the application's maximum filesize
-     */ 
     public function testUploadReturnsErrorIfFileSizeExceedsMaxSizeBasedOnArgs()
     {
-        $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
-
-        $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
-        $fileMock->shouldReceive('getSize')->andReturn(2);
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file', null, 1);
     }  
 
     public function testUploadCorrectlyAcceptsUserDefinedFilename()
     {
         $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
 
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
         $fileMock->shouldReceive('getSize')->andReturn(1);
@@ -266,9 +186,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('getMimeType')->andReturn('mime');
         $fileMock->shouldReceive('move');
 
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file', null, 1, null, 'custom_filename' );
+        $response = Uploadyoda::upload($fileMock, null, 'custom_filename' );
         
         $this->assertEquals('custom_filename.jpg', $response['name']);
     }
@@ -276,11 +194,6 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
     public function testUploadCorrectlyAcceptsUserDefinedUploadPath()
     {
         $fileMock = m::mock('fileMock');        
-        $_FILES['file'] = array('file' => $fileMock); 
-
-        $mockRequest = m::mock('\Illuminate\Http\Request');
-        $mockRequest->shouldReceive('hasFile')->andReturn(true);
-        $mockRequest->shouldReceive('file')->andReturn($fileMock);
 
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
         $fileMock->shouldReceive('getSize')->andReturn(1);
@@ -288,9 +201,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('getMimeType')->andReturn('mime');
         $fileMock->shouldReceive('move');
 
-        Input::swap($mockRequest);
-
-        $response = Uploadyoda::upload('file', null, 1, 'my_custom_folder', null );
+        $response = Uploadyoda::upload($fileMock, 'my_custom_folder', null );
         
         $this->assertEquals('my_custom_folder', $response['path']);
     }
