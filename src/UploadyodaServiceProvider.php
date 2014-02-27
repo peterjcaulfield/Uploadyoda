@@ -32,6 +32,12 @@ class UploadyodaServiceProvider extends ServiceProvider {
         {
             return new Uploadyoda( $app['config'], new Upload() );
         });    
+        
+        // bind the validation service
+        $this->app->bind('Quasimodal\Uploadyoda\Service\Validation\UploadyodaValidator', function()
+        {
+            return new \Quasimodal\Uploadyoda\Service\Validation\UploadyodaValidator( $this->app['validator'] );    
+        });
 
         // now we bind our repository interface implementations
         $this->app->bind('Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface', 'Quasimodal\Uploadyoda\repositories\EloquentUploadRepository');
