@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This filter checks if a user has been registered in the app and if not redirects 
+ * to the app's welcome screen. If a user has been registered, but the current user 
+ * is not logged in, we redirect to the login page.
+ */
+
 Route::filter('uploadyodaAuth', function(){
     if ( Quasimodal\Uploadyoda\models\UploadyodaUser::count() )
     {
@@ -7,6 +13,20 @@ Route::filter('uploadyodaAuth', function(){
     }
     else
         return Redirect::to('uploadyoda_user/welcome');
+});
+
+/**
+ * An empty $_FILES array can be caused for various reasons during a file upload.
+ * Unfortunately some of these causes also cause the $_POST superglobal to be emptied
+ * of it's contents (if the upload exceeds the servers max_post_size for instance).
+ * This then causes a csrf token mismatch exception to occur masking the true issue.
+ * This filter is therefore run before the csrf filter to catch these scenarios and
+ * report an error that is more accurate in respect of it's cause.
+ */
+
+Route::filter('emptyFiles', function(){
+    if ( !count( $_FILES ) )
+        return 'Server error'; // should be updated to something generic but instructive 
 });
 
 

@@ -6,7 +6,8 @@ use Input,
     Config, 
     Request, 
     Uploadyoda, 
-    Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface as UploadRepositoryInterface;
+    Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface as UploadRepositoryInterface,
+    Quasimodal\Uploadyoda\Service\Validation\UploadyodaValidator;
 
 class UploadsController extends BaseController
 {
@@ -14,11 +15,13 @@ class UploadsController extends BaseController
     protected $upload;
     public $layout;
 
-    public function __construct( UploadRepositoryInterface $upload )
+    public function __construct( UploadRepositoryInterface $upload, UploadyodaValidator $validator )
     {
         $this->upload = $upload;
+        $this->validator = $validator;
         $this->layout = Config::get('uploadyoda::layout');
         $this->beforeFilter(Config::get('uploadyoda::auth'));
+        $this->beforeFilter('emptyFiles', array('only' => 'store'));
         $this->beforeFilter('csrf', array('on'=>'post'));
     }
 
@@ -46,15 +49,15 @@ class UploadsController extends BaseController
 
     public function store()
     {
-        try 
+        if ( $this->validator->with(Input::all() )->valid('upload') )
         {
-            $response = Uploadyoda::upload('file');
-            $this->upload->create( $response ); 
+            $upload = Uploadyoda::upload(Input::file('file'));
+            $this->upload->create($upload);
             return 'success';
         }
-        catch ( UploadyodaException $e )
+        else
         {
-            return $e->getMessage();
+            return $this->validator->errors()->first();
         }
     }
 
@@ -68,6 +71,6 @@ class UploadsController extends BaseController
 
     public function test()
     {
-        dd($this->upload->getAllUploads());
+        return View::make('uploadyoda::test');
     }
 }
