@@ -1,7 +1,8 @@
 <?php namespace Quasimodal\Uploadyoda\models;
 
 use Eloquent,
-    Quasimodal\Uploadyoda\Uploadyoda as Uploadyoda;
+    Config,
+    Uploadyoda;
 
 class Upload extends Eloquent
 {
@@ -28,7 +29,22 @@ class Upload extends Eloquent
 
     public static function getMimeTypes($type)
     {
-        return $type === "0" ? array_reduce(array_values(Uploadyoda::getMimes()), "array_merge", array()) : Uploadyoda::getMimes()[$type];
-    
+        $allMimes = array_flip(Uploadyoda::getMimes());
+
+        $allowedExt = Config::get('uploadyoda::allowed_mime_types');
+        $allowedMimeTypes = array();
+        foreach ( $allowedExt as $ext )
+        {
+            if ( isset( $allMimes[$ext] ) )
+                array_push($allowedMimeTypes, $allMimes[$ext]); 
+        }
+        
+        $filterMimeTypes = array(); 
+        foreach($allowedMimeTypes as $mimeType)
+        {
+            if ( strpos($mimeType, $type) !== false )
+               array_push($filterMimeTypes, $mimeType); 
+        }
+        return $filterMimeTypes;
     }
 }
