@@ -6,7 +6,7 @@ return array(
      */
     'uploads_directory' => 'packages/quasimodal/uploadyoda/uploads',
     'allowed_mime_types' => array( 'jpg', 'png', 'jpeg', 'gif', 'pdf', 'avi', 'mkv', 'wmv', 'ogg', 'mp4' ),
-    'max_file_size' => (50000000 * 20),
+    'max_file_size' => (1000 * 1000 * 50),
     'layout' => 'uploadyoda::layouts.master',
     'auth' => 'uploadyodaAuth'
 );

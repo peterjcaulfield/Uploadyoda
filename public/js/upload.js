@@ -8,6 +8,46 @@ function calculateFilesize(num_bytes)
   else return (Math.ceil((num_bytes / 1000000) * 100) / 100) + ' MB'; 
 }
 
+function validFilesize(filesize)
+{
+  if ( filesize > configMaxFilesize || filesize > serverMaxFilesize )
+    return false;
+  else
+    return true;
+}
+
+function isInArray(value, array) 
+{
+  return array.indexOf(value) > -1;
+}
+
+function validMime(mime)
+{
+  return isInArray(mime, mimes);  
+}
+
+function uploadFail(uploadNum, statusText)
+{
+      var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
+      progressBar.value = 0;
+      progressBar.className += ' failedUpload';
+      var uploadStatus = document.getElementById( 'upload-' + uploadNum + '-status' );
+      uploadStatus.innerHTML = 'Upload failed: ' + statusText;
+      console.error('request no: ' + uploadNum + ' ' + statusText ); 
+}
+
+function uploadSuccess(uploadNum)
+{
+      console.log( 'success for request no: ' + uploadNum );
+      var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
+      progressBar.value = 0;
+      progressBar.className += ' succeededUpload';
+      var uploadStatus = document.getElementById( 'upload-' + uploadNum + '-status' );
+      uploadStatus.innerHTML = 'Uploaded successfully';
+      var upload = document.getElementById('upload-' + uploadNum);
+      setTimeout(function(){upload.parentNode.removeChild(upload)}, 500);
+}
+
 function getFileInfo(file, fileNumber)
 {
  var downloadsContainer = document.getElementById('downloadsBody');
@@ -29,31 +69,27 @@ function createOnloadFunction(requestObject)
   { 
     if ( requestObject.xhr.status === 200 )  
     {
-      console.log('request no: ' + requestObject.requestNo + ' complete');
       if ( requestObject.xhr.responseText != 'success' ) 
       {
-        var progressBar = document.getElementById( 'upload-' + requestObject.requestNo + '-progress' );
-        progressBar.value = 0;
-        progressBar.className += ' failedUpload';
-        var uploadStatus = document.getElementById( 'upload-' + requestObject.requestNo + '-status' );
-        uploadStatus.innerHTML = 'Upload failed: ' + requestObject.xhr.responseText;
-        console.error('request no: ' + requestObject.requestNo + ' ' + requestObject.xhr.responseText ); 
+        uploadFail(requestObject.requestNo, requestObject.xhr.responseText);
       }
       else
       {
-        console.log( 'success for request no: ' + requestObject.requestNo );
-        var progressBar = document.getElementById( 'upload-' + requestObject.requestNo + '-progress' );
-        progressBar.value = 0;
-        progressBar.className += ' succeededUpload';
-        var uploadStatus = document.getElementById( 'upload-' + requestObject.requestNo + '-status' );
-        uploadStatus.innerHTML = 'Uploaded successfully';
-        var upload = document.getElementById('upload-' + requestObject.requestNo);
-        setTimeout(function(){upload.parentNode.removeChild(upload)}, 500);
+        uploadSuccess(requestObject.requestNo);
       }
     }
     else
-      console.log('something went wrong for request no: ' + requestObject.requestNo);
+      console.log(requestObject.xhr.responseText + requestObject.requestNo);
   }
+}
+
+function updateProgressUI(uploadNum, progressEventObj)
+{
+  var complete = (progressEventObj.loaded / progressEventObj.total * 100 | 0);
+  var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
+  progressBar.value = complete;
+  var percent = document.getElementById('upload-' + uploadNum + '-complete');
+  percent.innerHTML = complete + '%';
 }
 
 function createUploadProgressFunction(requestObject)
@@ -62,14 +98,7 @@ function createUploadProgressFunction(requestObject)
   {
     if (e.lengthComputable)
     {
-       console.log(e.loaded);
-
-        var complete = (e.loaded / e.total * 100 | 0);
-        var progressBar = document.getElementById( 'upload-' + requestObject.requestNo + '-progress' );
-        progressBar.value = complete;
-        var percent = document.getElementById('upload-' + requestObject.requestNo + '-complete');
-        percent.innerHTML = complete + '%';
-        console.log('progress for request no: ' + requestObject.requestNo + ' is ' + complete);
+      updateProgressUI(requestObject.requestNo, e);
     }
   }
 }
@@ -81,8 +110,33 @@ function readFiles(files)
   for ( var i = 0; i < files.length; i++)
   {
     var formData = new FormData();
+    formData.append('_token', csrf_token);
     formData.append('file', files[i]);
     getFileInfo(files[i], totalFilesUploaded + 1);
+    console.log(files[i].type);
+    console.log(mimes);
+    
+    /**
+     * Validation
+     */
+
+    if ( !validFilesize(files[i].size) )
+    {
+      uploadFail(totalFilesUploaded + 1, 'max file size exceeded' );
+      continue;
+    }
+  
+    var mime = defaultExtensions[files[i].type];
+
+    if ( !validMime(mime, mimes) ) 
+    {
+      uploadFail(totalFilesUploaded + 1, 'invalid mime type' );
+      continue;
+    }
+
+    /**
+     * Prepare ajax request and handlers and send the request
+     */
 
     requests[i] = {};
     requests[i].fileName = files[i].name;
@@ -90,9 +144,8 @@ function readFiles(files)
     requests[i].requestNo = totalFilesUploaded + 1;
     requests[i].xhr = new XMLHttpRequest();
     requests[i].xhr.open('POST', '/uploadyoda/store');
-    requests[i].xhr.onload = createOnloadFunction(requests[i]);  
-      
     
+    requests[i].xhr.onload = createOnloadFunction(requests[i]);  
     requests[i].xhr.upload.onprogress = createUploadProgressFunction(requests[i]); 
     
     requests[i].xhr.send(formData);
@@ -123,9 +176,6 @@ window.onload = function(){
     e.preventDefault && e.preventDefault();
     this.className = '';
     readFiles(e.dataTransfer.files);
-    
-    // now do something with:
-    //var files = event.dataTransfer.files;
 
     return false;
   };
