@@ -127,7 +127,7 @@
            <tr> 
             <td class="preview">
                 <input type="checkbox" class="uploadCheckbox" value="<?php echo $upload->id; ?>">
-                <?php echo Uploadyoda::generateThumbnail($upload->name, $upload->mime_type); ?>
+                <?php echo Helpers::generateThumbnail($upload->name, $upload->mime_type); ?>
             </td>
             <td class="upload-name row-text"><div class="upload-inner row-text"><?php echo $upload->name; ?></div></td>
             <td class="size"><div class="row-text"><?php echo $upload->size; ?></div></td>

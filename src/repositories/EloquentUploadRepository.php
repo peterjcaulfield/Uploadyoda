@@ -1,6 +1,7 @@
 <?php namespace Quasimodal\Uploadyoda\repositories;
 
-use Quasimodal\Uploadyoda\models\Upload as Upload;
+use Quasimodal\Uploadyoda\models\Upload,
+    Filter;
 
 class EloquentUploadRepository implements UploadRepositoryInterface
 {
@@ -27,9 +28,9 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function getAllUploadsWithFilter($filters)
     {
-        $searchDates = Upload::getSearchDates($filters['date']);
+        $searchDates = Filter::getSearchDates($filters['date']);
 
-        $mimes = Upload::getMimeTypes($filters['type']);
+        $mimes = Filter::getSearchMimeTypes($filters['type']);
 
         $uploads = $this->model->where('name', 'LIKE', '%' . $filters['search'] . '%')
             ->whereIn('mime_type', $mimes)
