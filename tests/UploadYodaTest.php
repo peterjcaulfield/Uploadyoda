@@ -144,37 +144,9 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('test-8', $formattedFilename);
     }
 
-   /**
-    * Tests of uploadyoda's upload helper function using packages config
-    */
-
-    public function testUploadReturnsServerErrorWhenFilesArrayIsEmpty()
-    {
-    }
-
-    public function testUploadReturnsPHPErrorIfPresent()
-    {
-    }
-
-    public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnConfig()
-    {
-    }  
-    
-    public function testUploadReturnsErrorIfFilesizeExceedsMaxSizeBasedOnConfig()
-    {
-    }  
-    
     /**
      * Test uploadyoda's upload helper using passed in params
      */    
-    
-    public function testUploadReturnsErrorIfMimeTypeIsInvalidBasedOnArgs()
-    {
-    }  
-    
-    public function testUploadReturnsErrorIfFileSizeExceedsMaxSizeBasedOnArgs()
-    {
-    }  
 
     public function testUploadCorrectlyAcceptsUserDefinedFilename()
     {
