@@ -5,6 +5,7 @@ use Quasimodal\Uploadyoda\models\Upload,
 
 class EloquentUploadRepository implements UploadRepositoryInterface
 {
+    public $paginate = 10;
 
     public function __construct( Upload $model )
     {
@@ -23,7 +24,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function getAllUploads()
     {
-        return $this->model->orderBy('created_at', 'desc')->paginate(10);
+        return $this->model->orderBy('created_at', 'desc')->paginate($this->paginate);
     }
 
     public function getAllUploadsWithFilter($filters)
