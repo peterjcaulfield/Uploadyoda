@@ -100,7 +100,12 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
 
         $paginatedCollection = m::mock('paginatedCollection');
 
-        $this->uploadMock->shouldReceive('getAllUploadsWithFilter')
+        $this->uploadMock->shouldReceive('setFilter')
+            ->once()
+            ->with(['type' => 0, 'date' => 0, 'search' => 'test'])
+            ->andReturn($this->uploadMock);
+
+        $this->uploadMock->shouldReceive('getAllUploads')
             ->once()
             ->andReturn( $paginatedCollection );
 
