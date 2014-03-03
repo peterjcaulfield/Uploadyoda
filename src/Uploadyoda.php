@@ -790,9 +790,10 @@ class Uploadyoda {
 
     protected $upload;
     
-    public function guessMime($mime)
+    public function guessMimeFromExtension($ext)
     {
-        return isset($this->defaultExtensions[$mime]) ? $this->defaultExtensions[$mime] : false;
+        $extensions = array_flip($this->getMimes());
+        return isset($extensions[$ext]) ? $extensions[$ext] : false;
     }
 
     public function getMimes()
