@@ -892,5 +892,4 @@ class Uploadyoda {
         else
             return ( ceil( ( $fileSize / 1000000 ) * 100 ) / 100 ) . ' MB';
     }
-
 }

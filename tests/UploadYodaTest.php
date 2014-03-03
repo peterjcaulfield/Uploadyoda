@@ -177,4 +177,17 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         
         $this->assertEquals('my_custom_folder', $response['path']);
     }
+
+    public function testReturnBytesMethodConvertsAlphanumericByteRepresentationToNumericBytes()
+    {
+        $this->assertEquals(Uploadyoda::returnBytes('1K'), 1024);         
+        $this->assertEquals(Uploadyoda::returnBytes('1M'), 1024 * 1024);         
+        $this->assertEquals(Uploadyoda::returnBytes('1G'), 1024 * 1024 * 1024);         
+    }
+
+    public function testFormatFilesizeFormatsBytesToAlphanumericRepresentation()
+    {
+       $this->assertEquals(Uploadyoda::formatFilesize(1000), '1 kB'); 
+       $this->assertEquals(Uploadyoda::formatFilesize(1000 * 1000), '1 MB'); 
+    }
 }
