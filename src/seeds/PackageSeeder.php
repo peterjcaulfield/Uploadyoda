@@ -1,19 +1,37 @@
 <?php namespace Quasimodal\Uploadyoda\seeds;
 
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Seeder,
+    Carbon\Carbon,
+    DB,
+    Quasimodal\Uploadyoda\Facades\Uploadyoda;
 
 class PackageSeeder extends Seeder
 {
     public function run()
     {
-        $upload = array(
-            'name' => 'test.jpg',
-            'path' => 'test',
-            'mime_type' => 'jpg',
-            'size' => '100kb',
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now()
-        );
-        \DB::table('uploads')->insert($upload); 
+        $uploads = $this->makeRecords();
+        DB::table('uploads')->insert($uploads); 
     }
+
+    public function makeRecords()
+    {
+        $filePrefixes = ['foo', 'bar', 'baz', 'qux'];
+        $fileExtensions = ['jpeg', 'png', 'gif', 'wmv', 'ogv', 'mp4', 'pdf'];
+
+        $records = [];
+
+        foreach( $filePrefixes as $filePrefix )
+            foreach( $fileExtensions as $fileExtension )
+            {
+                $record = [];
+                $record['name'] = $filePrefix . '.' . $fileExtension;
+                $record['mime_type'] = Uploadyoda::guessMimeFromExtension($fileExtension);   
+                $record['size'] = rand(1, 999) . 'kB';
+                $record['path'] = 'path/to/file';
+                $record['created_at'] = Carbon::now();
+                $record['updated_at'] = Carbon::now();
+                array_push( $records, $record );
+            }
+        return $records;
+    } 
 }
