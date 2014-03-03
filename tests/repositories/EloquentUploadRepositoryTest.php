@@ -67,12 +67,6 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
             '--database' => 'uploadyoda',
             '--path' => '../src/migrations'      
             ]);
-        // seed the db's
-        $artisan->call('db:seed', [
-            '--class' => 'Quasimodal\Uploadyoda\seeds\PackageSeeder'
-            ]); 
-
-        $this->upload = new Upload();
     }
 
     public function tearDown()
@@ -80,10 +74,18 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
         m::close();
     }
 
-    public function makeRepo($modelMock)
+    public function makeRepo()
     {
-        $repo = new EloquentUploadRepository($modelMock);
-        return $repo;
+        return App::make('Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface');
+    }
+
+    public function seedDb()
+    {
+        $artisan = $this->app->make('artisan');
+        // seed the db's
+        $artisan->call('db:seed', [
+            '--class' => 'Quasimodal\Uploadyoda\seeds\PackageSeeder'
+            ]); 
     }
   
      /**
@@ -93,75 +95,73 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
      */
     public function testRunningMigration()
     {
-        /*$this->upload->name = 'test.jpg';
-        $this->upload->path = 'test';
-        $this->upload->mime_type = 'jpg';
-        $this->upload->size = '100kb';
-        $this->upload->save();*/
-        $uploads = Upload::count();
-        $this->assertEquals($uploads, 1);
+        $this->seedDb();
+        $this->assertEquals(Upload::count(), 28);
     } 
         
     public function testRepositoryCreateMethod()
     {
-        $uploadStub = array('name' => 'test.jpg');
-        $modelMock = m::mock('Quasimodal\Uploadyoda\models\Upload');
-        $repo = $this->makeRepo($modelMock);
-        $modelMock->shouldReceive('create')
-            ->once()
-            ->with($uploadStub);
+        $uploadStub = [
+            'name' => 'test.jpeg',
+            'mime_type' => 'image/jpeg',
+            'path' => 'path/to/file',
+            'size' => '100kB'
+        ];
+        $repo = $this->makeRepo();
         $repo->create($uploadStub);
+        $this->assertEquals(Upload::count(), 1);
     }
 
     public function testRepositoryDestroyMethod()
     {
-        $modelMock = m::mock('Quasimodal\Uploadyoda\models\Upload');
-        $repo = $this->makeRepo($modelMock);
-        $modelMock->shouldReceive('destroy')
-            ->once()
-            ->with(1);
+        $uploadStub = [
+            'name' => 'test.jpeg',
+            'mime_type' => 'image/jpeg',
+            'path' => 'path/to/file',
+            'size' => '100kB'
+        ];
+        $repo = $this->makeRepo();
+        $repo->create($uploadStub);
+        $this->assertEquals(Upload::count(), 1);
         $repo->destroy(1);
+        $this->assertEquals(Upload::count(), 0);
     }
 
     public function testRepositoryGetAllUploadsMethod()
     {
-        $modelMock = m::mock('Quasimodal\Uploadyoda\models\Upload');
-        $repo = $this->makeRepo($modelMock);
-        $modelMock->shouldReceive('orderBy')
-            ->with('created_at', 'desc')
-            ->andReturn(m::self())
-            ->shouldReceive('paginate')
-            ->with($repo->paginate);
-
-        $repo->getAllUploads();
+        $this->seedDb();
+        $repo = $this->makeRepo();
+        $repo->setPaginate(20);
+        $uploads = $repo->getAllUploads();
+        $this->assertEquals($uploads->count(), 20);
     } 
 
-    /*public function testRepositoryGetAllUploadsWithFilterMethod()
+    public function testRepositoryGetAllUploadsWithSearchFilter()
     {
-        $modelMock = m::mock('Quasimodal\Uploadyoda\models\Upload');
-        $repo = $this->makeRepo($modelMock);
+        $filter = [
+            'search' => 'foo',
+            'date' => false,
+            'type' => false 
+            ];
 
-        $filters = array(
-            'date' => 1,
-            'type' => 'image',
-            'search' => 'test'
-        );
+        $this->seedDb();
+        $repo = $this->makeRepo();
+        $repo->setFilter($filter);
+        $this->assertEquals($repo->getAllUploads()->count(), 6); 
+    }
 
-        $searchDatesStub = array('start' => 'start', 'end' => 'end');
+    public function testRepositoryGetAllUploadsWithTypeFilter()
+    {
+        $filter = [
+            'search' => false,
+            'date' => false,
+            'type' => 'image' 
+            ];
 
-        Filter::shouldReceive('getSearchDates')
-            ->with($filters['date'])
-            ->once()
-            ->andReturn($searchDatesStub);
-
-        Filter::shouldReceive('getSearchMimeTypes')
-            ->with($filters['type'])
-            ->once()
-            ->andReturn(array('mimes'));
-
-        $modelMock->shouldReceive('where')
-            ->with('name', 'LIKE', '%' . $filters['search'] . '%')
-
-        $repo->getAllUploadsWithFilter($filters);
-    }*/
+        $this->seedDb();
+        $repo = $this->makeRepo();
+        $repo->setPaginate(20);
+        $repo->setFilter($filter);
+        $this->assertEquals($repo->getAllUploads()->count(), 12); 
+    }
 }
