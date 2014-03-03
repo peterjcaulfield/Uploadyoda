@@ -4,12 +4,14 @@ interface UploadRepositoryInterface
 {
     public function getAllUploads();
 
-    public function getAllUploadsWithFilter($filter);
+    public function setFilter(array $filter);
 
     public function count();
 
-    public function create($upload);
+    public function create(array $upload);
 
     public function destroy($id);
+
+    public function setPaginate($num);
 
 }

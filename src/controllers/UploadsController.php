@@ -29,9 +29,8 @@ class UploadsController extends BaseController
     {
         if ( count(Request::query()) > 1 )
         {
-            $filters = Input::all();
-
-            $uploads = $this->upload->getAllUploadsWithFilter($filters);
+            $filter = Input::all();
+            $uploads = $this->upload->setFilter($filter)->getAllUploads();
             return View::make('uploadyoda::home', array('uploads' => $uploads, 'pageTitle'=>'Uploads', 'icon' => 'fa-home', 'count' => $this->upload->count()));
         }
         else

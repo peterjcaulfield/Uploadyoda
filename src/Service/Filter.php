@@ -46,5 +46,4 @@ class Filter
         }
         return $filterMimeTypes;
     }
-
 }

@@ -5,14 +5,26 @@ use Quasimodal\Uploadyoda\models\Upload,
 
 class EloquentUploadRepository implements UploadRepositoryInterface
 {
-    public $paginate = 10;
+    protected $paginate = 10;
+    protected $filter = false;
 
     public function __construct( Upload $model )
     {
         $this->model = $model;
     }
+
+    public function setPaginate($num)
+    {
+        $this->paginate = $num;
+    }
+
+    public function setFilter(array $filter)
+    {
+       $this->filter = $filter; 
+       return $this;
+    }
     
-    public function create($upload)
+    public function create(array $upload)
     {
        $this->model->create($upload); 
     }
@@ -24,23 +36,22 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function getAllUploads()
     {
+        if ( $this->filter )
+        {
+            $searchDates = Filter::getSearchDates($this->filter['date']);
+
+            $mimes = Filter::getSearchMimeTypes($this->filter['type']);
+
+            $uploads = $this->model->where('name', 'LIKE', '%' . $this->filter['search'] . '%')
+                ->whereIn('mime_type', $mimes)
+                ->where('created_at', '>=', $searchDates['start'])
+                ->where('created_at', '<=', $searchDates['end'])
+                ->orderBy('created_at', 'desc')
+                ->paginate($this->paginate);
+
+            return $uploads;
+        }
         return $this->model->orderBy('created_at', 'desc')->paginate($this->paginate);
-    }
-
-    public function getAllUploadsWithFilter($filters)
-    {
-        $searchDates = Filter::getSearchDates($filters['date']);
-
-        $mimes = Filter::getSearchMimeTypes($filters['type']);
-
-        $uploads = $this->model->where('name', 'LIKE', '%' . $filters['search'] . '%')
-            ->whereIn('mime_type', $mimes)
-            ->where('created_at', '>=', $searchDates['start'])
-            ->where('created_at', '<=', $searchDates['end'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return $uploads;
     }
 
     public function count()
