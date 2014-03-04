@@ -21,4 +21,9 @@ class EloquentUploadyodaUserRepository implements UploadyodaUserRepositoryInterf
 
        $this->model->create($user); 
     }
+
+    public function count()
+    {
+        return $this->model->count();
+    }
 }

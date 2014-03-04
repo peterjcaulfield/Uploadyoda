@@ -5,4 +5,6 @@ interface UploadyodaUserRepositoryInterface
     public function create($user);
 
     public function getValidatorRules();
+
+    public function count();
 }

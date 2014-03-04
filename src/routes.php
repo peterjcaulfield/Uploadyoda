@@ -1,13 +1,20 @@
 <?php
 
 /**
+ * Filters
+ */
+
+/**
  * This filter checks if a user has been registered in the app and if not redirects 
  * to the app's welcome screen. If a user has been registered, but the current user 
  * is not logged in, we redirect to the login page.
  */
 
 Route::filter('uploadyodaAuth', function(){
-    if ( Quasimodal\Uploadyoda\models\UploadyodaUser::count() )
+
+    $UploadyodaUser = App::make('Quasimodal\Uploadyoda\repositories\UploadyodaUserRepositoryInterface');
+
+    if ( $UploadyodaUser->count() )
     {
         if ( Auth::guest() ) return Redirect::guest('uploadyoda_user/login');
     }
@@ -29,6 +36,9 @@ Route::filter('emptyFiles', function(){
         return 'Server error'; // should be updated to something generic but instructive 
 });
 
+/**
+ * Uploadyoda registration/login routes
+ */
 
 Route::get('uploadyoda_user/welcome', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@welcome');
 Route::get('uploadyoda_user/create', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@create');
@@ -37,10 +47,13 @@ Route::get('uploadyoda_user/login', 'Quasimodal\Uploadyoda\controllers\Uploadyod
 Route::post('uploadyoda_user/login', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@attemptLogin');
 Route::get('uploadyoda_user/logout', 'Quasimodal\Uploadyoda\controllers\UploadyodaUsersController@logout');
 
-
+/**
+ * Uploadyoda application routes
+ */
 
 Route::get('uploadyoda', array('as' => 'uploadyodaHome', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@index'));
 Route::get('uploadyoda/upload', array('as' => 'uploadyodaUpload', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@create'));
 Route::post('uploadyoda/store', 'Quasimodal\Uploadyoda\controllers\UploadsController@store');
 Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\controllers\UploadsController@test');
 Route::post('uploadyoda/delete', 'Quasimodal\Uploadyoda\controllers\UploadsController@destroy');
+
