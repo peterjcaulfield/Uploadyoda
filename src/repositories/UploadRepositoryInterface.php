@@ -13,5 +13,4 @@ interface UploadRepositoryInterface
     public function destroy($id);
 
     public function setPaginate($num);
-
 }

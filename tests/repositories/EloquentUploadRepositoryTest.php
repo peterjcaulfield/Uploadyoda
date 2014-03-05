@@ -131,9 +131,9 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
     {
         $this->seedDb();
         $repo = $this->makeRepo();
-        $repo->setPaginate(20);
+        $repo->setPaginate(false);
         $uploads = $repo->getAllUploads();
-        $this->assertEquals($uploads->count(), 20);
+        $this->assertEquals($uploads->count(), 28);
     } 
 
     public function testRepositoryGetAllUploadsWithSearchFilter()
@@ -146,6 +146,7 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
 
         $this->seedDb();
         $repo = $this->makeRepo();
+        $repo->setPaginate(false);
         $repo->setFilter($filter);
         $this->assertEquals($repo->getAllUploads()->count(), 6); 
     }
@@ -160,7 +161,7 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
 
         $this->seedDb();
         $repo = $this->makeRepo();
-        $repo->setPaginate(20);
+        $repo->setPaginate(false);
         $repo->setFilter($filter);
         $this->assertEquals($repo->getAllUploads()->count(), 12); 
     }
