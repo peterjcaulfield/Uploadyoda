@@ -106,13 +106,15 @@ function createUploadProgressFunction(requestObject)
 function readFiles(files)
 {
   var requests = [];
+  console.log('total files uploaded = ' + totalFilesUploaded);
 
   for ( var i = 0; i < files.length; i++)
   {
+    totalFilesUploaded++;
     var formData = new FormData();
     formData.append('_token', csrf_token);
     formData.append('file', files[i]);
-    getFileInfo(files[i], totalFilesUploaded + 1);
+    getFileInfo(files[i], totalFilesUploaded);
     console.log(files[i].type);
     console.log(mimes);
     
@@ -122,7 +124,7 @@ function readFiles(files)
 
     if ( !validFilesize(files[i].size) )
     {
-      uploadFail(totalFilesUploaded + 1, 'max file size exceeded' );
+      uploadFail(totalFilesUploaded, 'max file size exceeded' );
       continue;
     }
   
@@ -130,7 +132,7 @@ function readFiles(files)
 
     if ( !validMime(mime, mimes) ) 
     {
-      uploadFail(totalFilesUploaded + 1, 'invalid mime type' );
+      uploadFail(totalFilesUploaded, 'invalid mime type' );
       continue;
     }
 
@@ -141,7 +143,7 @@ function readFiles(files)
     requests[i] = {};
     requests[i].fileName = files[i].name;
     requests[i].fileSize = calculateFilesize(files[i].size); 
-    requests[i].requestNo = totalFilesUploaded + 1;
+    requests[i].requestNo = totalFilesUploaded;
     requests[i].xhr = new XMLHttpRequest();
     requests[i].xhr.open('POST', '/uploadyoda/store');
     
@@ -149,7 +151,6 @@ function readFiles(files)
     requests[i].xhr.upload.onprogress = createUploadProgressFunction(requests[i]); 
     
     requests[i].xhr.send(formData);
-    totalFilesUploaded++;
   }
 }
 
