@@ -16,15 +16,15 @@
      *
      * @private
      * @function
-     * @param {number} num_bytes - number of bytes in the file to be uploaded
+     * @param {number} numBytes - number of bytes in the file to be uploaded
      * @returns {string} formatted filesize 
      */
-    function calculateFilesize(num_bytes)
+    function calculateFilesize(numBytes)
     {
-        if ( num_bytes < 1000000 )
-            return (Math.ceil((num_bytes / 1000) * 100) / 100) + ' kB';
+        if ( numBytes < 1000000 )
+            return (Math.ceil((numBytes / 1000) * 100) / 100) + ' kB';
         else 
-            return (Math.ceil((num_bytes / 1000000) * 100) / 100) + ' MB'; 
+            return (Math.ceil((numBytes / 1000000) * 100) / 100) + ' MB'; 
     }
 
     /**
@@ -201,23 +201,25 @@
      */
     uploadyoda.readFiles = function( files )
     {
+        // array to hold each ajax request
         var requests = [];
-        console.log('total files uploaded = ' + totalFilesUploaded);
+
+        // process each file
 
         for ( var i = 0; i < files.length; i++)
         {
             totalFilesUploaded++;
+            
+            // create the form object
             var formData = new FormData();
             formData.append('_token', csrf_token);
             formData.append('file', files[i]);
+
+            // update UI 
             getFileInfo(files[i], totalFilesUploaded);
-            console.log(files[i].type);
-            console.log(mimes);
 
-            /**
-            * Validation
-            */
-
+            // validate file
+            
             if ( !validFilesize(files[i].size) )
             {
                 uploadFail(totalFilesUploaded, 'max file size exceeded' );
@@ -232,10 +234,7 @@
                 continue;
             }
 
-            /**
-            * Prepare ajax request and handlers and send the request
-            */
-
+            // Create the ajax request object
             requests[i] = {};
             requests[i].fileName = files[i].name;
             requests[i].fileSize = calculateFilesize(files[i].size); 
@@ -243,9 +242,11 @@
             requests[i].xhr = new XMLHttpRequest();
             requests[i].xhr.open('POST', '/uploadyoda/store');
 
+            // bind the UI update handlers
             requests[i].xhr.onload = createOnloadFunction(requests[i]);  
             requests[i].xhr.upload.onprogress = createUploadProgressFunction(requests[i]); 
-
+            
+            // send the request
             requests[i].xhr.send(formData);
         }
     }
@@ -253,7 +254,7 @@
 }( window.uploadyoda = window.uploadyoda || {} ));
 
 /**
- * Binding the drag and drop events to the respective handlers
+ * Bind the drag and drop events to the respective handlers
  */
 window.onload = function(){
  
