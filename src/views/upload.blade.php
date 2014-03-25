@@ -6,7 +6,7 @@
 <div id="content-inner">
 
     <div id="drop-area">
-       Drop files to upload here 
+       Drop files to upload here
     </div>
     <p><i class=" fa fa-upload"></i>&nbsp;&nbsp;File uploads</p>
     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
@@ -31,11 +31,11 @@
  * vars that upload.js depend on
  */
 
-var configMaxFilesize = "<?php echo Config::get('uploadyoda::max_file_size'); ?>"; 
+var configMaxFilesize = "<?php echo Config::get('uploadyoda::max_file_size'); ?>";
 var serverMaxFilesize = "<?php echo Uploadyoda::returnBytes(ini_get('post_max_size')); ?>";
 var mimes = <?php echo json_encode(Config::get('uploadyoda::allowed_mime_types')); ?>;
 var defaultExtensions = <?php echo json_encode(Uploadyoda::getMimes()); ?>;
 var csrf_token = "<?php echo csrf_token(); ?>"
 </script>
-<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/upload.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/uploadyoda.js') }}"></script>
 @stop
