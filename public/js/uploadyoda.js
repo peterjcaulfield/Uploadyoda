@@ -78,14 +78,11 @@
      * @param {number} uploadNum - the upload number
      * @param {string} statusText - the error message 
      */
-    function uploadFail(uploadNum, statusText)
+    function uploadFail(UIElements, statusText)
     {
-        var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
-        progressBar.value = 0;
-        progressBar.className += ' failedUpload';
-        var uploadStatus = document.getElementById( 'upload-' + uploadNum + '-status' );
-        uploadStatus.innerHTML = 'Upload failed: ' + statusText;
-        console.error('request no: ' + uploadNum + ' ' + statusText ); 
+        UIElements.progressBar.value = 0;
+        UIElements.progressBar.className += ' failedUpload';
+        UIElements.statusTd.innerHTML = 'Upload failed: ' + statusText;
     }
 
     /**
@@ -95,16 +92,12 @@
      * @function
      * @param {number} uploadNum - the upload number
      */
-    function uploadSuccess(uploadNum)
+    function uploadSuccess(UIElements)
     {
-        console.log( 'success for request no: ' + uploadNum );
-        var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
-        progressBar.value = 0;
-        progressBar.className += ' succeededUpload';
-        var uploadStatus = document.getElementById( 'upload-' + uploadNum + '-status' );
-        uploadStatus.innerHTML = 'Uploaded successfully';
-        var upload = document.getElementById('upload-' + uploadNum);
-        setTimeout(function(){upload.parentNode.removeChild(upload)}, 500);
+        UIElements.progressBar.value = 0;
+        UIElements.progressBar.className += ' succeededUpload';
+        UIElements.statusTd.innerHTML = 'Uploaded successfully';
+        setTimeout(function(){UIElements.uploadRow.parentNode.removeChild(UIElements.uploadRow)}, 500);
     }
 
     /**
@@ -128,6 +121,16 @@
 
         tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd + uploadCompleteTd + uploadStatusTd;
         downloadsContainer.appendChild(tableRow);
+
+        var UIElements = {
+            
+            progressBar : document.getElementById('upload-' + fileNumber + '-progress'),
+            statusTd : document.getElementById('upload-' + fileNumber + '-status'),
+            completeTd : document.getElementById('upload-' + fileNumber + '-complete'),
+            uploadRow : document.getElementById('upload-' + fileNumber)
+        };
+       
+       return UIElements;
     }
 
     /**
@@ -145,11 +148,11 @@
             {
                 if ( requestObject.xhr.responseText != 'success' ) 
                 {
-                    uploadFail(requestObject.requestNo, requestObject.xhr.responseText);
+                    uploadFail(requestObject.UIElements, requestObject.xhr.responseText);
                 }
                 else
                 {
-                    uploadSuccess(requestObject.requestNo);
+                    uploadSuccess(requestObject.UIElements);
                 }
             }
             else
@@ -165,13 +168,11 @@
      * @param {number} uploadNum - the number of the upload
      * @param {object} progressEventObj - the progess object of the XMLHttpRequest
      */
-    function updateProgressUI(uploadNum, progressEventObj)
+    function updateProgressUI(UIElements, progressEventObj)
     {
         var complete = (progressEventObj.loaded / progressEventObj.total * 100 | 0);
-        var progressBar = document.getElementById( 'upload-' + uploadNum + '-progress' );
-        progressBar.value = complete;
-        var percent = document.getElementById('upload-' + uploadNum + '-complete');
-        percent.innerHTML = complete + '%';
+        UIElements.progressBar.value = complete;
+        UIElements.completeTd.innerHTML = complete + '%';
     }
 
     /**
@@ -187,7 +188,7 @@
         {
             if (e.lengthComputable)
             {
-                updateProgressUI(requestObject.requestNo, e);
+                updateProgressUI(requestObject.UIElements, e);
             }
         }
     }
@@ -209,6 +210,9 @@
         for ( var i = 0; i < files.length; i++)
         {
             totalFilesUploaded++;
+
+            // create the request object
+            requests[i] = {};
             
             // create the form object
             var formData = new FormData();
@@ -216,7 +220,10 @@
             formData.append('file', files[i]);
 
             // update UI 
-            getFileInfo(files[i], totalFilesUploaded);
+            var requestUIElements = getFileInfo(files[i], totalFilesUploaded);
+    
+            // add the requests UI Elements to the request object
+            requests[i].UIElements = requestUIElements;
 
             // validate file
             
@@ -230,12 +237,11 @@
 
             if ( !validMime(mime, mimes) ) 
             {
-                uploadFail(totalFilesUploaded, 'invalid mime type' );
+                uploadFail(requests[i].UIElements, 'invalid mime type' );
                 continue;
             }
-
+            
             // Create the ajax request object
-            requests[i] = {};
             requests[i].fileName = files[i].name;
             requests[i].fileSize = calculateFilesize(files[i].size); 
             requests[i].requestNo = totalFilesUploaded;
