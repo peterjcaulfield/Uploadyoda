@@ -67,6 +67,11 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .mime { width: 120px; }
 .created { width: 100px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; }
+.rowActions { display: none; }
+.rowActionLinks { list-style-type:none; padding: 0; margin: 0; }
+.rowActionLinks li { display: inline; padding: 0 5px 0 5px; }
+.rowActionLinks li:first-child { padding-left: 0; }
+.upload-name:hover .rowActions { display: block; }
 .upload-inner { position: absolute; top: 5; left: 5; }
 .preview-container { padding: 5px 0 5px 15px;}
 .thumb { height: 85px; width: 85px; overflow: hidden; margin: 0 auto; }

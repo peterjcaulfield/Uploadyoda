@@ -41,7 +41,7 @@
         #editActions { padding: 10px; overflow: auto; background: #f5f5f5; }
         #fileUrl { width: 100%; margin: 5px 0 0 0; }
         #media { padding: 25px 0 25px 0; }
-        #media img { width: auto; }
+        #media img { width: auto; width: 100%; }
         #editUpdate { float: right; display: inline-block; }
         #editDelete { float: left; display: inline-block; }
         .bold { font-weight: bold; }

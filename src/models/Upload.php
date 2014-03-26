@@ -9,4 +9,9 @@ class Upload extends Eloquent
     protected $table = 'uploads';
 
     protected $fillable = array( 'name', 'path', 'mime_type', 'size' );
+
+    public function metable()
+    {
+        return $this->morphTo();
+    }
 }
