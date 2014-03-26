@@ -13,29 +13,29 @@ class EloquentUploadRepository implements UploadRepositoryInterface
     {
         $this->model = $model;
     }
-    
+
     protected function createFilterQuery()
     {
         $searchDates = Filter::getSearchDates($this->filter['date']);
 
         $mimes = Filter::getSearchMimeTypes($this->filter['type']);
-        
+
         $filterQuery = $this->model->where('name', 'LIKE', '%' . $this->filter['search'] . '%')
             ->whereIn('mime_type', $mimes)
             ->where('created_at', '>=', $searchDates['start'])
             ->where('created_at', '<=', $searchDates['end']);
-    
-        return $filterQuery; 
+
+        return $filterQuery;
     }
 
     protected function queryUploads($filterQuery=false, $orderBy='created_at', $direction='asc')
     {
-        return $filterQuery ? $filterQuery->orderBy($orderBy, $direction) : $this->model->orderBy($orderBy, $direction); 
+        return $filterQuery ? $filterQuery->orderBy($orderBy, $direction) : $this->model->orderBy($orderBy, $direction);
     }
-    
+
     protected function performQuery($query)
     {
-       return $this->paginate === false ? $query->get() : $query->paginate($this->paginate); 
+       return $this->paginate === false ? $query->get() : $query->paginate($this->paginate);
     }
 
 
@@ -46,13 +46,13 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function setFilter(array $filter)
     {
-       $this->filter = $filter; 
+       $this->filter = $filter;
        return $this;
     }
-    
+
     public function create(array $upload)
     {
-       $this->model->create($upload); 
+       $this->model->create($upload);
     }
 
     public function destroy($id)
@@ -70,6 +70,11 @@ class EloquentUploadRepository implements UploadRepositoryInterface
         }
 
         return $this->performQuery($this->queryUploads());
+    }
+
+    public function getUploadById($id)
+    {
+        return $this->model->find($id);
     }
 
     public function count()

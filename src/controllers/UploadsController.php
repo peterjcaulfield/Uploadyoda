@@ -75,7 +75,12 @@ class UploadsController extends BaseController
 
     public function edit($id=null)
     {
-        $upload = \DB::table('uploads')->where('id', 38)->first();
-        return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+        //$upload = \DB::table('uploads')->where('id', 38)->first();
+        $upload = $this->upload->getUploadById($id);
+
+        if ( $upload )
+            return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+        else
+            return View::make('uploadyoda::404');
     }
 }
