@@ -159,3 +159,7 @@ background-image:
     -moz-linear-gradient( left, #09c, #f44);
 }
 
+/**
+ * Edit
+ */
+.form .form-control { margin-bottom: 5px; }

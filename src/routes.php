@@ -5,8 +5,8 @@
  */
 
 /**
- * This filter checks if a user has been registered in the app and if not redirects 
- * to the app's welcome screen. If a user has been registered, but the current user 
+ * This filter checks if a user has been registered in the app and if not redirects
+ * to the app's welcome screen. If a user has been registered, but the current user
  * is not logged in, we redirect to the login page.
  */
 
@@ -33,7 +33,7 @@ Route::filter('uploadyodaAuth', function(){
 
 Route::filter('emptyFiles', function(){
     if ( !count( $_FILES ) )
-        return 'Server error'; // should be updated to something generic but instructive 
+        return 'Server error'; // should be updated to something generic but instructive
 });
 
 /**
@@ -56,4 +56,5 @@ Route::get('uploadyoda/upload', array('as' => 'uploadyodaUpload', 'uses' => 'Qua
 Route::post('uploadyoda/store', 'Quasimodal\Uploadyoda\controllers\UploadsController@store');
 Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\controllers\UploadsController@test');
 Route::post('uploadyoda/delete', 'Quasimodal\Uploadyoda\controllers\UploadsController@destroy');
+Route::get('uploadyoda/{id}/edit', 'Quasimodal\Uploadyoda\controllers\UploadsController@edit');
 

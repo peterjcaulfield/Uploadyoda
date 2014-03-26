@@ -1,11 +1,11 @@
-<?php namespace Quasimodal\Uploadyoda\controllers; 
+<?php namespace Quasimodal\Uploadyoda\controllers;
 
-use Input, 
-    View, 
-    Redirect, 
-    Config, 
-    Request, 
-    Uploadyoda, 
+use Input,
+    View,
+    Redirect,
+    Config,
+    Request,
+    Uploadyoda,
     Quasimodal\Uploadyoda\repositories\UploadRepositoryInterface as UploadRepositoryInterface,
     Quasimodal\Uploadyoda\Service\Validation\UploadyodaValidator;
 
@@ -71,5 +71,11 @@ class UploadsController extends BaseController
     public function test()
     {
         return View::make('uploadyoda::test');
+    }
+
+    public function edit($id=null)
+    {
+        $upload = \DB::table('uploads')->where('id', 38)->first();
+        return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
     }
 }
