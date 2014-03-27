@@ -97,10 +97,6 @@ class EloquentUploadRepository implements UploadRepositoryInterface
        {
             case (strpos($mime, 'image') !== false):
                 return ImageMeta::create([]);
-                break;
-            case (strpos($mime, 'video') !== false):
-                return ImageMeta::create([]);
-                break;
             default:
                 return false;
        }
