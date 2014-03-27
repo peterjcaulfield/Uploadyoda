@@ -19,8 +19,8 @@ class CreateUploadsTable extends Migration {
             $table->string('path');
             $table->string('mime_type');
             $table->string('size');
-            $table->integer('metable_id');
-            $table->string('metable_type');
+            $table->integer('metable_id')->nullable();
+            $table->string('metable_type')->nullable();
 			$table->timestamps();
             $table->softDeletes();
 		});
