@@ -2,7 +2,7 @@
 
 use Eloquent;
 
-class Upload extends Eloquent
+class ImageMeta extends Eloquent
 {
     protected $table = 'image_meta';
 
@@ -10,6 +10,6 @@ class Upload extends Eloquent
 
     public function uploads()
     {
-        return $this->morphMany('Upload', 'metable');
+        return $this->morphMany('Quasimodal\Uploadyoda\models\Upload', 'metable');
     }
 }

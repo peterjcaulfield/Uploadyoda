@@ -54,7 +54,9 @@ Route::get('uploadyoda_user/logout', 'Quasimodal\Uploadyoda\controllers\Uploadyo
 Route::get('uploadyoda', array('as' => 'uploadyodaHome', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@index'));
 Route::get('uploadyoda/upload', array('as' => 'uploadyodaUpload', 'uses' => 'Quasimodal\Uploadyoda\controllers\UploadsController@create'));
 Route::post('uploadyoda/store', 'Quasimodal\Uploadyoda\controllers\UploadsController@store');
-Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\controllers\UploadsController@test');
 Route::post('uploadyoda/delete', 'Quasimodal\Uploadyoda\controllers\UploadsController@destroy');
 Route::get('uploadyoda/{id}/edit', 'Quasimodal\Uploadyoda\controllers\UploadsController@edit');
+
+// test route
+Route::get('uploadyoda/test', 'Quasimodal\Uploadyoda\controllers\UploadsController@test');
 

@@ -1,6 +1,7 @@
 <?php namespace Quasimodal\Uploadyoda\repositories;
 
 use Quasimodal\Uploadyoda\models\Upload,
+    Quasimodal\Uploadyoda\models\ImageMeta,
     Filter;
 
 class EloquentUploadRepository implements UploadRepositoryInterface
@@ -52,7 +53,15 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function create(array $upload)
     {
-       $this->model->create($upload);
+       $meta = $this->createMetaInstanceFromMime($upload['mime_type']);
+
+       if ( $meta )
+       {
+           $this->model->fill($upload);
+           $meta->uploads()->save($this->model);
+       }
+       else
+           $this->model->create($upload);
     }
 
     public function destroy($id)
@@ -80,5 +89,25 @@ class EloquentUploadRepository implements UploadRepositoryInterface
     public function count()
     {
         return $this->model->count();
+    }
+
+    public function createMetaInstanceFromMime($mime)
+    {
+       switch($mime)
+       {
+            case (strpos($mime, 'image') !== false):
+                return ImageMeta::create([]);
+                break;
+            case (strpos($mime, 'video') !== false):
+                return ImageMeta::create([]);
+                break;
+            default:
+                return false;
+       }
+    }
+
+    public function testMeta()
+    {
+        return ImageMeta::create([]);
     }
 }
