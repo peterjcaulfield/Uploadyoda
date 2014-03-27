@@ -24,6 +24,9 @@
             }
         ],
     "autoload": {
+        "classmap" : [ 
+            "src/migrations"  
+        ],
         "psr-4" : {
             "Quasimodal\\Uploadyoda\\" : "src/"
         }
