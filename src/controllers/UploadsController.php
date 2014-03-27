@@ -70,16 +70,27 @@ class UploadsController extends BaseController
 
     public function test()
     {
-        return View::make('uploadyoda::test');
+        return $this->upload->testMeta();
     }
 
     public function edit($id=null)
     {
-        //$upload = \DB::table('uploads')->where('id', 38)->first();
         $upload = $this->upload->getUploadById($id);
 
         if ( $upload )
-            return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+        {
+            switch ( $upload->mime_type )
+            {
+                case (strpos($upload->mime_type, 'image') !== false):
+                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    break;
+                case ($upload->mime_type == 'application/pdf'):
+                    return View::make('uploadyoda::edit-pdf', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    break;
+                default:
+                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+            }
+        }
         else
             return View::make('uploadyoda::404');
     }
