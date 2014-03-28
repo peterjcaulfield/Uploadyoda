@@ -55,5 +55,6 @@
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/l10n.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/pdf.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/debugger.js') }}"></script>
+<script type="text/javascript">var UPLOADYODA_PDF_PATH = "{{'http://' . $_SERVER['HTTP_HOST'] . $path}}";</script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/viewer.js') }}"></script>
 @stop
