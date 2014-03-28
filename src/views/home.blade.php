@@ -132,6 +132,7 @@
                     {{ $upload->name }}<br/><br/>
                     <div class="rowActions">
                         <ul class="rowActionLinks">
+                            <li><a class="rowAction" href="<?php echo '/uploadyoda/' . $upload->id . '/view'; ?>">View</a></li>|
                             <li><a class="rowAction" href="<?php echo '/uploadyoda/' . $upload->id . '/edit'; ?>">Edit</a></li>|
                             <li><a class="rowAction" href="<?php echo '/uploadyoda/' . $upload->id . '/destroy'; ?>">Delete</a></li>
                         </ul>

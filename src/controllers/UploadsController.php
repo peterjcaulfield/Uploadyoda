@@ -94,4 +94,26 @@ class UploadsController extends BaseController
         else
             return View::make('uploadyoda::404');
     }
+
+    public function view($id=null)
+    {
+        $upload = $this->upload->getUploadById($id);
+
+        if ( $upload )
+        {
+            switch ( $upload->mime_type )
+            {
+                case (strpos($upload->mime_type, 'image') !== false):
+                    return View::make('uploadyoda::view-image', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    break;
+                case ($upload->mime_type == 'application/pdf'):
+                    return View::make('uploadyoda::view-pdf', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    break;
+                default:
+                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+            }
+        }
+        else
+            return View::make('uploadyoda::404');
+    }
 }

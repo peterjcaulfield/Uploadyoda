@@ -1,7 +1,7 @@
 /*@import url(http://reset5.googlecode.com/hg/reset.min.css);*/
 
 a { text-decoration: none; }
-html { padding-top: 32px; font-family: sans-serif; font-size: 14px;}
+html { padding-top: 64px; font-family: sans-serif; font-size: 14px;}
 body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 #nav-back { position: fixed; top: 0; left: 0; width: 140px; background: #ebebeb; height: 100%; }
 #nav { position: fixed; width: 140px; background: #ebebeb;  color: #000; padding-top: 10px; left: 0; }
@@ -19,7 +19,7 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .nav li a { color: #fdf7ef; }
 .nav li a:hover { background: none; color: #f0523f; }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
-#sectionHeaderContainer { margin: 15px 0 25px 0; overflow: auto;}
+#sectionHeaderContainer { margin: 15px 0 25px 0; overflow: hidden;}
 .sectionText { margin: 0 10px 0 5px; float: left; }
 #logout { display: inline-block; float: right; padding: 22px 20px 0 0; }
 #logout a { text-decoration: none; color: #fdf7ef; }
