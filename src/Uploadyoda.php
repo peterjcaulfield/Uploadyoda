@@ -784,12 +784,12 @@ class Uploadyoda {
         'video/x-sgi-movie' => 'movie',
         'video/x-smv' => 'smv',
         'x-conference/x-cooltalk' => 'ice',
-    ); 
+    );
 
     protected $config;
 
     protected $upload;
-    
+
     public function guessMimeFromExtension($ext)
     {
         $extensions = array_flip($this->getMimes());
@@ -797,10 +797,10 @@ class Uploadyoda {
     }
 
     public function getMimes()
-    { 
+    {
         return $this->defaultExtensions;
     }
-   
+
     // return memory sizes from ini in bytes
     public function returnBytes($val) {
         $val = trim($val);
@@ -823,25 +823,25 @@ class Uploadyoda {
         $this->upload = $upload;
     }
 
-    public function createUniqueFilename( $filename, $ext ) 
+    public function createUniqueFilename( $filename, $ext )
     {
         // first we replace any spaces with hyphens
         $filename = preg_replace('/\s+/', '-', $filename);
 
         if ( $this->upload->where( 'name', '=', $filename . '.' . $ext )->count() )
-        {   // if filename ends in hyphen(s) or hyphen(s) with number(s) remove these and add a single hyphen at the end 
+        {   // if filename ends in hyphen(s) or hyphen(s) with number(s) remove these and add a single hyphen at the end
             if ( preg_match( '/-+(\d+)?$/', $filename, $match ) )
                 $filename = substr($filename, 0, -(strlen($match[0]))) . '-';
             else
-              $filename = $filename . '-';  
-            
-            // check if there is a versioned filename in the database already and retrieve the highest versioned filename 
+              $filename = $filename . '-';
+
+            // check if there is a versioned filename in the database already and retrieve the highest versioned filename
             $existing_versioned = $this->upload->select('name')
                 ->where( 'name', 'like', $filename . '_%.%' ) // wildcards appended to query for one or more characters after the hyphen
                 ->orderBy('created_at', 'desc')
                 ->take(1)
                 ->get();
-            
+
             if ( count( $existing_versioned ) && preg_match('/\d+$/', pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME ) ) )
             {
                 $last_versioned = pathinfo( $existing_versioned[0]->name, PATHINFO_FILENAME );
@@ -855,15 +855,15 @@ class Uploadyoda {
             else // no versioned filenames exist yet so we can create the first
                 return $filename . 1;
         }// no record exists with current filename to return it for db insertion
-       return $filename; 
+       return $filename;
     }
 
     public function upload( $uploadedFile, $path=null, $name=null )
     {
-        $response  = array();
+        $response  = [];
 
         $fileExt = pathinfo( $uploadedFile->getClientOriginalName(), PATHINFO_EXTENSION );
-        
+
         $fileSize = $uploadedFile->getSize();
 
         // create unique filename
@@ -874,10 +874,22 @@ class Uploadyoda {
         $path = isset( $path ) ? $path : $this->config->get('uploadyoda::uploads_directory');
 
         // format the response
-        $response['name'] = $name . '.' . $fileExt;
-        $response['path'] = $path;
-        $response['mime_type'] = $uploadedFile->getMimeType();
-        $response['size'] = $this::formatFilesize($fileSize);
+        $upload = [];
+        $upload['name'] = $name . '.' . $fileExt;
+        $upload['path'] = $path;
+        $upload['mime_type'] = $uploadedFile->getMimeType();
+        $upload['size'] = $this::formatFilesize($fileSize);
+
+        $meta = [];
+        if ( strpos($upload['mime_type'], 'image')  !== false )
+        {
+           list($width, $height) = getimagesize($uploadedFile);
+           $meta['width'] = $width;
+           $meta['height'] = $height;
+        }
+
+        $response['upload'] = $upload;
+        $response['meta'] = $meta;
 
         // upload the file
         $uploadedFile->move( public_path() .'/' . $path, $name . '.' . $fileExt );

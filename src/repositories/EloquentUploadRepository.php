@@ -53,15 +53,15 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function create(array $upload)
     {
-       $meta = $this->createMetaInstanceFromMime($upload['mime_type']);
+       $meta = $this->createMetaInstanceFromMime($upload['upload']['mime_type'], $upload['meta']);
 
        if ($meta)
        {
-           $this->model->fill($upload);
+           $this->model->fill($upload['upload']);
            $meta->uploads()->save($this->model);
        }
        else
-           $this->model->create($upload);
+           $this->model->create($upload['upload']);
     }
 
     public function destroy($id)
@@ -91,12 +91,12 @@ class EloquentUploadRepository implements UploadRepositoryInterface
         return $this->model->count();
     }
 
-    public function createMetaInstanceFromMime($mime)
+    public function createMetaInstanceFromMime($mime, $attr)
     {
        switch($mime)
        {
             case (strpos($mime, 'image') !== false):
-                return ImageMeta::create([]);
+                return ImageMeta::create($attr);
             default:
                 return false;
        }

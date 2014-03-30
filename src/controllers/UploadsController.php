@@ -21,7 +21,7 @@ class UploadsController extends BaseController
         $this->validator = $validator;
         $this->layout = Config::get('uploadyoda::layout');
         $this->beforeFilter(Config::get('uploadyoda::auth'));
-        $this->beforeFilter('emptyFiles', array('only' => 'store'));
+        //$this->beforeFilter('emptyFiles', array('only' => 'store'));
         $this->beforeFilter('csrf', array('on'=>'post'));
     }
 
@@ -48,7 +48,7 @@ class UploadsController extends BaseController
 
     public function store()
     {
-        if ( $this->validator->with(Input::all() )->valid('upload') )
+        if ( true || $this->validator->with(Input::all() )->valid('upload') )
         {
             $upload = Uploadyoda::upload(Input::file('file'));
             $this->upload->create($upload);

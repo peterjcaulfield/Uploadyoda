@@ -1,8 +1,4 @@
-{{ Form::open(array('url' => '/uploadyoda/test')) }}
-{{ Form::text('upload[name]') }}
-{{ Form::text('upload[title]') }}
-{{ Form::text('meta') }}
+{{ Form::open(array('url' => '/uploadyoda/store', 'files' => true)) }}
+{{ Form::file('file') }}
 {{ Form::submit('submit') }}
-<button>button</button>
-test
 {{ Form::close() }}
