@@ -70,7 +70,15 @@ class UploadsController extends BaseController
 
     public function test()
     {
-        return $this->upload->testMeta();
+        dd( Input::all() );
+    }
+
+    public function update($id)
+    {
+        if ( $this->upload->update($id, Input::all()) )
+            return Redirect::back();
+        else
+            return 'problem updating';
     }
 
     public function edit($id=null)
@@ -82,7 +90,7 @@ class UploadsController extends BaseController
             switch ( $upload->mime_type )
             {
                 case (strpos($upload->mime_type, 'image') !== false):
-                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    return View::make('uploadyoda::edit-image', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
                     break;
                 case ($upload->mime_type == 'application/pdf'):
                     return View::make('uploadyoda::edit-pdf', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
@@ -110,7 +118,7 @@ class UploadsController extends BaseController
                     return View::make('uploadyoda::view-pdf', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
                     break;
                 default:
-                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    return View::make('uploadyoda::view', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
             }
         }
         else

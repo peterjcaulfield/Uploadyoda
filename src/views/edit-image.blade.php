@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="editContainer">
-    {{ Form::open(array('class' => 'form editForm')) }}
+    {{ Form::open(array('url' => '/uploadyoda/' . $upload->id . '/update', 'class' => 'form editForm')) }}
     <div id="publishArea">
         <div id="meta">
             <div class="metadata">Uploaded: <span class="bold">{{ $upload->created_at }}</span></div>
@@ -21,16 +21,16 @@
         </div>
     </div>
     <div id="editForm">
-        {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>'title')) }}
+        {{ Form::text('meta[title]', $upload->metable->title, array('class'=>'form-control', 'placeholder'=>'title')) }}
         <div id="media">
             <img src="{{$path}}"/>
         </div>
         <label for="alt-text">Alternative text</label>
-        {{ Form::text('alt-text', null, array('class'=>'form-control', 'placeholder'=>'alt text')) }}
+        {{ Form::text('meta[altText]', $upload->metable->altText, array('class'=>'form-control', 'placeholder'=>'alt text')) }}
         <label for="description">Description</label>
-        {{ Form::text('description', null, array('class'=>'form-control', 'placeholder'=>'description')) }}
+        {{ Form::text('meta[description]', $upload->metable->description, array('class'=>'form-control', 'placeholder'=>'description')) }}
         <label for="caption">Caption</label>
-        {{ Form::text('caption', null, array('class'=>'form-control', 'placeholder'=>'caption')) }}
+        {{ Form::text('meta[caption]', $upload->metable->caption, array('class'=>'form-control', 'placeholder'=>'caption')) }}
     </div>
     {{ Form::close() }}
     <style>

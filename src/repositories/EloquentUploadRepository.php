@@ -55,7 +55,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
     {
        $meta = $this->createMetaInstanceFromMime($upload['mime_type']);
 
-       if ( $meta )
+       if ($meta)
        {
            $this->model->fill($upload);
            $meta->uploads()->save($this->model);
@@ -83,7 +83,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function getUploadById($id)
     {
-        return $this->model->find($id);
+        return $this->model->with('metable')->find($id);
     }
 
     public function count()
@@ -102,8 +102,23 @@ class EloquentUploadRepository implements UploadRepositoryInterface
        }
     }
 
+    public function update($id, $attr)
+    {
+        // no values (empty strings) should be saved as null
+        static::formatNullAttributes($attr['meta']);
+
+        return $this->model->find($id)->metable->fill($attr['meta'])->save();
+    }
+
     public function testMeta()
     {
         return ImageMeta::create([]);
+    }
+
+    private static function formatNullAttributes(&$attr)
+    {
+        foreach( $attr as $key => &$value )
+            if ( $value == '' )
+                $value = NULL;
     }
 }
