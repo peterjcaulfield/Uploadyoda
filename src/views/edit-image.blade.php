@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="editContainer">
-    {{ Form::open(array('url' => '/uploadyoda/' . $upload->id . '/update', 'class' => 'form editForm')) }}
+    {{ Form::open(array('url' => '/uploadyoda/' . $upload->id . '/update', 'class' => 'form editForm', 'id' => 'editForm')) }}
     <div id="publishArea">
         <div id="meta">
             <div class="metadata">Uploaded: <span class="bold">{{ $upload->created_at }}</span></div>
@@ -17,6 +17,9 @@
             </div>
             <div id="editDelete">
             {{ Form::submit('Delete', array('class'=>'btn btn-large btn-danger'))}}
+            </div>
+            <div style="clear: both;"></div>
+            <div id="updateStatus">
             </div>
         </div>
     </div>
@@ -46,6 +49,30 @@
         #editDelete { float: left; display: inline-block; }
         .bold { font-weight: bold; }
         .metadata { padding: 5px 0 5px 0; }
+        #updateStatus { display: none; padding: 10px 0 0 0; }
     </style>
 </div>
+<script>
+$(':submit').click(function(e){
+    e.preventDefault();
+    $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
+        .serialize())
+        .done(function(data){
+            response = JSON.parse(data);
+            var status = $('#updateStatus');
+            if ( response.code == 200 )
+            {
+                status.html('<span class="success">' + response.status + '</span>')
+                    .slideToggle(250, function(){
+                        setTimeout(function(){ status.slideToggle(250);}, 1000);
+                    });
+            }
+            else
+            {
+                status.html('<span class="success">' + response.status + '</span>')
+                .slideToggle(250);
+            }
+        });
+});
+</script>
 @stop

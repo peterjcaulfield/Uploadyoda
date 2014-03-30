@@ -76,9 +76,9 @@ class UploadsController extends BaseController
     public function update($id)
     {
         if ( $this->upload->update($id, Input::all()) )
-            return Redirect::back();
+            return json_encode(['code' => 200, 'status' => 'updated successfully']);
         else
-            return 'problem updating';
+            return json_encode(['code' => 500, 'status' => 'update failed']);
     }
 
     public function edit($id=null)
