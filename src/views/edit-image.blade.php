@@ -13,10 +13,10 @@
         </div>
         <div id="editActions">
             <div id="editUpdate">
-            {{ Form::submit('Update', array('class'=>'btn btn-large btn-primary'))}}
+            {{ Form::submit('Update', array('class'=>'btn btn-large btn-primary', 'id' => 'updateButton'))}}
             </div>
             <div id="editDelete">
-            {{ Form::submit('Delete', array('class'=>'btn btn-large btn-danger'))}}
+            {{ Form::submit('Delete', array('class'=>'btn btn-large btn-danger', 'id' => 'deleteButton'))}}
             </div>
             <div style="clear: both;"></div>
             <div id="updateStatus">
@@ -55,24 +55,43 @@
 <script>
 $(':submit').click(function(e){
     e.preventDefault();
-    $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
-        .serialize())
-        .done(function(data){
-            response = JSON.parse(data);
-            var status = $('#updateStatus');
-            if ( response.code == 200 )
-            {
-                status.html('<span class="success">' + response.status + '</span>')
-                    .slideToggle(250, function(){
-                        setTimeout(function(){ status.slideToggle(250);}, 1000);
-                    });
+    if ( $(this).attr('id') == 'updateButton' )
+    {
+        $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
+            .serialize())
+            .done(function(data){
+                response = JSON.parse(data);
+                var status = $('#updateStatus');
+                if ( response.code == 200 )
+                {
+                    status.html('<span class="success">' + response.status + '</span>')
+                        .slideToggle(250, function(){
+                            setTimeout(function(){ status.slideToggle(250);}, 1000);
+                        });
+                }
+                else
+                {
+                    status.html('<span class="success">' + response.status + '</span>')
+                    .slideToggle(250);
+                }
+            });
+    }
+    else
+    {
+        $.post("/uploadyoda/delete", {'delete' : JSON.stringify([{{ $upload->id }}]) )
+            .done(function(data){
+                response = JSON.parse(data);
+                var status = $('#updateStatus');
+                if ( response.code == 200 )
+                {
+                    // redirect to referrer
+                }
+                else
+                {
+                    // display error
+                }
             }
-            else
-            {
-                status.html('<span class="success">' + response.status + '</span>')
-                .slideToggle(250);
-            }
-        });
+    }
 });
 </script>
 @stop

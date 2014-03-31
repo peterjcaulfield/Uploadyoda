@@ -21,7 +21,7 @@ class UploadsController extends BaseController
         $this->validator = $validator;
         $this->layout = Config::get('uploadyoda::layout');
         $this->beforeFilter(Config::get('uploadyoda::auth'));
-        //$this->beforeFilter('emptyFiles', array('only' => 'store'));
+        $this->beforeFilter('emptyFiles', array('only' => 'store'));
         $this->beforeFilter('csrf', array('on'=>'post'));
     }
 
@@ -62,10 +62,13 @@ class UploadsController extends BaseController
 
     public function destroy()
     {
-        $recordsToTrash = json_decode(Input::get('itemsToTrash'));
-        if (count($recordsToTrash))
-            $this->upload->destroy($recordsToTrash);
-        return Redirect::back();
+        $recordsToTrash = json_decode(Input::get('delete'));
+        if ( count($recordsToTrash) )
+            if ( $this->upload->destroy($recordsToTrash) )
+                return json_encode(['code' => 200, 'status' => 'deleted successfully']);
+            else
+                return json_encode(['code' => 500, 'status' => 'delete failed']);
+
     }
 
     public function test()

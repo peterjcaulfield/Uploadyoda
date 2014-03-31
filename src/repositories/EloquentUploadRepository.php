@@ -66,7 +66,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function destroy($id)
     {
-        $this->model->destroy($id);
+       return $this->model->destroy($id);
     }
 
     public function getAllUploads()

@@ -50,20 +50,25 @@
                     uploadsToTrash.push($(this).val());
                 });
 
-                var form = document.createElement("form");
-                form.method = 'post';
-                form.action = '/uploadyoda/delete';
-                var input = document.createElement('input');
-                input.name = 'itemsToTrash';
-                input.value = JSON.stringify(uploadsToTrash);
-                form.appendChild(input);
-                var inputToken = document.createElement('input');
-                inputToken.name = '_token';
-                inputToken.value = "<?php echo csrf_token(); ?>";
-                form.appendChild(inputToken);
-                form.style.display = 'none';
-                document.body.appendChild(form);
-                form.submit();
+
+                $('.loading-mask-elem').show();
+
+                $.post('uploadyoda/delete', { 'delete' : JSON.stringify(uploadsToTrash), '_token' : '{{ csrf_token() }}' })
+                    .done(function(data){
+                        var response = JSON.parse(data);
+                        if ( response.code == 200 )
+                        {
+                            for ( var i = 0; i < uploadsToTrash.length; i++ )
+                            {
+                               $('#upload-' + uploadsToTrash[i]).remove();
+                               $('.loading-mask-elem').hide();
+                            }
+                        }
+                        else
+                        {
+                            console.log(response.status);
+                        }
+                    });
             }
         });
     })
@@ -112,7 +117,9 @@
             </form>
         </div>
     </div>
-    <table id="header-container" class="table table-condensed table-bordered">
+    <table id="header-container" class="table table-condensed table-bordered" style="position: relative">
+    <img id="loading-mask-gif" class="loading-mask-elem" src="/packages/quasimodal/uploadyoda/img/loader.gif">
+        <div id="loading-mask" class="loading-mask-elem"></div>
         <th id="thumbnail-header" class="header"><div class="header-text"><input type="checkbox" id="uploadCheckboxBatch" class=""></div></th>
         <th id="name-header" class="header"><div class="header-text">Name</div></th>
         <th id="size-header" class="header"><div class="header-text">Size</div></th>
@@ -122,7 +129,7 @@
     if ( $uploads->count() )
     {
         foreach($uploads as $upload){ ?>
-           <tr>
+           <tr id="{{'upload-' . $upload->id }}">
             <td class="preview">
                 <input type="checkbox" class="uploadCheckbox" value="<?php echo $upload->id; ?>">
                 <?php echo Helpers::generateThumbnail($upload->name, $upload->mime_type); ?>
