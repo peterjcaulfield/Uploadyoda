@@ -38,13 +38,13 @@
     {{ Form::close() }}
     <style>
         #editContainer { padding: 20px; }
-        #editForm { overflow: hidden;  }
+        #editForm { overflow: hidden; }
         #publishArea { float: right; width: 300px; margin: 0 0 0 20px; border: 1px solid #e5e5e5; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04); box-shadow: 0 1px 1px rgba(0,0,0,.04); }
         #meta { background-color: #fff; padding: 10px; border-bottom: 1px solid #ddd;  }
         #editActions { padding: 10px; overflow: auto; background: #f5f5f5; }
         #fileUrl { width: 100%; margin: 5px 0 0 0; }
         #media { padding: 25px 0 25px 0; }
-        #media img { width: auto; width: 100%; }
+        #media img { width: auto; max-width: 100%; margin: 0 auto; display: block; }
         #editUpdate { float: right; display: inline-block; }
         #editDelete { float: left; display: inline-block; }
         .bold { font-weight: bold; }
@@ -57,6 +57,10 @@ $(':submit').click(function(e){
     e.preventDefault();
     if ( $(this).attr('id') == 'updateButton' )
     {
+        $('body').append(
+            '<img id="loading-mask-gif" class="loading-mask-elem" src="/packages/quasimodal/uploadyoda/img/loader.gif"><div id="loading-mask" class="loading-mask-elem"></div>'
+        );
+        $('.loading-mask-elem').show();
         $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
             .serialize())
             .done(function(data){
@@ -64,33 +68,17 @@ $(':submit').click(function(e){
                 var status = $('#updateStatus');
                 if ( response.code == 200 )
                 {
-                    status.html('<span class="success">' + response.status + '</span>')
-                        .slideToggle(250, function(){
-                            setTimeout(function(){ status.slideToggle(250);}, 1000);
-                        });
+                    setTimeout(function(){
+                        $('.loading-mask-elem').remove();
+                    }, 500);
                 }
                 else
                 {
-                    status.html('<span class="success">' + response.status + '</span>')
-                    .slideToggle(250);
                 }
             });
     }
     else
     {
-        $.post("/uploadyoda/delete", {'delete' : JSON.stringify([{{ $upload->id }}]) )
-            .done(function(data){
-                response = JSON.parse(data);
-                var status = $('#updateStatus');
-                if ( response.code == 200 )
-                {
-                    // redirect to referrer
-                }
-                else
-                {
-                    // display error
-                }
-            }
     }
 });
 </script>
