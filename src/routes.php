@@ -11,6 +11,8 @@
  */
 
 Route::filter('uploadyodaAuth', function(){
+    // we use the a different model than laravels default User model for uploadyoda users
+    Config::set('auth.model', 'Quasimodal\Uploadyoda\models\UploadyodaUser');
 
     $UploadyodaUser = App::make('Quasimodal\Uploadyoda\repositories\UploadyodaUserRepositoryInterface');
 
