@@ -8,7 +8,7 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
 #nav-content .active a { color: #fff; }
-#content { height: 100%; overflow-x: hidden; padding-top: 47px; }
+#content { height: 100%; overflow-x: hidden; padding-top: 70px; }
 #header { height: 64px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #444444; }
 #body { position: relative; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; }
@@ -19,13 +19,12 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .nav li a { color: #fdf7ef; }
 .nav li a:hover { background: none; color: #f0523f; }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
-#sectionHeaderContainer { margin: 15px 0 25px 0; overflow: hidden;}
+#sectionHeaderContainer { margin: 0px 0 25px 0; overflow: hidden;}
 .sectionText { margin: 0 10px 0 5px; float: left; }
 #logout { display: inline-block; float: right; padding: 22px 20px 0 0; }
 #logout a { text-decoration: none; color: #fdf7ef; }
-
-.form-alert { position: absolute; top: 0; width: 100%; }
-
+#alertContainer { position: absolute; top: 80px; height: 40px; width: 100%; min-width: 960px; padding: 0px 20px 0px 20px; }
+#alert { height: 100%; }
 
 /**
  * Welcome page

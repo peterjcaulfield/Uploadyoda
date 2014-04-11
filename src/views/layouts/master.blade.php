@@ -19,12 +19,11 @@
             <a href="/uploadyoda_user/logout">Logout</a>
         </span>
     </div>
-    <div id="body">
-        <div id="body-content">
-            <div class="wrap">
-                @yield('content')
-            </div>
-        </div>
+    <div id="alertContainer">
+        <div id="alert"></div>
+    </div>
+    <div class="wrap">
+    @yield('content')
     </div>
 </div>
 @yield('footer')

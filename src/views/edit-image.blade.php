@@ -37,7 +37,7 @@
     </div>
     {{ Form::close() }}
     <style>
-        #editContainer { padding: 20px; }
+        #editContainer { padding: 0 20px 0 20px; }
         #editForm { overflow: hidden; }
         #publishArea { float: right; width: 300px; margin: 0 0 0 20px; border: 1px solid #e5e5e5; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04); box-shadow: 0 1px 1px rgba(0,0,0,.04); }
         #meta { background-color: #fff; padding: 10px; border-bottom: 1px solid #ddd;  }
@@ -57,10 +57,6 @@ $(':submit').click(function(e){
     e.preventDefault();
     if ( $(this).attr('id') == 'updateButton' )
     {
-        $('body').append(
-            '<img id="loading-mask-gif" class="loading-mask-elem" src="/packages/quasimodal/uploadyoda/img/loader.gif"><div id="loading-mask" class="loading-mask-elem"></div>'
-        );
-        $('.loading-mask-elem').show();
         $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
             .serialize())
             .done(function(data){
@@ -68,9 +64,6 @@ $(':submit').click(function(e){
                 var status = $('#updateStatus');
                 if ( response.code == 200 )
                 {
-                    setTimeout(function(){
-                        $('.loading-mask-elem').remove();
-                    }, 500);
                 }
                 else
                 {
