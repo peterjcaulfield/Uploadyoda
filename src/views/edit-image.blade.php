@@ -52,29 +52,7 @@
         #updateStatus { display: none; padding: 10px 0 0 0; }
     </style>
 </div>
-<script>
-$(':submit').click(function(e){
-    e.preventDefault();
-    if ( $(this).attr('id') == 'updateButton' )
-    {
-        $.post("/uploadyoda/" + "{{ $upload->id  }}" + "/update", $('#editForm')
-            .serialize())
-            .done(function(data){
-                response = JSON.parse(data);
-                var status = $('#updateStatus');
-                if ( response.code == 200 )
-                {
-                    $('#alertContainer').html('<div class="alert alert-success">Updated successfully</div>');
-                }
-                else
-                {
-                    $('#alertContainer').html('<div class="alert alert-danger">Update failed</div>');
-                }
-            });
-    }
-    else
-    {
-    }
-});
-</script>
+<script> var uploadID = "{{$upload->id}}"; </script>
+<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/update.js') }}"></script>
+
 @stop
