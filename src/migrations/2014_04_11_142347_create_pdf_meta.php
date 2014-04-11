@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImageMetaTable extends Migration {
+class CreatePdfMeta extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,16 +12,15 @@ class CreateImageMetaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('image_meta', function(Blueprint $table)
+		Schema::create('pdf_meta', function(Blueprint $table)
 		{
-            $table->increments('id');
+			$table->increments('id');
             $table->string('title')->nullable();
-            $table->string('altText')->nullable();
+            $table->string('author')->nullable();
+            $table->string('published')->nullable();
             $table->string('caption')->nullable();
             $table->text('description')->nullable();
-            $table->string('height')->nullable();
-            $table->string('width')->nullable();
-            $table->timestamps();
+			$table->timestamps();
 		});
 	}
 
@@ -32,7 +31,7 @@ class CreateImageMetaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('image_meta');
+		Schema::drop('pdf_meta');
 	}
 
 }

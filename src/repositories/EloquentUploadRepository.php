@@ -2,6 +2,7 @@
 
 use Quasimodal\Uploadyoda\models\Upload,
     Quasimodal\Uploadyoda\models\ImageMeta,
+    Quasimodal\Uploadyoda\models\PdfMeta,
     Filter;
 
 class EloquentUploadRepository implements UploadRepositoryInterface
@@ -95,10 +96,12 @@ class EloquentUploadRepository implements UploadRepositoryInterface
     {
        switch($mime)
        {
-            case (strpos($mime, 'image') !== false):
-                return ImageMeta::create($attr);
-            default:
-                return false;
+           case (strpos($mime, 'image') !== false):
+               return ImageMeta::create($attr);
+           case (strpos($mime, 'pdf') !== false):
+               return PdfMeta::create($attr);
+           default:
+               return false;
        }
     }
 
