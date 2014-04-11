@@ -1,17 +1,17 @@
 <?php namespace Quasimodal\Uploadyoda\controllers;
 
-use Input, 
-    View, 
-    Redirect, 
-    Config, 
-    Request, 
-    Validator, 
-    Hash, 
+use Input,
+    View,
+    Redirect,
+    Config,
+    Request,
+    Validator,
+    Hash,
     Auth,
     Quasimodal\Uploadyoda\repositories\UploadyodaUserRepositoryInterface as UploadyodaUserRepositoryInterface,
     Quasimodal\Uploadyoda\Service\Validation\UploadyodaUserValidator;
 
-class UploadyodaUsersController extends BaseController 
+class UploadyodaUsersController extends BaseController
 {
     protected $uploadyodaUser;
     public $layout;
@@ -27,7 +27,7 @@ class UploadyodaUsersController extends BaseController
     public function welcome()
     {
         return View::make('uploadyoda::welcome');
-    }  
+    }
 
     public function store()
     {
@@ -40,7 +40,7 @@ class UploadyodaUsersController extends BaseController
         else
             return Redirect::to('uploadyoda_user/welcome')->with('danger', 'shit happened')->withErrors($this->validator->errors())->withInput();
     }
-    
+
     public function login()
     {
         return View::make('uploadyoda::login');
@@ -48,6 +48,9 @@ class UploadyodaUsersController extends BaseController
 
     public function attemptLogin()
     {
+        // we use a different model than laravels default User model for uploadyoda users
+        Config::set('auth.model', 'Quasimodal\Uploadyoda\models\UploadyodaUser');
+
         if ( Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password'))) )
             return Redirect::to('uploadyoda/upload');
         else
