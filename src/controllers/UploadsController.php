@@ -51,8 +51,8 @@ class UploadsController extends BaseController
         if ( true || $this->validator->with(Input::all() )->valid('upload') )
         {
             $upload = Uploadyoda::upload(Input::file('file'));
-            $this->upload->create($upload);
-            return 'success';
+            $upload = $this->upload->create($upload);
+            return json_encode(['code' => 200, 'id' => $upload->id]);
         }
         else
         {

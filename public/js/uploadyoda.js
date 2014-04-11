@@ -92,12 +92,12 @@
      * @function
      * @param {number} uploadNum - the upload number
      */
-    function uploadSuccess(UIElements)
+    function uploadSuccess(UIElements, id)
     {
         UIElements.progressBar.value = 0;
         UIElements.progressBar.className += ' succeededUpload';
         UIElements.statusTd.innerHTML = 'Uploaded successfully';
-        setTimeout(function(){UIElements.uploadRow.parentNode.removeChild(UIElements.uploadRow)}, 500);
+        UIElements.uploadNameTd.innerHTML += ' <a href="/uploadyoda/' + id + '/edit">Edit</a>';
     }
 
     /**
@@ -113,7 +113,7 @@
         var downloadsContainer = document.getElementById('downloadsBody');
         var tableRow = document.createElement('tr');
         tableRow.id = 'upload-' + fileNumber;
-        var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner">' + file.name  + '</div></td>';
+        var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + fileNumber + '-name-inner">' + file.name  + '</div></td>';
         var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ calculateFilesize(file.size) + '</td>';
         var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></td>';
         var uploadCompleteTd = '<td id="upload-' + fileNumber + '-complete" class="upload-complete">0%</td>';
@@ -125,6 +125,7 @@
         var UIElements = {
             
             progressBar : document.getElementById('upload-' + fileNumber + '-progress'),
+            uploadNameTd : document.getElementById('upload-' + fileNumber + '-name-inner'),
             statusTd : document.getElementById('upload-' + fileNumber + '-status'),
             completeTd : document.getElementById('upload-' + fileNumber + '-complete'),
             uploadRow : document.getElementById('upload-' + fileNumber)
@@ -146,13 +147,15 @@
         { 
             if ( requestObject.xhr.status === 200 )  
             {
-                if ( requestObject.xhr.responseText != 'success' ) 
+                var response = JSON.parse(requestObject.xhr.response);
+
+                if ( response.code != 200 ) 
                 {
                     uploadFail(requestObject.UIElements, requestObject.xhr.responseText);
                 }
                 else
                 {
-                    uploadSuccess(requestObject.UIElements);
+                    uploadSuccess(requestObject.UIElements, response.id);
                 }
             }
             else

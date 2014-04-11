@@ -58,10 +58,10 @@ class EloquentUploadRepository implements UploadRepositoryInterface
        if ($meta)
        {
            $this->model->fill($upload['upload']);
-           $meta->uploads()->save($this->model);
+           return $meta->uploads()->save($this->model);
        }
        else
-           $this->model->create($upload['upload']);
+           return $this->model->create($upload['upload']);
     }
 
     public function destroy($id)
