@@ -64,9 +64,11 @@ $(':submit').click(function(e){
                 var status = $('#updateStatus');
                 if ( response.code == 200 )
                 {
+                    $('#alertContainer').html('<div class="alert alert-success">Updated successfully</div>');
                 }
                 else
                 {
+                    $('#alertContainer').html('<div class="alert alert-danger">Update failed</div>');
                 }
             });
     }

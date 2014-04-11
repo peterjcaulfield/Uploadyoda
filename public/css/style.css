@@ -23,8 +23,8 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .sectionText { margin: 0 10px 0 5px; float: left; }
 #logout { display: inline-block; float: right; padding: 22px 20px 0 0; }
 #logout a { text-decoration: none; color: #fdf7ef; }
-#alertContainer { position: absolute; top: 80px; height: 40px; width: 100%; min-width: 960px; padding: 0px 20px 0px 20px; }
-#alert { height: 100%; }
+#alertContainer { position: absolute; top: 75px; height: 40px; width: 100%; min-width: 960px; padding: 0px 20px 0px 20px; }
+#alert { }
 
 /**
  * Welcome page
