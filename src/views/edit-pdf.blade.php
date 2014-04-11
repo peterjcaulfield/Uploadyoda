@@ -29,6 +29,8 @@
         {{ Form::text('meta[author]', $upload->metable->author, array('class'=>'form-control', 'placeholder'=>'author')) }}
         <label for="published">Published</label>
         {{ Form::text('meta[published]', $upload->metable->published, array('class'=>'form-control', 'placeholder'=>'published')) }}
+        <label for="pages">Pages</label>
+        {{ Form::text('meta[pages]', $upload->metable->pages, array('class'=>'form-control', 'placeholder'=>'pages')) }}
         <label for="description">Description</label>
         {{ Form::text('meta[description]', $upload->metable->description, array('class'=>'form-control', 'placeholder'=>'description')) }}
         <label for="caption">Caption</label>
