@@ -1,6 +1,7 @@
 <?php namespace Quasimodal\Uploadyoda;
 
-use Illuminate\Config\Repository,
+use ZendPdf\PdfDocument,
+    Illuminate\Config\Repository,
     Input,
     Quasimodal\Uploadyoda\models\Upload as Upload;
 
@@ -881,11 +882,16 @@ class Uploadyoda {
         $upload['size'] = $this::formatFilesize($fileSize);
 
         $meta = [];
-        if ( strpos($upload['mime_type'], 'image')  !== false )
+
+        switch( $mime = $upload['mime_type'] )
         {
-           list($width, $height) = getimagesize($uploadedFile);
-           $meta['width'] = $width;
-           $meta['height'] = $height;
+            case (strpos($upload['mime_type'], 'image')  !== false ):
+                list($width, $height) = getimagesize($uploadedFile);
+                $meta['width'] = $width;
+                $meta['height'] = $height;
+                break;
+            default:
+                break;
         }
 
         $response['upload'] = $upload;

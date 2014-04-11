@@ -18,6 +18,7 @@ class CreatePdfMeta extends Migration {
             $table->string('title')->nullable();
             $table->string('author')->nullable();
             $table->string('published')->nullable();
+            $table->string('pages')->nullable();
             $table->string('caption')->nullable();
             $table->text('description')->nullable();
 			$table->timestamps();
