@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="editContainer">
-    {{ Form::open(array('class' => 'form editForm')) }}
+    {{ Form::open(array('url' => '/uploadyoda/' . $upload->id . '/update', 'class' => 'form editForm', 'id' => 'editForm')) }}
     <div id="publishArea">
         <div id="meta">
             <div class="metadata">Uploaded: <span class="bold">{{ $upload->created_at }}</span></div>
@@ -13,28 +13,30 @@
         </div>
         <div id="editActions">
             <div id="editUpdate">
-            {{ Form::submit('Update', array('class'=>'btn btn-large btn-primary'))}}
+                {{ Form::submit('Update', array('class'=>'btn btn-large btn-primary', 'id' => 'updateButton'))}}
             </div>
             <div id="editDelete">
-            {{ Form::submit('Delete', array('class'=>'btn btn-large btn-danger'))}}
+                {{ Form::submit('Delete', array('class'=>'btn btn-large btn-danger', 'id' => 'deleteButton'))}}
             </div>
         </div>
     </div>
     <div id="editForm">
-        {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>'title')) }}
+        {{ Form::text('meta[title]', $upload->metable->title, array('class'=>'form-control', 'placeholder'=>'title')) }}
         <div id="media">
            @include('uploadyoda::pdfjs')
         </div>
-        <label for="alt-text">Alternative text</label>
-        {{ Form::text('alt-text', null, array('class'=>'form-control', 'placeholder'=>'alt text')) }}
+        <label for="author">Author</label>
+        {{ Form::text('meta[author]', $upload->metable->author, array('class'=>'form-control', 'placeholder'=>'author')) }}
+        <label for="published">Published</label>
+        {{ Form::text('meta[published]', $upload->metable->published, array('class'=>'form-control', 'placeholder'=>'published')) }}
         <label for="description">Description</label>
-        {{ Form::text('description', null, array('class'=>'form-control', 'placeholder'=>'description')) }}
+        {{ Form::text('meta[description]', $upload->metable->description, array('class'=>'form-control', 'placeholder'=>'description')) }}
         <label for="caption">Caption</label>
-        {{ Form::text('caption', null, array('class'=>'form-control', 'placeholder'=>'caption')) }}
+        {{ Form::text('meta[caption]', $upload->metable->caption, array('class'=>'form-control', 'placeholder'=>'caption')) }}
     </div>
     {{ Form::close() }}
     <style>
-        #editContainer { padding: 20px; }
+        #editContainer { padding: 0 20px 0 20px; }
         #editForm { overflow: hidden;  }
         #publishArea { float: right; width: 300px; margin: 0 0 0 20px; border: 1px solid #e5e5e5; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04); box-shadow: 0 1px 1px rgba(0,0,0,.04); }
         #meta { background-color: #fff; padding: 10px; border-bottom: 1px solid #ddd;  }
@@ -50,6 +52,8 @@
 </div>
 @stop
 @section('footer')
+<script> var uploadID = "{{$upload->id}}"; </script>
+<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/update.js') }}"></script>
 <link rel="stylesheet" href="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/viewer.css') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/compatibility.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/pdfjs/l10n.js') }}"></script>

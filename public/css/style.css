@@ -8,7 +8,7 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 #nav-content { font-size: 12px; padding: 0 10px; }
 #nav-content a { text-decoration: none; color: #000; display: block; padding: 12px 0 12px 30px; }
 #nav-content .active a { color: #fff; }
-#content { height: 100%; overflow-x: hidden; padding-top: 70px; }
+#content { overflow-x: hidden; padding-top: 70px; }
 #header { height: 64px; position: fixed; top: 0; left: 0; width: 100%; min-width: 600px; z-index: 99999; background: #444444; }
 #body { position: relative; overflow: auto; min-width: 860px; }
 #body-content { width: 100%; overflow: visible!important; }
