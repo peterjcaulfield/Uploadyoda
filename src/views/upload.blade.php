@@ -9,24 +9,61 @@
        Drop files to upload here
     </div>
     <p><i class=" fa fa-upload"></i>&nbsp;&nbsp;File uploads</p>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
-      <tbody id="downloadsBody">
-        <tr>
-          <th id="name-header" align="left">Name</th>
-          <th id="size-header" align="left">Size</th>
-          <th id="progress-header" align="left">Progress</th>
-          <th id="complete-header" align="left">Complete</th>
-          <th id="status-header" align="left">Status</th>
-        </tr>
-      </tbody>
-    </table>
-
+    <ul id="uploadTabs" class="nav nav-tabs">
+        <li><a href="#in" data-toggle="tab">Progress <span id="progressCount">&nbsp;&nbsp;&nbsp;</span></a></li>
+        <li><a href="#successfulUploads" data-toggle="tab">Successful <span id="successCount">&nbsp;&nbsp;&nbsp;</span></a></li>
+        <li><a href="#failedUploads" data-toggle="tab">Failed <span id="failCount">&nbsp;&nbsp;&nbsp;</span></a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="in" class="tab-pane">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <tbody id="downloadsBody">
+                <tr>
+                <th id="name-header" align="left">Name</th>
+                <th id="size-header" align="left">Size</th>
+                <th id="progress-header" align="left">Progress</th>
+                <th id="complete-header" align="left">Complete</th>
+                <th id="status-header" align="left">Status</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="successfulUploads" class="tab-pane">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <tbody id="downloadsBody">
+                <tr>
+                <th id="name-header" align="left">Name wooooo</th>
+                <th id="size-header" align="left">Size</th>
+                <th id="progress-header" align="left">Progress</th>
+                <th id="complete-header" align="left">Complete</th>
+                <th id="status-header" align="left">Status</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="failedUploads" class="tab-pane">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <tbody id="downloadsBody">
+                <tr>
+                <th id="name-header" align="left">Name booooo</th>
+                <th id="size-header" align="left">Size</th>
+                <th id="progress-header" align="left">Progress</th>
+                <th id="complete-header" align="left">Complete</th>
+                <th id="status-header" align="left">Status</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 @stop
 
 @section('footer')
 <script>
+$(function(){
+    $('#uploadTabs a:first').tab('show');
+});
 /**
  * vars that upload.js depend on
  */
