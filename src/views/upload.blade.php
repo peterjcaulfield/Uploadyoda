@@ -31,7 +31,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
                 <tbody id="sucessfulUploadsTableBody">
                 <tr>
-                <th id="name-header" align="left">Name wooooo</th>
+                <th id="name-header" align="left">Name</th>
                 <th id="size-header" align="left">Size</th>
                 <th id="action" align="left">Action</th>
                 </tr>
@@ -42,9 +42,9 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
                 <tbody id="failedUploadsTableBody">
                 <tr>
-                <th id="name-header" align="left">Name booooo</th>
+                <th id="name-header" align="left">Name</th>
                 <th id="size-header" align="left">Size</th>
-                <th id="status-header" align="left">Status</th>
+                <th id="status-header" align="left">Error</th>
                 </tr>
                 </tbody>
             </table>

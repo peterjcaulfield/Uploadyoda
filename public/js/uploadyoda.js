@@ -28,26 +28,25 @@ $(document).ready(function(){
         globals.failedUploads = 0;
     
         /**
-        * Total number of files uploaded 
+        * Table for uploads in progress 
         *
         * @private
         */
         globals.uploadsProgressContainer = document.getElementById('progressUploadsTableBody');
     
         /**
-        * Total number of files uploaded 
+        * Table for successful uploads 
         *
         * @private
         */
-        //var uploadsSuccessContainer = document.getElementById('successfulUploadsTableBody');
         globals.uploadsSuccessContainer = $('#sucessfulUploadsTableBody');
     
         /**
-        * Total number of files uploaded 
+        * Table for failed uploads 
         *
         * @private
         */
-        globals.uploadsFailedContainer = document.getElementById('failedUploadsTableBody');
+        globals.uploadsFailedContainer = $('#failedUploadsTableBody'); 
 
         /**
         * calculate the file size in kB/MB from total bytes
@@ -116,10 +115,15 @@ $(document).ready(function(){
         * @param {number} uploadNum - the upload number
         * @param {string} statusText - the error message 
         */
-        function uploadFail(UIElements)
+        function uploadFail(upload, error)
         {
-            UIElements.progressBar.value = 0;
-            UIElements.progressBar.className += ' failedUpload';
+            globals.failedUploads++;
+            upload.UIElements.uploadRow.remove();
+            $('#failCount').html(' ' + globals.failedUploads + ' ');
+            var uploadNameTd = '<td id="upload-' + upload.uploadNum + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + upload.uploadNum + '-name-inner">' + upload.uploadMeta.filename  + '</div></td>';
+            var uploadSizeTd = '<td id="upload-' + upload.uploadNum + '-size" class="upload-size">'+ upload.uploadMeta.filesize + '</td>';
+            var errorTd = '<td>' + error + '</td>';
+            globals.uploadsFailedContainer.append('<tr>' + uploadNameTd + uploadSizeTd + errorTd + '</tr>');
         }
 
         /**
@@ -279,7 +283,7 @@ $(document).ready(function(){
                 
                 if ( !validFilesize(files[i].size) )
                 {
-                    uploadFail(totalFilesUploaded, 'max file size exceeded' );
+                    uploadFail(upload, 'max file size exceeded' );
                     continue;
                 }
 
@@ -287,7 +291,7 @@ $(document).ready(function(){
 
                 if ( !validMime(mime, mimes) ) 
                 {
-                    uploadFail(requests[i].UIElements, 'invalid mime type' );
+                    uploadFail(requests[i].upload, 'invalid mime type' );
                     continue;
                 }
                 
