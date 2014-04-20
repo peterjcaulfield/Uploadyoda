@@ -99,7 +99,7 @@ class UploadsController extends BaseController
                     return View::make('uploadyoda::edit-pdf', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
                     break;
                 default:
-                    return View::make('uploadyoda::edit', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
+                    return View::make('uploadyoda::edit-upload', array('upload' => $upload, 'path' => '/' . $upload->path . '/' . $upload->name));
             }
         }
         else

@@ -107,14 +107,14 @@ td { border-bottom: 1px solid #ddd; }
 #downloads th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
 #downloads td { padding: 5px 5px; }
 #size-header { width: 100px; }
-#progress-header { width: 100px; }
-#complete-header { width: 80px; }
+#progress-header { width: 250px; }
+#complete-header { width: 100px; }
 #status-header { width: 350px; }
-.upload-name { position: relative; white-space: nowrap; overflow: hidden; }
+.upload-name { position: relative; white-space: nowrap; overflow: hidden; padding: 5px; }
 .upload-name-inner { position: absolute; top: 5; left: 5; }
 .upload-size { width: 100px; }
-.upload-progress { width: 100px; }
-.upload-complete { width: 80px; text-align: center; }
+.upload-progress { width: 250px; }
+.upload-complete { width: 100px; text-align: center; }
 .upload-status { width: 350px; }
 .progress { margin: 0; width: 100%; height: 10px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
 .progress::-webkit-progress-bar { background-color: whiteSmoke; }

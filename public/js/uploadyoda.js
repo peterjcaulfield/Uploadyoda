@@ -1,266 +1,315 @@
-
 /**
  * @namespace uploadyoda
  */
-(function( uploadyoda ) {
+$(document).ready(function(){
 
-    /**
-     * Total number of files uploaded 
-     *
-     * @private
-     */
-    var totalFilesUploaded = 0;
+    (function( uploadyoda ) {
+
+        var globals = {};
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        globals.totalFilesUploaded = 0;
+        
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        globals.successfulUploads = 0;
+        
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        globals.failedUploads = 0;
     
-    /**
-     * calculate the file size in kB/MB from total bytes
-     *
-     * @private
-     * @function
-     * @param {number} numBytes - number of bytes in the file to be uploaded
-     * @returns {string} formatted filesize 
-     */
-    function calculateFilesize(numBytes)
-    {
-        if ( numBytes < 1000000 )
-            return (Math.ceil((numBytes / 1000) * 100) / 100) + ' kB';
-        else 
-            return (Math.ceil((numBytes / 1000000) * 100) / 100) + ' MB'; 
-    }
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        globals.uploadsProgressContainer = document.getElementById('progressUploadsTableBody');
+    
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        //var uploadsSuccessContainer = document.getElementById('successfulUploadsTableBody');
+        globals.uploadsSuccessContainer = $('#sucessfulUploadsTableBody');
+    
+        /**
+        * Total number of files uploaded 
+        *
+        * @private
+        */
+        globals.uploadsFailedContainer = document.getElementById('failedUploadsTableBody');
 
-    /**
-     * validate the file size against max file size in app config and php.ini
-     *
-     * @private
-     * @function
-     * @param {number} filesize - number of bytes in the file to be uploaded
-     * @returns {boolean} if the filesize is valid or not
-     */
-    function validFilesize(filesize)
-    {
-        if ( filesize > configMaxFilesize || filesize > serverMaxFilesize )
-            return false;
-        else
-            return true;
-    }
+        /**
+        * calculate the file size in kB/MB from total bytes
+        *
+        * @private
+        * @function
+        * @param {number} numBytes - number of bytes in the file to be uploaded
+        * @returns {string} formatted filesize 
+        */
+        function calculateFilesize(numBytes)
+        {
+            if ( numBytes < 1000000 )
+                return (Math.ceil((numBytes / 1000) * 100) / 100) + ' kB';
+            else 
+                return (Math.ceil((numBytes / 1000000) * 100) / 100) + ' MB'; 
+        }
 
-    /**
-     * Check  if a value is in an array
-     *
-     * @private
-     * @function
-     * @param {mixed} value - needle
-     * @param {array} array - haystack
-     * @returns {boolean} if the value exists in the array or not 
-     */
-    function isInArray(value, array) 
-    {
-        return array.indexOf(value) > -1;
-    }
+        /**
+        * validate the file size against max file size in app config and php.ini
+        *
+        * @private
+        * @function
+        * @param {number} filesize - number of bytes in the file to be uploaded
+        * @returns {boolean} if the filesize is valid or not
+        */
+        function validFilesize(filesize)
+        {
+            if ( filesize > configMaxFilesize || filesize > serverMaxFilesize )
+                return false;
+            else
+                return true;
+        }
 
-    /**
-     * Check if a files mime type is valid
-     *
-     * @private
-     * @function
-     * @param {string} mime
-     * @returns {boolean} if the mime is valid or not 
-     */
-    function validMime(mime)
-    {
-        return isInArray(mime, mimes);  
-    }
+        /**
+        * Check  if a value is in an array
+        *
+        * @private
+        * @function
+        * @param {mixed} value - needle
+        * @param {array} array - haystack
+        * @returns {boolean} if the value exists in the array or not 
+        */
+        function isInArray(value, array) 
+        {
+            return array.indexOf(value) > -1;
+        }
 
-    /**
-     * Updates UI for the table row of a failed upload
-     *
-     * @private
-     * @function
-     * @param {number} uploadNum - the upload number
-     * @param {string} statusText - the error message 
-     */
-    function uploadFail(UIElements, statusText)
-    {
-        UIElements.progressBar.value = 0;
-        UIElements.progressBar.className += ' failedUpload';
-        UIElements.statusTd.innerHTML = 'Upload failed: ' + statusText;
-    }
+        /**
+        * Check if a files mime type is valid
+        *
+        * @private
+        * @function
+        * @param {string} mime
+        * @returns {boolean} if the mime is valid or not 
+        */
+        function validMime(mime)
+        {
+            return isInArray(mime, mimes);  
+        }
 
-    /**
-     * Updates UI for the table row of a successful upload
-     *
-     * @private
-     * @function
-     * @param {number} uploadNum - the upload number
-     */
-    function uploadSuccess(UIElements, id)
-    {
-        UIElements.progressBar.value = 0;
-        UIElements.progressBar.className += ' succeededUpload';
-        UIElements.statusTd.innerHTML = 'Uploaded successfully';
-        UIElements.uploadNameTd.innerHTML += ' <a href="/uploadyoda/' + id + '/edit">Edit</a>';
-    }
+        /**
+        * Updates UI for the table row of a failed upload
+        *
+        * @private
+        * @function
+        * @param {number} uploadNum - the upload number
+        * @param {string} statusText - the error message 
+        */
+        function uploadFail(UIElements)
+        {
+            UIElements.progressBar.value = 0;
+            UIElements.progressBar.className += ' failedUpload';
+        }
 
-    /**
-     * Updates UI creating new table row for a new upload
-     *
-     * @private
-     * @function
-     * @param {object} file - the file object
-     * @param {number} fileNumber - the number of the uploaded file
-     */
-    function getFileInfo(file, fileNumber)
-    {
-        var downloadsContainer = document.getElementById('downloadsBody');
-        var tableRow = document.createElement('tr');
-        tableRow.id = 'upload-' + fileNumber;
-        var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + fileNumber + '-name-inner">' + file.name  + '</div></td>';
-        var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ calculateFilesize(file.size) + '</td>';
-        var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></td>';
-        var uploadCompleteTd = '<td id="upload-' + fileNumber + '-complete" class="upload-complete">0%</td>';
-        var uploadStatusTd = '<td id="upload-' + fileNumber + '-status" class="upload-status">Uploading</td>';
+        /**
+        * Updates UI for the table row of a successful upload
+        *
+        * @private
+        * @function
+        * @param {number} uploadNum - the upload number
+        */
+        function uploadSuccess(upload, id)
+        {
+            globals.successfulUploads++;
+            upload.UIElements.uploadRow.remove();
+            $('#successCount').html(' ' + globals.successfulUploads + ' ');
+            var uploadNameTd = '<td id="upload-' + upload.uploadNum + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + upload.uploadNum + '-name-inner">' + upload.uploadMeta.filename  + '</div></td>';
+            var uploadSizeTd = '<td id="upload-' + upload.uploadNum + '-size" class="upload-size">'+ upload.uploadMeta.filesize + '</td>';
+            var actionsTd = '<td><div class=""><a href="/uploadyoda/' + id + '/edit">Edit</a></div></td>';
+            globals.uploadsSuccessContainer.append('<tr>' + uploadNameTd + uploadSizeTd + actionsTd + '</tr>');
+        }
 
-        tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd + uploadCompleteTd + uploadStatusTd;
-        downloadsContainer.appendChild(tableRow);
+        /**
+        * Updates UI creating new table row for a new upload
+        *
+        * @private
+        * @function
+        * @param {object} file - the file object
+        * @param {number} fileNumber - the number of the uploaded file
+        */
+        function getFileInfo(file, fileNumber)
+        {
+            var uploadMeta = {};
+            uploadMeta.fileNumber = fileNumber;
+            uploadMeta.filename = file.name;
+            uploadMeta.filesize = calculateFilesize(file.size);
 
-        var UIElements = {
-            
-            progressBar : document.getElementById('upload-' + fileNumber + '-progress'),
-            uploadNameTd : document.getElementById('upload-' + fileNumber + '-name-inner'),
-            statusTd : document.getElementById('upload-' + fileNumber + '-status'),
-            completeTd : document.getElementById('upload-' + fileNumber + '-complete'),
-            uploadRow : document.getElementById('upload-' + fileNumber)
-        };
-       
-       return UIElements;
-    }
+            var tableRow = document.createElement('tr');
+            tableRow.id = 'upload-' + fileNumber;
+            var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + fileNumber + '-name-inner">' + file.name  + '</div></td>';
+            var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ calculateFilesize(file.size) + '</td>';
+            var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></td>';
+            var uploadCompleteTd = '<td id="upload-' + fileNumber + '-complete" class="upload-complete">0%</td>';
 
-    /**
-     * Creates callback for the xhr onload event
-     *
-     * @private
-     * @function
-     * @param {object} requestObject - the object that encapsulates the XMLHttpRequest
-     */
-    function createOnloadFunction(requestObject)
-    {
-        return function()
-        { 
-            if ( requestObject.xhr.status === 200 )  
-            {
-                var response = JSON.parse(requestObject.xhr.response);
+            tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd + uploadCompleteTd;
+            globals.uploadsProgressContainer.appendChild(tableRow);
 
-                if ( response.code != 200 ) 
+            var UIElements = {
+
+                progressBar : document.getElementById('upload-' + fileNumber + '-progress'),
+                uploadNameTd : document.getElementById('upload-' + fileNumber + '-name-inner'),
+                completeTd : document.getElementById('upload-' + fileNumber + '-complete'),
+                uploadRow : $('#upload-' + fileNumber)
+            };
+
+            var upload = {};
+            upload.uploadMeta = uploadMeta;
+            upload.UIElements = UIElements;
+
+        return upload;
+        }
+
+        /**
+        * Creates callback for the xhr onload event
+        *
+        * @private
+        * @function
+        * @param {object} requestObject - the object that encapsulates the XMLHttpRequest
+        */
+        function createOnloadFunction(requestObject)
+        {
+            return function()
+            { 
+                if ( requestObject.xhr.status === 200 )  
                 {
-                    uploadFail(requestObject.UIElements, requestObject.xhr.responseText);
+                    var response = JSON.parse(requestObject.xhr.response);
+
+                    if ( response.code != 200 ) 
+                    {
+                        uploadFail(requestObject.upload, requestObject.xhr.responseText);
+                    }
+                    else
+                    {
+                        uploadSuccess(requestObject.upload, response.id);
+                    }
                 }
                 else
+                    console.log(requestObject.xhr.responseText + requestObject.requestNo);
+            }
+        }
+
+        /**
+        * Updates UI upload progress for an upload
+        *
+        * @private
+        * @function
+        * @param {number} uploadNum - the number of the upload
+        * @param {object} progressEventObj - the progess object of the XMLHttpRequest
+        */
+        function updateProgressUI(upload, progressEventObj)
+        {
+            var complete = (progressEventObj.loaded / progressEventObj.total * 100 | 0);
+            upload.UIElements.progressBar.value = complete;
+            upload.UIElements.completeTd.innerHTML = complete + '%';
+        }
+
+        /**
+        * Creates callback for the xhr onprogresss event
+        *
+        * @private
+        * @function
+        * @param {object} requestObject - the object that encapsulates the XMLHttpRequest
+        */
+        function createUploadProgressFunction(requestObject)
+        {
+            return function(e)
+            {
+                if (e.lengthComputable)
                 {
-                    uploadSuccess(requestObject.UIElements, response.id);
+                    updateProgressUI(requestObject.upload, e);
                 }
             }
-            else
-                console.log(requestObject.xhr.responseText + requestObject.requestNo);
         }
-    }
 
-    /**
-     * Updates UI upload progress for an upload
-     *
-     * @private
-     * @function
-     * @param {number} uploadNum - the number of the upload
-     * @param {object} progressEventObj - the progess object of the XMLHttpRequest
-     */
-    function updateProgressUI(UIElements, progressEventObj)
-    {
-        var complete = (progressEventObj.loaded / progressEventObj.total * 100 | 0);
-        UIElements.progressBar.value = complete;
-        UIElements.completeTd.innerHTML = complete + '%';
-    }
-
-    /**
-     * Creates callback for the xhr onprogresss event
-     *
-     * @private
-     * @function
-     * @param {object} requestObject - the object that encapsulates the XMLHttpRequest
-     */
-    function createUploadProgressFunction(requestObject)
-    {
-        return function(e)
+        /**
+        * Function that handles the uploading of files when a file/files are dragged and dropped into upload area 
+        *
+        * @public
+        * @function
+        * @param {object} files - object containing files that were dropped
+        */
+        uploadyoda.readFiles = function( files )
         {
-            if (e.lengthComputable)
+            // array to hold each ajax request
+            var requests = [];
+
+            // process each file
+
+            for ( var i = 0; i < files.length; i++)
             {
-                updateProgressUI(requestObject.UIElements, e);
+                globals.totalFilesUploaded++;
+
+                // create the request object
+                requests[i] = {};
+                
+                // create the form object
+                var formData = new FormData();
+                formData.append('_token', csrf_token);
+                formData.append('file', files[i]);
+
+                // update UI 
+                var upload  = getFileInfo(files[i], globals.totalFilesUploaded);
+                upload.uploadNum = i;
+        
+                // add the requests UI Elements to the request object
+                requests[i].upload = upload;
+
+                // validate file
+                
+                if ( !validFilesize(files[i].size) )
+                {
+                    uploadFail(totalFilesUploaded, 'max file size exceeded' );
+                    continue;
+                }
+
+                var mime = defaultExtensions[files[i].type];
+
+                if ( !validMime(mime, mimes) ) 
+                {
+                    uploadFail(requests[i].UIElements, 'invalid mime type' );
+                    continue;
+                }
+                
+                // Create the ajax request object
+                requests[i].fileName = files[i].name;
+                requests[i].fileSize = calculateFilesize(files[i].size); 
+                requests[i].requestNo = globals.totalFilesUploaded;
+                requests[i].xhr = new XMLHttpRequest();
+                requests[i].xhr.open('POST', '/uploadyoda/store');
+
+                // bind the UI update handlers
+                requests[i].xhr.onload = createOnloadFunction(requests[i]);  
+                requests[i].xhr.upload.onprogress = createUploadProgressFunction(requests[i]); 
+                
+                // send the request
+                requests[i].xhr.send(formData);
             }
         }
-    }
 
-    /**
-     * Function that handles the uploading of files when a file/files are dragged and dropped into upload area 
-     *
-     * @public
-     * @function
-     * @param {object} files - object containing files that were dropped
-     */
-    uploadyoda.readFiles = function( files )
-    {
-        // array to hold each ajax request
-        var requests = [];
+    }( window.uploadyoda = window.uploadyoda || {} ));
 
-        // process each file
-
-        for ( var i = 0; i < files.length; i++)
-        {
-            totalFilesUploaded++;
-
-            // create the request object
-            requests[i] = {};
-            
-            // create the form object
-            var formData = new FormData();
-            formData.append('_token', csrf_token);
-            formData.append('file', files[i]);
-
-            // update UI 
-            var requestUIElements = getFileInfo(files[i], totalFilesUploaded);
-    
-            // add the requests UI Elements to the request object
-            requests[i].UIElements = requestUIElements;
-
-            // validate file
-            
-            if ( !validFilesize(files[i].size) )
-            {
-                uploadFail(totalFilesUploaded, 'max file size exceeded' );
-                continue;
-            }
-
-            var mime = defaultExtensions[files[i].type];
-
-            if ( !validMime(mime, mimes) ) 
-            {
-                uploadFail(requests[i].UIElements, 'invalid mime type' );
-                continue;
-            }
-            
-            // Create the ajax request object
-            requests[i].fileName = files[i].name;
-            requests[i].fileSize = calculateFilesize(files[i].size); 
-            requests[i].requestNo = totalFilesUploaded;
-            requests[i].xhr = new XMLHttpRequest();
-            requests[i].xhr.open('POST', '/uploadyoda/store');
-
-            // bind the UI update handlers
-            requests[i].xhr.onload = createOnloadFunction(requests[i]);  
-            requests[i].xhr.upload.onprogress = createUploadProgressFunction(requests[i]); 
-            
-            // send the request
-            requests[i].xhr.send(formData);
-        }
-    }
-
-}( window.uploadyoda = window.uploadyoda || {} ));
+});
 
 /**
  * Bind the drag and drop events to the respective handlers
