@@ -24,18 +24,19 @@
         var searchQuery = "<?php echo $searchQuery; ?>";
 
         var filters = filterString.split(',');
-        if ( filters.length )
+
+        if ( filters.length > 1 )
         {
             for ( var i = 0; i < filters.length; i++ )
             {
                 var xLinkFilters = filters.filter(function(filter) { return filter !== filters[i]});
                 var xLinkHref = xLinkFilters.join(',');
-                console.log(xLinkHref);
 
                 if ( searchQuery !== '')
                     xLinkHref+= '&search=' + searchQuery;
 
                 $('#filter-' + filters[i]).append(' <a href="/uploadyoda?filters=' + xLinkHref + '"><i class="fa fa-times"></i></a>');
+                $('#filters-in-use').append('<button type="button" class="btn btn-default btn-sm in-use-filter-btn"><a href="/uploadyoda?filters=' + xLinkHref + '">' + filters[i] + ' <i class="fa fa-times"></i></a></button>');
             }
         }
 
@@ -83,7 +84,6 @@
         });
 
         $('#filter-action').on('click', function(){
-            console.log('hurr');
             $('#filters').toggle();
         });
 
@@ -134,6 +134,7 @@
             </form>
         </div>
         <button type="button" id="filter-action" class="btn btn-default btn-sm">Filters <i class="fa fa-caret-down"></i></button>
+        <div id="filters-in-use"></div>
         <div id="filters">
             <div class="filter-options">
                 <p><strong>Upload date</strong></p>
