@@ -77,11 +77,12 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .uploadCheckbox { float: left; margin: 0; }
 input[type=checkbox] { margin: 0; }
 #uploadCheckboxBatch { margin-top: 3px; }
-#uploadSelectBatch { width: 140px; display: inline-block; }
+#uploadSelectBatch { width: 140px; display: inline-block; float: left; }
 #uploadBatchOptions { margin: 0 0 0 5px; clear: both; float: left; display: inline-block;}
+#applyBatch { margin: 0 0 0 5px; }
 #filter-action { float: left; margin: 0 0 0 10px; }
 #filters { display: none; clear: both; padding: 20px; }
-.filter-options { margin-right: 20px; display: inline-block; vertical-align: top; }
+.filter-options { margin-right: 35px; display: inline-block; vertical-align: top; }
 #search { display: inline-block; float: right; margin-right: 5px; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
