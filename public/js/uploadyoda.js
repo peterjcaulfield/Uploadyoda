@@ -119,7 +119,7 @@ $(document).ready(function(){
         {
             globals.failedUploads++;
             upload.UIElements.uploadRow.remove();
-            $('#failCount').html(' ' + globals.failedUploads + ' ');
+            $('#failCount').html('  ' + globals.failedUploads + '  ');
             var uploadNameTd = '<td id="upload-' + upload.uploadNum + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + upload.uploadNum + '-name-inner">' + upload.uploadMeta.filename  + '</div></td>';
             var uploadSizeTd = '<td id="upload-' + upload.uploadNum + '-size" class="upload-size">'+ upload.uploadMeta.filesize + '</td>';
             var errorTd = '<td>' + error + '</td>';
@@ -137,7 +137,7 @@ $(document).ready(function(){
         {
             globals.successfulUploads++;
             upload.UIElements.uploadRow.remove();
-            $('#successCount').html(' ' + globals.successfulUploads + ' ');
+            $('#successCount').html('  ' + globals.successfulUploads + '  ');
             var uploadNameTd = '<td id="upload-' + upload.uploadNum + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + upload.uploadNum + '-name-inner">' + upload.uploadMeta.filename  + '</div></td>';
             var uploadSizeTd = '<td id="upload-' + upload.uploadNum + '-size" class="upload-size">'+ upload.uploadMeta.filesize + '</td>';
             var actionsTd = '<td><div class=""><a href="/uploadyoda/' + id + '/edit">Edit</a></div></td>';
@@ -163,17 +163,16 @@ $(document).ready(function(){
             tableRow.id = 'upload-' + fileNumber;
             var uploadNameTd = '<td id="upload-' + fileNumber + '-name" class="upload-name"><div class="upload-name-inner" id="upload-' + fileNumber + '-name-inner">' + file.name  + '</div></td>';
             var uploadSizeTd = '<td id="upload-' + fileNumber + '-size" class="upload-size">'+ calculateFilesize(file.size) + '</td>';
-            var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></td>';
-            var uploadCompleteTd = '<td id="upload-' + fileNumber + '-complete" class="upload-complete">0%</td>';
+            var uploadProgressTd = '<td id="upload-' + fileNumber + '-progress-td" class="upload-progress"><div class="progress-container"><progress value=0 max=100 id="upload-' + fileNumber + '-progress" class="progress"></progress></div><div id="upload-' + fileNumber + '-complete" class="upload-complete">0%</div></td>';
 
-            tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd + uploadCompleteTd;
+            tableRow.innerHTML = uploadNameTd + uploadSizeTd + uploadProgressTd;
             globals.uploadsProgressContainer.appendChild(tableRow);
 
             var UIElements = {
 
                 progressBar : document.getElementById('upload-' + fileNumber + '-progress'),
                 uploadNameTd : document.getElementById('upload-' + fileNumber + '-name-inner'),
-                completeTd : document.getElementById('upload-' + fileNumber + '-complete'),
+                complete : $('#upload-' + fileNumber + '-complete'), 
                 uploadRow : $('#upload-' + fileNumber)
             };
 
@@ -181,7 +180,7 @@ $(document).ready(function(){
             upload.uploadMeta = uploadMeta;
             upload.UIElements = UIElements;
 
-        return upload;
+            return upload;
         }
 
         /**
@@ -225,7 +224,7 @@ $(document).ready(function(){
         {
             var complete = (progressEventObj.loaded / progressEventObj.total * 100 | 0);
             upload.UIElements.progressBar.value = complete;
-            upload.UIElements.completeTd.innerHTML = complete + '%';
+            upload.UIElements.complete.html(complete + '%');
         }
 
         /**

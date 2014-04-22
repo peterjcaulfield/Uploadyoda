@@ -14,11 +14,11 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 #body-content { width: 100%; overflow: visible!important; }
 .wrap { position: relative; }
 .wrap p { padding: 20px 0 5px 4px;  font-size: 12px; }
-.nav { float: left; margin: 15px 0 0 8px; font-size: 12px; }
-.nav li { margin-right: 12px; }
-.nav li a { color: #fdf7ef; }
-.nav li a:hover { background: none; color: #f0523f; }
-.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
+#header .nav { float: left; margin: 15px 0 0 8px; font-size: 12px; }
+#header .nav li { margin-right: 12px; }
+#header .nav li a { color: #fdf7ef; }
+#header .nav li a:hover { background: none; }
+#header .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus { background-color: #f0523f; }
 #sectionHeaderContainer { margin: 0px 0 25px 0; overflow: hidden;}
 .sectionText { margin: 0 10px 0 5px; float: left; }
 #logout { display: inline-block; float: right; padding: 22px 20px 0 0; }
@@ -101,6 +101,7 @@ td { border-bottom: 1px solid #ddd; }
 
 #drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 2px #ccc; color: #ccc; }
 .drop-hover { border: dashed 2px #f0523f!important; color: #f0523f!important; }
+#uploads { margin-top: 15px; }
 #downloads { overflow: auto; font-size: 12px; border-collapse: collapse; }
 #downloads th { padding: 5px 5px; background: #444444 !important; border-left: solid 2px #fff; border-right: solid 2px #fff; color: #fdf7ef; }
 #downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
@@ -109,17 +110,22 @@ td { border-bottom: 1px solid #ddd; }
 #size-header { width: 100px; }
 #progress-header { width: 250px; }
 #complete-header { width: 100px; }
-#status-header { width: 350px; }
+#status-header { width: 400px; }
 .upload-name { position: relative; white-space: nowrap; overflow: hidden; padding: 5px; }
 .upload-name-inner { position: absolute; top: 5; left: 5; }
 .upload-size { width: 100px; }
-.upload-progress { width: 250px; }
-.upload-complete { width: 100px; text-align: center; }
-.upload-status { width: 350px; }
+.upload-complete { width: 37px; text-align: center; float: right; font-size: 11px; }
+.upload-status { width: 352px; }
 .progress { margin: 0; width: 100%; height: 10px; z-index: 0; background-color: #eee; border-radius: 2px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+.progress-container { width: 350px; float: left; }
 .progress::-webkit-progress-bar { background-color: whiteSmoke; }
 .failedUpload::-webkit-progress-bar { background-color: #d22000; color: #fff; }
 .succeededUpload::-webkit-progress-bar { background-color: #73ac3a; }
+#uploads .nav-tabs>li.active>a { background-color: #f0523f; color: #fff; }
+#uploads .nav-tabs>li.active>a:hover { background-color: #f0523f; border-color: #f0523f; color: #fff;}
+#uploads .nav-tabs li a:hover { background-color: #444444; } 
+#uploads .nav li a { background-color: #444444; color: #fff; font-size: 12px; }
+#uploads .nav-tabs>li>a:hover { border-color: #444444;  color: #f0523f; }
 
 
 
