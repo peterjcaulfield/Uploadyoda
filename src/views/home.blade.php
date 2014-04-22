@@ -24,8 +24,22 @@
         var searchQuery = "<?php echo $searchQuery; ?>";
 
         var filters = filterString.split(',');
+        if ( filters.length )
+        {
+            for ( var i = 0; i < filters.length; i++ )
+            {
+                var xLinkFilters = filters.filter(function(filter) { return filter !== filters[i]});
+                var xLinkHref = xLinkFilters.join(',');
+                console.log(xLinkHref);
 
-        $('.filter-options a').each(function(){
+                if ( searchQuery !== '')
+                    xLinkHref+= '&search=' + searchQuery;
+
+                $('#filter-' + filters[i]).append(' <a href="/uploadyoda?filters=' + xLinkHref + '"><i class="fa fa-times"></i></a>');
+            }
+        }
+
+        $('.filter-link').each(function(){
             var href = $(this).attr('href');
 
             var newHref = '';
@@ -36,7 +50,9 @@
                 {
                     // if href doesn't contain filter already and if filter and href are not both date filters append the filter
                     if ( href.indexOf(filters[i]) == -1 && !( filterTypes[href.substr(20)] == 'date' && filterTypes[filters[i]] == 'date' ) )
+                    {
                         newHref += ',' + filters[i];
+                    }
                 }
             }
 
@@ -107,7 +123,6 @@
             </select>
             <button id="applyBatch" class="btn btn-default btn-sm">Apply</button>
         </div>
-        <button type="button" id="filter-action" class="btn btn-default btn-sm">Filters <i class="fa fa-caret-down"></i></button>
         <div id="search">
             <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
                 <div class="input-group" id="searchContainer">
@@ -118,19 +133,20 @@
                 </div>
             </form>
         </div>
+        <button type="button" id="filter-action" class="btn btn-default btn-sm">Filters <i class="fa fa-caret-down"></i></button>
         <div id="filters">
             <div class="filter-options">
                 <p><strong>Upload date</strong></p>
-                <p><a href="/uploadyoda?filters=today">Today</a></p>
-                <p><a href="/uploadyoda?filters=week">This week</a></p>
-                <p><a href="/uploadyoda?filters=month">This month</a></p>
-                <p><a href="/uploadyoda?filters=year">This year</a></p>
+                <p id="filter-today"><a class="filter-link" href="/uploadyoda?filters=today">Today</a></p>
+                <p id="filter-week"><a class="filter-link" href="/uploadyoda?filters=week">This week</a></p>
+                <p id="filter-month"><a class="filter-link" href="/uploadyoda?filters=month">This month</a></p>
+                <p id="filter-year"><a class="filter-link" href="/uploadyoda?filters=year">This year</a></p>
             </div>
             <div class="filter-options">
                 <p><strong>Result type</strong></p>
-                <p><a href="/uploadyoda?filters=image">Image</a></p>
-                <p><a href="/uploadyoda?filters=video">Video</a></p>
-                <p><a href="/uploadyoda?filters=audio">Audio</a></p>
+                <p id="filter-image"><a class="filter-link" href="/uploadyoda?filters=image">Image</a></p>
+                <p id="filter-video"><a class="filter-link" href="/uploadyoda?filters=video">Video</a></p>
+                <p id="filter-audio"><a class="filter-link" href="/uploadyoda?filters=audio">Audio</a></p>
             </div>
             <div class="filter-options">
                 <p><strong>Sort by</strong></p>

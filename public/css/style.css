@@ -80,9 +80,9 @@ input[type=checkbox] { margin: 0; }
 #uploadSelectBatch { width: 140px; display: inline-block; float: left; font-size: 12px; }
 #uploadBatchOptions { margin: 0 0 0 5px; clear: both; float: left; display: inline-block;}
 #applyBatch { margin: 0 0 0 5px; }
-#filter-action { float: left; margin: 0 0 0 10px; }
-#filters { display: none; clear: both; padding: 20px; }
-.filter-options { margin-right: 35px; display: inline-block; vertical-align: top; }
+#filter-action { float: right; margin: 0 10px 0 0; }
+#filters { display: inline-block; display: none; float: right; clear: both; padding: 20px; overflow: auto; }
+.filter-options { margin-left: 35px; display: inline-block; vertical-align: top; }
 #search { display: inline-block; float: right; margin-right: 5px; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }
