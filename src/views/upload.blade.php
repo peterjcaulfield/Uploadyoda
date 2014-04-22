@@ -17,7 +17,7 @@
         </ul>
         <div class="tab-content">
             <div id="progressUploads" class="tab-pane">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="uploadsTable" class="uploads-table table table-condensed table-bordered">
                     <tbody id="progressUploadsTableBody">
                     <tr>
                     <th id="name-header" align="left">Name</th>
@@ -28,7 +28,7 @@
                 </table>
             </div>
             <div id="successfulUploads" class="tab-pane">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="uploads-table table table-condensed table-bordered">
                     <tbody id="sucessfulUploadsTableBody">
                     <tr>
                     <th id="name-header" align="left">Name</th>
@@ -39,7 +39,7 @@
                 </table>
             </div>
             <div id="failedUploads" class="tab-pane">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="downloads" class="table table-condensed table-bordered">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="uploads-table table table-condensed table-bordered">
                     <tbody id="failedUploadsTableBody">
                     <tr>
                     <th id="name-header" align="left">Name</th>

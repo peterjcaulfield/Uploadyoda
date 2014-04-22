@@ -102,11 +102,12 @@ td { border-bottom: 1px solid #ddd; }
 #drop-area { padding: 100px 0px 100px 0px; text-align: center; border: dashed 2px #ccc; color: #ccc; }
 .drop-hover { border: dashed 2px #f0523f!important; color: #f0523f!important; }
 #uploads { margin-top: 15px; }
-#downloads { overflow: auto; font-size: 12px; border-collapse: collapse; }
-#downloads th { padding: 5px 5px; background: #444444 !important; border-left: solid 2px #fff; border-right: solid 2px #fff; color: #fdf7ef; }
-#downloads th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
-#downloads th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
-#downloads td { padding: 5px 5px; }
+#uploads { overflow: auto; font-size: 12px; border-collapse: collapse; }
+.uploads-table { border: none; }
+.uploads-table th { padding: 5px 5px; background: #444444 !important; border-left: solid 2px #fff; border-right: solid 2px #fff; color: #fdf7ef; }
+.uploads-table th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
+.uploads-table th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
+.uploads-table td { padding: 5px 5px; }
 #size-header { width: 100px; }
 #progress-header { width: 250px; }
 #complete-header { width: 100px; }
