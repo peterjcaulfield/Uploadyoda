@@ -77,7 +77,7 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .uploadCheckbox { float: left; margin: 0; }
 input[type=checkbox] { margin: 0; }
 #uploadCheckboxBatch { margin-top: 3px; }
-#uploadSelectBatch { width: 140px; display: inline-block; float: left; }
+#uploadSelectBatch { width: 140px; display: inline-block; float: left; font-size: 12px; }
 #uploadBatchOptions { margin: 0 0 0 5px; clear: both; float: left; display: inline-block;}
 #applyBatch { margin: 0 0 0 5px; }
 #filter-action { float: left; margin: 0 0 0 10px; }
@@ -125,10 +125,10 @@ td { border-bottom: 1px solid #ddd; }
 .progress::-webkit-progress-bar { background-color: whiteSmoke; }
 .failedUpload::-webkit-progress-bar { background-color: #d22000; color: #fff; }
 .succeededUpload::-webkit-progress-bar { background-color: #73ac3a; }
-#uploads .nav-tabs>li.active>a { background-color: #f0523f; color: #fff; }
+#uploads .nav-tabs>li.active>a { background-color: #f0523f; color: #fff; border-color: #f0523f; }
 #uploads .nav-tabs>li.active>a:hover { background-color: #f0523f; border-color: #f0523f; color: #fff;}
 #uploads .nav-tabs li a:hover { background-color: #444444; } 
-#uploads .nav li a { background-color: #444444; color: #fff; font-size: 12px; }
+#uploads .nav li a { background-color: #444444; color: #fff; font-size: 12px; padding: 7px 15px; }
 #uploads .nav-tabs>li>a:hover { border-color: #444444;  color: #f0523f; }
 
 
