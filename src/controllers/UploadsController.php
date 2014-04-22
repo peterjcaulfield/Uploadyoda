@@ -63,12 +63,24 @@ class UploadsController extends BaseController
     public function destroy()
     {
         $recordsToTrash = json_decode(Input::get('delete'));
-        if ( count($recordsToTrash) )
-            if ( $this->upload->destroy($recordsToTrash) )
-                return json_encode(['code' => 200, 'status' => 'deleted successfully']);
-            else
-                return json_encode(['code' => 500, 'status' => 'delete failed']);
 
+        if ( count($recordsToTrash) )
+        {
+            if ( Request::ajax() )
+            {
+                if ( $this->upload->destroy($recordsToTrash) )
+                    return json_encode(['code' => 200, 'status' => 'deleted successfully']);
+                else
+                    return json_encode(['code' => 500, 'status' => 'delete failed']);
+            }
+            else
+            {
+                if ( $this->upload->destroy($recordsToTrash) )
+                    return Redirect::back()->with('success', 'deleted successfully');
+                else
+                    return Redirect::back()->with('error', 'delete failed');
+            }
+        }
     }
 
     public function test()

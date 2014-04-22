@@ -20,7 +20,17 @@
         </span>
     </div>
     <div id="alertContainer">
-        <div id="alert"></div>
+        <div id="alert">
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @elseif(Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
+        </div>
     </div>
     <div class="wrap">
     @yield('content')

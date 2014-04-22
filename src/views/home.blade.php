@@ -50,33 +50,25 @@
                     uploadsToTrash.push($(this).val());
                 });
 
-
-                $('.loading-mask-elem').show();
-
-                $.post('uploadyoda/delete', { 'delete' : JSON.stringify(uploadsToTrash), '_token' : '{{ csrf_token() }}' })
-                    .done(function(data){
-                        var response = JSON.parse(data);
-                        if ( response.code == 200 )
-                        {
-                            for ( var i = 0; i < uploadsToTrash.length; i++ )
-                            {
-                               $('#upload-' + uploadsToTrash[i]).remove();
-                               $('.loading-mask-elem').hide();
-                            }
-                        }
-                        else
-                        {
-                            console.log(response.status);
-                        }
-                    });
+                var form = document.createElement("form");
+                form.method = 'post';
+                form.action = '/uploadyoda/delete';
+                var input = document.createElement('input');
+                input.name = 'delete';
+                input.value = JSON.stringify(uploadsToTrash);
+                form.appendChild(input);
+                var inputToken = document.createElement('input');
+                inputToken.name = '_token';
+                inputToken.value = "<?php echo csrf_token(); ?>";
+                form.appendChild(inputToken);
+                form.style.display = 'none';
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     })
 </script>
 <div id="uploads-index">
-    <!--<div id="sectionHeaderContainer">
-        <h1 class="sectionText"><i class="fa fa-home"></i>&nbsp;&nbsp;Uploads</h1>
-    </div>-->
     <div id="tableActions">
         <div id="uploadBatchOptions">
             <select id="uploadSelectBatch" class="form-control">
