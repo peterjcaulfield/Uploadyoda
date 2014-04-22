@@ -24,8 +24,8 @@
         var searchQuery = "<?php echo $searchQuery; ?>";
 
         var filters = filterString.split(',');
-
-        if ( filters.length > 1 )
+        // update filters in use UI
+        if ( filters[0] !== '' )
         {
             for ( var i = 0; i < filters.length; i++ )
             {
@@ -40,12 +40,13 @@
             }
         }
 
+        // url rewriting
         $('.filter-link').each(function(){
             var href = $(this).attr('href');
 
             var newHref = '';
 
-            if ( filters.length )
+            if ( filters[0] !== '' )
             {
                 for ( var i = 0; i < filters.length; i++ )
                 {
