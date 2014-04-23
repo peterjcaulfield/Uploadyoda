@@ -3,31 +3,40 @@
 use Quasimodal\Uploadyoda\models\Upload,
     Quasimodal\Uploadyoda\models\ImageMeta,
     Quasimodal\Uploadyoda\models\PdfMeta,
-    Filter;
+    Quasimodal\Uploadyoda\Service\Filter;
 
 class EloquentUploadRepository implements UploadRepositoryInterface
 {
     protected $paginate = 10;
-    protected $filter = false;
+    protected $filters = false;
+    protected $filter;
     protected $model;
 
-    public function __construct( Upload $model )
+    public function __construct( Upload $model, Filter $filter )
     {
         $this->model = $model;
+        $this->filter = $filter;
+        $this->filter->setQueryModel($this->model);
     }
 
     protected function createFilterQuery()
     {
-        $searchDates = Filter::getSearchDates($this->filter['date']);
+        if ( isset($this->filters['filters']) )
+        {
+            $filters = explode(',', $this->filters['filters']);
 
-        $mimes = Filter::getSearchMimeTypes($this->filter['type']);
+            foreach( $filters as $filter )
+            {
+                $this->filter->buildQueryWithFilters($filter);
+            }
+        }
 
-        $filterQuery = $this->model->where('name', 'LIKE', '%' . $this->filter['search'] . '%')
-            ->whereIn('mime_type', $mimes)
-            ->where('created_at', '>=', $searchDates['start'])
-            ->where('created_at', '<=', $searchDates['end']);
+        if ( isset($this->filters['search']) )
+        {
+            $this->filter->buildQueryWithSearch($this->filters['search']);
+        }
 
-        return $filterQuery;
+        return $this->filter->getFilteredQuery();
     }
 
     protected function queryUploads($filterQuery=false, $orderBy='created_at', $direction='asc')
@@ -48,7 +57,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function setFilter(array $filter)
     {
-       $this->filter = $filter;
+       $this->filters = $filter;
        return $this;
     }
 
@@ -72,7 +81,8 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     public function getAllUploads()
     {
-        if ( $this->filter )
+
+        if ( $this->filters )
         {
             $filterQuery = $this->createFilterQuery();
 

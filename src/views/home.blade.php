@@ -32,11 +32,20 @@
                 var xLinkFilters = filters.filter(function(filter) { return filter !== filters[i]});
                 var xLinkHref = xLinkFilters.join(',');
 
-                if ( searchQuery !== '')
-                    xLinkHref+= '&search=' + searchQuery;
+                if (xLinkHref !== '')
+                {
+                    xLinkHref = '?filters=' + xLinkHref;
 
-                $('#filter-' + filters[i]).append(' <a href="/uploadyoda?filters=' + xLinkHref + '"><i class="fa fa-times"></i></a>');
-                $('#filters-in-use').append('<button type="button" class="btn btn-default btn-sm in-use-filter-btn"><a href="/uploadyoda?filters=' + xLinkHref + '">' + filters[i] + ' <i class="fa fa-times"></i></a></button>');
+                    if ( searchQuery !== '')
+                        xLinkHref+= '&search=' + searchQuery;
+                }
+                else if ( searchQuery !== '' )
+                {
+                    xLinkHref = '?search=' + searchQuery;
+                }
+
+                $('#filter-' + filters[i]).append(' <a href="/uploadyoda' + xLinkHref + '"><i class="fa fa-times"></i></a>');
+                $('#filters-in-use').append('<button type="button" class="btn btn-default btn-sm in-use-filter-btn"><a href="/uploadyoda' + xLinkHref + '">' + filters[i] + ' <i class="fa fa-times"></i></a></button>');
             }
         }
 

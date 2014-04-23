@@ -82,9 +82,11 @@ input[type=checkbox] { margin: 0; }
 #applyBatch { margin: 0 0 0 5px; }
 #filter-action { float: right; margin: 0 10px 0 0; }
 #filters { display: none; float: right; clear: both; padding: 20px; overflow: auto; }
+#filters a { color: #000; }
 .filter-options { margin-left: 35px; display: inline-block; vertical-align: top; }
 #filters-in-use { float: right; margin: 0 10px 0 0; display: inline-block; }
 .in-use-filter-btn { margin-left: 5px; }
+.in-use-filter-btn a { color: #000; }
 #search { display: inline-block; float: right; margin-right: 5px; }
 .pagination { margin: 10px 0 0 10px; }
 .pagination li { display: inline; }

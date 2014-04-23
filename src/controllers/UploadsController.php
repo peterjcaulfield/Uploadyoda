@@ -27,7 +27,7 @@ class UploadsController extends BaseController
 
     public function index()
     {
-        if ( count(Request::query()) > 1 )
+        if ( count(Request::query())  )
         {
             $filter = Input::all();
             $uploads = $this->upload->setFilter($filter)->getAllUploads();
@@ -48,7 +48,7 @@ class UploadsController extends BaseController
 
     public function store()
     {
-        if ( true || $this->validator->with(Input::all() )->valid('upload') )
+        if ( $this->validator->with(Input::all() )->valid('upload') )
         {
             $upload = Uploadyoda::upload(Input::file('file'));
             $upload = $this->upload->create($upload);
