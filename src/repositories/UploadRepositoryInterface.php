@@ -6,7 +6,7 @@ interface UploadRepositoryInterface
 
     public function getUploadById($id);
 
-    public function setFilter(array $filter);
+    public function setQueryFilters(array $filters);
 
     public function count();
 
