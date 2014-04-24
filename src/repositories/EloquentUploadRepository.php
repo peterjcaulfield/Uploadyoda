@@ -37,17 +37,17 @@ class EloquentUploadRepository implements UploadRepositoryInterface
         return $this->getFilteredQuery();
     }
 
-    public function getFilteredQuery()
+    protected function getFilteredQuery()
     {
         return $this->query;
     }
 
-    public function filterSearch($search)
+    protected function filterSearch($search)
     {
         $this->query->where('name', 'LIKE', '%' . $search . '%');
     }
 
-    public function buildFilteredQuery($raw)
+    protected function buildFilteredQuery($raw)
     {
         if ( isset($raw['filters'] ) )
         {
