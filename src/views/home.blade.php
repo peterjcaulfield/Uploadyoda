@@ -45,7 +45,7 @@
                 }
 
                 $('#filter-' + filters[i]).append(' <a href="/uploadyoda' + xLinkHref + '"><i class="fa fa-times"></i></a>');
-                $('#filters-in-use').append('<button type="button" class="btn btn-default btn-sm in-use-filter-btn"><a href="/uploadyoda' + xLinkHref + '">' + filters[i] + ' <i class="fa fa-times"></i></a></button>');
+                $('#filters-in-use').append('<a href="/uploadyoda' + xLinkHref + '"><button type="button" class="btn btn-default btn-sm in-use-filter-btn">' + filters[i] + ' <i class="fa fa-times"></i></button></a>');
             }
         }
 
