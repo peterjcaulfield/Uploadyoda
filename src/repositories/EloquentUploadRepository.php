@@ -100,7 +100,10 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     protected function filterFormat($formats)
     {
-        $this->query->whereIn('mime_type', $this->getAllowableFormats($formats));
+        $allowableFormats = $this->getAllowableFormats($formats);
+
+        if ( count($allowableFormats) )
+            $this->query->whereIn('mime_type', $allowableFormats);
     }
 
     protected function getAllowableFormats($formats)
