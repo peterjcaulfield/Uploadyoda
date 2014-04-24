@@ -21,20 +21,7 @@ class EloquentUploadRepository implements UploadRepositoryInterface
 
     protected function createFilterQuery()
     {
-        if ( isset($this->filters['filters']) )
-        {
-            $filters = explode(',', $this->filters['filters']);
-
-            foreach( $filters as $filter )
-            {
-                $this->filter->buildQueryWithFilters($filter);
-            }
-        }
-
-        if ( isset($this->filters['search']) )
-        {
-            $this->filter->buildQueryWithSearch($this->filters['search']);
-        }
+        $this->filter->buildFilteredQuery($this->filters);
 
         return $this->filter->getFilteredQuery();
     }

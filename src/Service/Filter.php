@@ -10,9 +10,10 @@ class Filter
 
     protected $query;
 
-    protected static $filters = [
-        'date' => ['today', 'week', 'month', 'year']
-        ];
+    protected $filters = [
+        'date' => ['today', 'week', 'month', 'year'],
+        'format' => ['audio', 'video', 'pdf', 'image']
+            ];
 
     public function setQueryModel($model)
     {
@@ -24,22 +25,41 @@ class Filter
         return $this->query;
     }
 
-    public function buildQueryWithSearch($search)
+    public function filterSearch($search)
     {
         $this->query->where('name', 'LIKE', '%' . $search . '%');
     }
 
-    public function buildQueryWithFilters($filter)
+    public function buildFilteredQuery($raw)
     {
-        if ( in_array( $filter, static::$filters['date'] ) )
-            $this->filterDate($filter);
-        else
-            $this->filterFormat($filter);
+        if ( isset($raw['filters'] ) )
+        {
+            $filters = explode(',', $raw['filters'] );
+
+            $dateFilter = array_intersect($filters, $this->filters['date']);
+
+            if  ( $date = reset($dateFilter) )
+            {
+                $this->filterDate($date);
+            }
+
+            $formatFilters = array_intersect($filters, $this->filters['format']);
+
+            if ( count($formatFilters) )
+            {
+                $this->filterFormat($formatFilters);
+            }
+        }
+
+        if ( isset($raw['search']) )
+        {
+            $this->filterSearch($raw['search']);
+        }
     }
 
-    protected function filterDate($filter)
+    protected function filterDate($date)
     {
-        switch($filter)
+        switch($date)
         {
             case 'today':
                 $this->query->where('created_at', '>=', Carbon\Carbon::today())
@@ -61,12 +81,12 @@ class Filter
 
     }
 
-    protected function filterFormat($filter)
+    protected function filterFormat($formats)
     {
-        $this->query->whereIn('mime_type', $this->getAllowableFormats($filter));
+        $this->query->whereIn('mime_type', $this->getAllowableFormats($formats));
     }
 
-    protected function getAllowableFormats($filter)
+    protected function getAllowableFormats($formats)
     {
         $allMimes = array_flip(Uploadyoda::getMimes());
         $allowedExt = Config::get('uploadyoda::allowed_mime_types');
@@ -78,14 +98,17 @@ class Filter
                 array_push($allowedMimeTypes, $allMimes[$ext]);
         }
         // all types should be returned
-        if ( !$filter )
+        if ( !$formats )
             return $allowedMimeTypes;
         // we have a type so return mimes of that type
         $filterMimeTypes = array();
-        foreach($allowedMimeTypes as $mimeType)
+        foreach( $formats as $format )
         {
-            if ( strpos($mimeType, $filter) !== false )
-                array_push($filterMimeTypes, $mimeType);
+            foreach( $allowedMimeTypes as $mimeType )
+            {
+                if ( strpos($mimeType, $format) !== false )
+                    array_push($filterMimeTypes, $mimeType);
+            }
         }
         return $filterMimeTypes;
     }
