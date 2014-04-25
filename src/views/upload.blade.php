@@ -11,9 +11,9 @@
     <div id="uploads">
         <p><i class=" fa fa-upload"></i>&nbsp;&nbsp;File uploads</p>
         <ul id="uploadTabs" class="nav nav-tabs">
-            <li><a href="#progressUploads" data-toggle="tab">Progress <span id="progressCount">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-            <li><a href="#successfulUploads" data-toggle="tab">Successful <span id="successCount">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-            <li><a href="#failedUploads" data-toggle="tab">Failed <span id="failCount">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+            <li><a href="#progressUploads" data-toggle="tab">Progress <div class="uploadStats"><span class="uploadCount" id="progressCount"></span></div></a></li>
+            <li><a href="#successfulUploads" data-toggle="tab">Successful <div class="uploadStats"><span class="uploadCount" id="successCount"></span></div></a></li>
+            <li><a href="#failedUploads" data-toggle="tab">Failed <div class="uploadStats"><span class="uploadCount" id="failCount"></span></div></a></li>
         </ul>
         <div class="tab-content">
             <div id="progressUploads" class="tab-pane">

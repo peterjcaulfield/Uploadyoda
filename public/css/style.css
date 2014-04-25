@@ -134,6 +134,7 @@ td { border-bottom: 1px solid #ddd; }
 #uploads .nav-tabs li a:hover { background-color: #444444; } 
 #uploads .nav li a { background-color: #444444; color: #fff; font-size: 12px; padding: 7px 15px; }
 #uploads .nav-tabs>li>a:hover { border-color: #444444;  color: #f0523f; }
+.uploadStats { display: inline-block; position: relative; width: 15px; padding: 0 5px 0 5px; }
 
 
 
