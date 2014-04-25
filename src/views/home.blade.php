@@ -137,6 +137,7 @@
             <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
                 <div class="input-group" id="searchContainer">
                     <input id="searchFilter" type="text" class="form-control" name="search">
+                    <input type="hidden" name="filters" value="{{ $filters }}">
                     <span class="input-group-btn">
                         <button class="btn btn-default btn-sm" type="submit">Search</button>
                     </span>
