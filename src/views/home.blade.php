@@ -30,7 +30,7 @@
             for ( var i = 0; i < filters.length; i++ )
             {
                 var xLinkFilters = filters.filter(function(filter) { return filter !== filters[i]});
-                var xLinkHref = xLinkFilters.join(',');
+                var xLinkHref = xLinkFilters.join('%2C');
 
                 if (xLinkHref !== '')
                 {
@@ -62,7 +62,7 @@
                     // if href doesn't contain filter already and if filter and href are not both date filters append the filter
                     if ( href.indexOf(filters[i]) == -1 && !( filterTypes[href.substr(20)] == 'date' && filterTypes[filters[i]] == 'date' ) )
                     {
-                        newHref += ',' + filters[i];
+                        newHref += '%2C' + filters[i];
                     }
                 }
             }
