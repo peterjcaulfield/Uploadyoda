@@ -73,7 +73,7 @@ body { background-color: #ebebeb; margin: 0; min-width: 960px; }
 .upload-name:hover .rowActions { display: block; }
 .upload-inner { position: absolute; top: 5; left: 5; }
 .preview-container { padding: 5px 0 5px 15px;}
-.thumb { height: 85px; width: 85px; overflow: hidden; margin: 0 auto; }
+.thumb { height: 64px; width: 64px; overflow: hidden; margin: 0 auto; background-size: cover; background-repeat: no-repeat; }
 .uploadCheckbox { float: left; margin: 0; }
 input[type=checkbox] { margin: 0; }
 #uploadCheckboxBatch { margin-top: 3px; }
@@ -112,7 +112,7 @@ td { border-bottom: 1px solid #ddd; }
 #uploads { font-size: 12px; border-collapse: collapse; }
 .uploads-table { border: none; }
 .uploads-table th { padding: 5px 5px; background: #444444 !important; border-left: solid 2px #fff; border-right: solid 2px #fff; color: #fdf7ef; }
-.uploads-table th:first-child { padding: 5px 5px; background: #ccc; border-left: 0;}
+.uploads-table th:first-child { padding: 5px 5px; background: #ccc; border-left: 0; padding: 0 5px 0 5px;}
 .uploads-table th:last-child { padding: 5px 5px; background: #ccc; border-right: 0;}
 .uploads-table td { padding: 5px 5px; }
 #size-header { width: 100px; }
