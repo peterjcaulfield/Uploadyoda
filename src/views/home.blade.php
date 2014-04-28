@@ -5,65 +5,9 @@
     $queryString = Request::query();
     unset($queryString['page']);
     $filters = isset($queryString['filters']) ? $queryString['filters'] : '';
-    $searchQuery = isset($queryString['search']) ? $queryString['search'] : '';
 ?>
 <script>
-    $(document).ready(function(){
-
-        var filterString = "<?php echo $filters; ?>";
-        var searchQuery = "<?php echo $searchQuery; ?>";
-
-
-        $('#searchFilter').val(searchQuery);
-
-        $('#uploadCheckboxBatch').on('click', function(e){
-            var checked = $('#uploadCheckboxBatch:checked').length > 0;
-            $('.uploadCheckbox').prop('checked', checked);
-
-            if ( checked )
-               $('.uploadCheckbox').addClass('checked').removeClass('unchecked');
-            else
-               $('.uploadCheckbox').addClass('unchecked').removeClass('checked');
-        });
-
-        $('.uploadCheckbox').on('click', function(e){
-            var checkbox = $(this);
-            if (checkbox.prop('checked'))
-               checkbox.removeClass('unchecked').addClass('checked');
-            else
-               checkbox.removeClass('checked').addClass('unchecked');
-        });
-
-        $('#filter-action').on('click', function(){
-            $('#filters').toggle();
-        });
-
-        $('#applyBatch').on('click', function(){
-            var batchAction = $('#uploadSelectBatch').val();
-            if ( batchAction == 1 )
-            {
-                var uploadsToTrash = [];
-                $('.checked').each(function(){
-                    uploadsToTrash.push($(this).val());
-                });
-
-                var form = document.createElement("form");
-                form.method = 'post';
-                form.action = '/uploadyoda/delete';
-                var input = document.createElement('input');
-                input.name = 'delete';
-                input.value = JSON.stringify(uploadsToTrash);
-                form.appendChild(input);
-                var inputToken = document.createElement('input');
-                inputToken.name = '_token';
-                inputToken.value = "<?php echo csrf_token(); ?>";
-                form.appendChild(inputToken);
-                form.style.display = 'none';
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
-    })
+    var csrfToken = "{{ csrf_token() }}";
 </script>
 <div id="uploads-index">
     <div id="tableActions">
@@ -142,8 +86,6 @@
     <?php } // end loop ?>
         </table>
     <?php
-        $queryString = Request::query();
-        unset($queryString['page']);
         echo $uploads->appends($queryString)->links();
     } // end if
     else
