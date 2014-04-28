@@ -1,7 +1,7 @@
 /**
  * @namespace uploadyoda
  */
-$(document).ready(function(){
+$(function(){
 
     (function( uploadyoda ) {
 

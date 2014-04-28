@@ -10,68 +10,9 @@
 <script>
     $(document).ready(function(){
 
-        var filterTypes = {
-            'today' : 'date',
-            'week' : 'date',
-            'month' : 'date',
-            'year' : 'date',
-            'image' : 'format',
-            'video' : 'format',
-            'audio' : 'format',
-        }
-
         var filterString = "<?php echo $filters; ?>";
         var searchQuery = "<?php echo $searchQuery; ?>";
 
-        var filters = filterString.split(',');
-        // update filters in use UI
-        if ( filters[0] !== '' )
-        {
-            for ( var i = 0; i < filters.length; i++ )
-            {
-                var xLinkFilters = filters.filter(function(filter) { return filter !== filters[i]});
-                var xLinkHref = xLinkFilters.join('%2C');
-
-                if (xLinkHref !== '')
-                {
-                    xLinkHref = '?filters=' + xLinkHref;
-
-                    if ( searchQuery !== '')
-                        xLinkHref+= '&search=' + searchQuery;
-                }
-                else if ( searchQuery !== '' )
-                {
-                    xLinkHref = '?search=' + searchQuery;
-                }
-
-                $('#filter-' + filters[i]).append(' <a href="/uploadyoda' + xLinkHref + '"><i class="fa fa-times"></i></a>');
-                $('#filters-in-use').append('<a href="/uploadyoda' + xLinkHref + '"><button type="button" class="btn btn-default btn-sm in-use-filter-btn">' + filters[i] + ' <i class="fa fa-times"></i></button></a>');
-            }
-        }
-
-        // url rewriting
-        $('.filter-link').each(function(){
-            var href = $(this).attr('href');
-
-            var newHref = '';
-
-            if ( filters[0] !== '' )
-            {
-                for ( var i = 0; i < filters.length; i++ )
-                {
-                    // if href doesn't contain filter already and if filter and href are not both date filters append the filter
-                    if ( href.indexOf(filters[i]) == -1 && !( filterTypes[href.substr(20)] == 'date' && filterTypes[filters[i]] == 'date' ) )
-                    {
-                        newHref += '%2C' + filters[i];
-                    }
-                }
-            }
-
-            if ( searchQuery !== '')
-                newHref += '&search=' + searchQuery;
-
-            $(this).attr('href', href + newHref);
-        });
 
         $('#searchFilter').val(searchQuery);
 
@@ -136,8 +77,10 @@
         <div id="search">
             <form method="get" action="<?php echo URL::route('uploadyodaHome'); ?>" id="filterForm">
                 <div class="input-group" id="searchContainer">
+                    @if ( $filters !== '' )
+                        <input type="hidden" name="filters" value="{{ $filters }}">
+                    @endif
                     <input id="searchFilter" type="text" class="form-control" name="search">
-                    <input type="hidden" name="filters" value="{{ $filters }}">
                     <span class="input-group-btn">
                         <button class="btn btn-default btn-sm" type="submit">Search</button>
                     </span>
@@ -208,4 +151,8 @@
         </table>
     <?php }// end else ?>
 
+@stop
+
+@section('footer')
+<script type="text/javascript" src="{{ URL::asset('packages/quasimodal/uploadyoda/js/home.js') }}"></script>
 @stop
