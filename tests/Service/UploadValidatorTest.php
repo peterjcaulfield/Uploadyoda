@@ -27,7 +27,7 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
     {
         // reset base path to point to our package's src directory
         $app['path.base'] = __DIR__ . '/../../src';
-    }    
+    }
 
     /**
      * Get package providers.  At a minimum this is the package being tested, but also
@@ -47,9 +47,9 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
     public function testValidationValidDynamicUploadMethodReturnsFalseIfNoFile()
     {
         $passes = $this->validator->with(array())->valid('upload');
-        $this->assertEquals(false, $passes);     
+        $this->assertEquals(false, $passes);
         $this->assertEquals('server error', $this->validator->errors()->first());
-    }    
+    }
 
     public function testValidationValidDynamicUploadMethodReturnsFalseIfErrorInFilesArray()
     {
@@ -57,7 +57,7 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
         // set the error
         $_FILES['file']['error'] = 1;
         $passes = $this->validator->with(array())->valid('upload');
-        $this->assertEquals(false, $passes);     
+        $this->assertEquals(false, $passes);
         $this->assertEquals($this->validator->getPHPUploadError(1), $this->validator->errors()->first());
     }
 
@@ -65,14 +65,14 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
     {
         $fileMock = m::mock('foo');
         $_FILES = array('file' => array('error' => 0));
-        
+
         $request = array('file' => $fileMock);
         $fileMock->shouldReceive('getSize')
             ->once()
             ->andReturn(Config::get('uploadyoda::max_file_size') + 1);
 
         $passes = $this->validator->with($request)->valid('upload');
-        $this->assertEquals(false, $passes);     
+        $this->assertEquals(false, $passes);
         $this->assertEquals('file size exceeds config max file size', $this->validator->errors()->first());
     }
 
@@ -80,7 +80,7 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
     {
         $fileMock = m::mock('Symfony\Component\HttpFoundation\File\File');
         $_FILES = array('file' => array('error' => 0));
-        $request = array('file' => $fileMock); 
+        $request = array('file' => $fileMock);
         $fileMock->shouldReceive('getSize')
             ->once()
             ->andReturn(Config::get('uploadyoda::max_file_size'));
@@ -88,12 +88,15 @@ class UploadValidatorTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('getPath')
             ->andReturn('path/to/file');
 
+        $fileMock->shouldReceive('isValid')
+            ->andReturn(true);
+
         $fileMock->shouldReceive('guessExtension')
             ->andReturn('mimeThatDoesntExist');
 
-        $passes = $this->validator->with($request)->valid('upload');        
-        
+        $passes = $this->validator->with($request)->valid('upload');
+
         $this->assertEquals(false, $passes);
         $this->assertEquals('Invalid mime type', $this->validator->errors()->first());
-    }  
+    }
 }
