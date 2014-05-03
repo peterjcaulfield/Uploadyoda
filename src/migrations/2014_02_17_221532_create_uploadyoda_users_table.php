@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +21,7 @@ class CreateUploadyodaUsersTable extends Migration {
             $table->string('password', 64);
             $table->timestamps();
             $table->boolean('activated');
+            $table->string('remember_token', 100)->nullable();
         });
 	}
 
