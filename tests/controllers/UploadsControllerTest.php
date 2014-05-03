@@ -1,20 +1,20 @@
-<?php namespace Quasimodal\Uploadyoda; 
+<?php namespace Quasimodal\Uploadyoda;
 
 use Mockery as m;
 
 
-class UploadYodaTest extends \Orchestra\Testbench\TestCase 
+class UploadYodaTest extends \Orchestra\Testbench\TestCase
 {
 
     protected $uploader;
     protected $uploadMock;
-    
+
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->uploadMock = m::mock('Quasimodal\Uploadyoda\repositories\EloquentUploadRepository'); 
+        $this->uploadMock = m::mock('Quasimodal\Uploadyoda\repositories\EloquentUploadRepository');
     }
 
     public function tearDown()
@@ -39,7 +39,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ));
-    }    
+    }
 
     /**
      * Get package providers.  At a minimum this is the package being tested, but also
@@ -100,9 +100,9 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
 
         $paginatedCollection = m::mock('paginatedCollection');
 
-        $this->uploadMock->shouldReceive('setFilter')
+        $this->uploadMock->shouldReceive('setQueryFilters')
             ->once()
-            ->with(['type' => 0, 'date' => 0, 'search' => 'test'])
+            ->with(['filters' => 'audio','search' => 'test'])
             ->andReturn($this->uploadMock);
 
         $this->uploadMock->shouldReceive('getAllUploads')
@@ -117,7 +117,7 @@ class UploadYodaTest extends \Orchestra\Testbench\TestCase
             ->once()
             ->andReturn(0);
 
-        $response = $this->call('GET', '/uploadyoda?type=0&date=0&search=test');
+        $response = $this->call('GET', '/uploadyoda?filters=audio&search=test');
 
         $this->assertViewHas('uploads', $paginatedCollection);
     }
