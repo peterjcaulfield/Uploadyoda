@@ -25,8 +25,8 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ));
-    }    
-    
+    }
+
     /**
      * Get package providers.  At a minimum this is the package being tested, but also
      * would include packages upon which our package depends, e.g. Cartalyst/Sentry
@@ -41,7 +41,7 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
             'Quasimodal\Uploadyoda\UploadyodaServiceProvider'
         );
     }
-    
+
     /**
      * Get package aliases.  In a normal app environment these would be added to
      * the 'aliases' array in the config/app.php file.  If your package exposes an
@@ -65,7 +65,7 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
         // create the tables
         $artisan->call('migrate', [
             '--database' => 'uploadyoda',
-            '--path' => '../src/migrations'      
+            '--path' => '../src/migrations'
             ]);
     }
 
@@ -85,9 +85,9 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
         // seed the db's
         $artisan->call('db:seed', [
             '--class' => 'Quasimodal\Uploadyoda\seeds\PackageSeeder'
-            ]); 
+            ]);
     }
-  
+
      /**
      * Test running migration.
      *
@@ -97,15 +97,18 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
     {
         $this->seedDb();
         $this->assertEquals(Upload::count(), 28);
-    } 
-        
+    }
+
     public function testRepositoryCreateMethod()
     {
         $uploadStub = [
-            'name' => 'test.jpeg',
-            'mime_type' => 'image/jpeg',
-            'path' => 'path/to/file',
-            'size' => '100kB'
+            'upload' => [
+                'name' => 'test.jpeg',
+                'mime_type' => 'image/jpeg',
+                'path' => 'path/to/file',
+                'size' => '100kB'
+            ],
+            'meta' => []
         ];
         $repo = $this->makeRepo();
         $repo->create($uploadStub);
@@ -115,10 +118,13 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
     public function testRepositoryDestroyMethod()
     {
         $uploadStub = [
-            'name' => 'test.jpeg',
-            'mime_type' => 'image/jpeg',
-            'path' => 'path/to/file',
-            'size' => '100kB'
+            'upload' => [
+                'name' => 'test.jpeg',
+                'mime_type' => 'image/jpeg',
+                'path' => 'path/to/file',
+                'size' => '100kB'
+            ],
+            'meta' => []
         ];
         $repo = $this->makeRepo();
         $repo->create($uploadStub);
@@ -134,35 +140,31 @@ class EloquentUploadRepositoryTest extends \Orchestra\Testbench\TestCase
         $repo->setPaginate(false);
         $uploads = $repo->getAllUploads();
         $this->assertEquals($uploads->count(), 28);
-    } 
+    }
 
     public function testRepositoryGetAllUploadsWithSearchFilter()
     {
         $filter = [
             'search' => 'foo',
-            'date' => false,
-            'type' => false 
             ];
 
         $this->seedDb();
         $repo = $this->makeRepo();
         $repo->setPaginate(false);
-        $repo->setFilter($filter);
-        $this->assertEquals($repo->getAllUploads()->count(), 6); 
+        $repo->setQueryFilters($filter);
+        $this->assertEquals($repo->getAllUploads()->count(), 7);
     }
 
     public function testRepositoryGetAllUploadsWithTypeFilter()
     {
         $filter = [
-            'search' => false,
-            'date' => false,
-            'type' => 'image' 
+            'filters' => 'image'
             ];
 
         $this->seedDb();
         $repo = $this->makeRepo();
         $repo->setPaginate(false);
-        $repo->setFilter($filter);
-        $this->assertEquals($repo->getAllUploads()->count(), 12); 
+        $repo->setQueryFilters($filter);
+        $this->assertEquals($repo->getAllUploads()->count(), 12);
     }
 }
