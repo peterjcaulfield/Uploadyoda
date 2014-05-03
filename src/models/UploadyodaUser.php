@@ -47,6 +47,21 @@ class UploadyodaUser extends Eloquent implements UserInterface, RemindableInterf
 		return $this->email;
 	}
 
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
+
     public function setPassword($value)
     {
         $this->attributes['password'] = Hash::make($value);
