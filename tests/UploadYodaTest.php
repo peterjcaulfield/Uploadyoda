@@ -1,14 +1,14 @@
-<?php 
+<?php
 
 use Mockery as m,
     Quasimodal\Uploadyoda\models\Upload as Upload;
 
 
-class UploadYodaTest extends Orchestra\Testbench\TestCase 
+class UploadYodaTest extends Orchestra\Testbench\TestCase
 {
 
     protected $upload;
-    
+
 
     public function setUp()
     {
@@ -20,7 +20,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
 
         $artisan->call('migrate', [
             '--database' => 'uploadyoda',
-            '--path' => '../src/migrations'      
+            '--path' => '../src/migrations'
         ]);
     }
 
@@ -47,7 +47,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ));
-    }    
+    }
 
     /**
      * Get package providers.  At a minimum this is the package being tested, but also
@@ -93,7 +93,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $this->upload->save();
         $uploads = Upload::count();
         $this->assertEquals($uploads, 1);
-    } 
+    }
 
     /**
      * Tests of uploadyoda's uniqueFilename helper function
@@ -103,13 +103,13 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $formattedFilename = Uploadyoda::createUniqueFilename('test-', 'jpg');
         $this->assertEquals('test-', $formattedFilename);
     }
-    
+
     public function testFilenameWithHyphenAndNumberIsValidIfNoCollisionsInDb()
     {
         $formattedFilename = Uploadyoda::createUniqueFilename('test-1', 'jpg');
         $this->assertEquals('test-1', $formattedFilename);
     }
-    
+
     public function testFilenameIsVersionedWhenOneCollisionInDbAndCollisionIsNotVersioned()
     {
         $this->upload->create(array( 'name' => 'test.jpg', 'path' => 'test', 'mime_type' => 'jpg', 'size' => '100kb' ));
@@ -117,7 +117,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $formattedFilename = Uploadyoda::createUniqueFilename('test', 'jpg');
         $this->assertEquals('test-1', $formattedFilename);
     }
-    
+
     public function testFilenameIsVersionedWhenFilenameContainsVersionAndCollisionInDb()
     {
         $this->upload->create(array( 'name' => 'test-1.jpg', 'path' => 'test', 'mime_type' => 'jpg', 'size' => '100kb' ));
@@ -125,7 +125,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $formattedFilename = Uploadyoda::createUniqueFilename('test-1', 'jpg');
         $this->assertEquals('test-2', $formattedFilename);
     }
-    
+
     public function testFilenameIsVersionedWhenCollisionInDbAndVersionedFilenameAlreadyInDb()
     {
         $this->upload->create(array( 'name' => 'test.jpg', 'path' => 'test', 'mime_type' => 'jpg', 'size' => '100kb' ));
@@ -134,7 +134,7 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $formattedFilename = Uploadyoda::createUniqueFilename('test', 'jpg');
         $this->assertEquals('test-2', $formattedFilename);
     }
-    
+
     public function testFilenameIsVersionedBasedOnIncrementOfExistingVersionedFilenameWithHighestVersionNumericWhenCollisionInDb()
     {
         $this->upload->create(array( 'name' => 'test.jpg', 'path' => 'test', 'mime_type' => 'jpg', 'size' => '100kb' ));
@@ -146,11 +146,11 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
 
     /**
      * Test uploadyoda's upload helper using passed in params
-     */    
+     */
 
     public function testUploadCorrectlyAcceptsUserDefinedFilename()
     {
-        $fileMock = m::mock('fileMock');        
+        $fileMock = m::mock('fileMock');
 
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
         $fileMock->shouldReceive('getSize')->andReturn(1);
@@ -159,13 +159,13 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('move');
 
         $response = Uploadyoda::upload($fileMock, null, 'custom_filename' );
-        
-        $this->assertEquals('custom_filename.jpg', $response['name']);
+
+        $this->assertEquals('custom_filename.jpg', $response['upload']['name']);
     }
-    
+
     public function testUploadCorrectlyAcceptsUserDefinedUploadPath()
     {
-        $fileMock = m::mock('fileMock');        
+        $fileMock = m::mock('fileMock');
 
         $fileMock->shouldReceive('getClientOriginalName')->andReturn('test.jpg');
         $fileMock->shouldReceive('getSize')->andReturn(1);
@@ -174,20 +174,20 @@ class UploadYodaTest extends Orchestra\Testbench\TestCase
         $fileMock->shouldReceive('move');
 
         $response = Uploadyoda::upload($fileMock, 'my_custom_folder', null );
-        
-        $this->assertEquals('my_custom_folder', $response['path']);
+
+        $this->assertEquals('my_custom_folder', $response['upload']['path']);
     }
 
     public function testReturnBytesMethodConvertsAlphanumericByteRepresentationToNumericBytes()
     {
-        $this->assertEquals(Uploadyoda::returnBytes('1K'), 1024);         
-        $this->assertEquals(Uploadyoda::returnBytes('1M'), 1024 * 1024);         
-        $this->assertEquals(Uploadyoda::returnBytes('1G'), 1024 * 1024 * 1024);         
+        $this->assertEquals(Uploadyoda::returnBytes('1K'), 1024);
+        $this->assertEquals(Uploadyoda::returnBytes('1M'), 1024 * 1024);
+        $this->assertEquals(Uploadyoda::returnBytes('1G'), 1024 * 1024 * 1024);
     }
 
     public function testFormatFilesizeFormatsBytesToAlphanumericRepresentation()
     {
-       $this->assertEquals(Uploadyoda::formatFilesize(1000), '1 kB'); 
-       $this->assertEquals(Uploadyoda::formatFilesize(1000 * 1000), '1 MB'); 
+       $this->assertEquals(Uploadyoda::formatFilesize(1000), '1 kB');
+       $this->assertEquals(Uploadyoda::formatFilesize(1000 * 1000), '1 MB');
     }
 }
