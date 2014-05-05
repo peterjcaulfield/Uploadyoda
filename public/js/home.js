@@ -32,10 +32,14 @@ $(function(){
                     var filterType = filter[0];
                     var filterValues = filter[1];
 
-                    if (filterType !== 'search' )
+                    if (filterType !== 'search' && filterType !== 'sort' )
+                    {
                         uploadyoda.query[filter[0]] = filter[1].split('%2C').filter(function(filter){return globals.filterTypes.hasOwnProperty(filter);});
+                    }
                     else
+                    {
                         uploadyoda.query[filter[0]] = filter[1].split('%2C');
+                    }
                 }
             }
         }
@@ -46,32 +50,32 @@ $(function(){
             {
                 for ( var i = 0; i < uploadyoda.query.filters.length; i++ )
                 {
-                    var removeFilterLink = '';
-                    var removeFilterFilters = uploadyoda.query.filters.filter(function(filter){ return filter!==uploadyoda.query.filters[i] }); 
-                    var removeFilterLinkFilters = removeFilterFilters.join('%2C');
+                    var removeFilterLink = '/uploadyoda?';
+                
+                    var filters = uploadyoda.query.filters.filter(function(filter) { return filter!==uploadyoda.query.filters[i]; } );
 
-                    if ( removeFilterLinkFilters !== '' )
-                        var haveFilters = true;
+                    console.log(filters);
 
-                    if ( uploadyoda.query.hasOwnProperty('search') )
-                        var haveSearch = true;
+                    var formattedLinkParts = [];
 
-                    if ( haveFilters && haveSearch )
+                    for ( var param in uploadyoda.query )
                     {
-                        removeFilterLink = '?filters=' + removeFilterLinkFilters +  '&search=' + uploadyoda.query.search; 
+                        if ( param == 'filters' )
+                        {
+                            if ( filters.length )
+                                formattedLinkParts.push('filters=' + filters.join('%2C'));
+                        }
+                        else
+                        {
+                            formattedLinkParts.push(param + '=' + uploadyoda.query[param]); 
+                        }
                     }
-                    else if ( haveFilters  )
-                    {
-                        removeFilterLink = '?filters=' + removeFilterLinkFilters; 
-                    }
-                    else if ( haveSearch )
-                    {
-                        removeFilterLink = '?search=' + uploadyoda.query.search;
-                    }
+
+                    removeFilterLink += formattedLinkParts.join('&');
 
                     // update the UI
-                    $('#filter-' + uploadyoda.query.filters[i]).append(' <a href="/uploadyoda' + removeFilterLink + '"><i class="fa fa-times"></i></a>');
-                    $('#filters-in-use').append('<a href="/uploadyoda' + removeFilterLink + '"><button type="button" class="btn btn-default btn-sm in-use-filter-btn">' + uploadyoda.query.filters[i] + ' <i class="fa fa-times"></i></button></a>');
+                    $('#filter-' + uploadyoda.query.filters[i]).append(' <a href="' + removeFilterLink + '"><i class="fa fa-times"></i></a>');
+                    $('#filters-in-use').append('<a href="' + removeFilterLink + '"><button type="button" class="btn btn-default btn-sm in-use-filter-btn">' + uploadyoda.query.filters[i] + ' <i class="fa fa-times"></i></button></a>');
                 }
             }
         }
@@ -83,8 +87,6 @@ $(function(){
             var href = $(this).attr('href');
 
             var newHref = '';
-
-            console.log(href.substr(20));
 
             if ( uploadyoda.query.hasOwnProperty('filters') )
             {
@@ -104,6 +106,30 @@ $(function(){
             $(this).attr('href', href + newHref);
 
            });
+        }
+
+        function updateSortUrls()
+        {
+            $('.sort-link').each(function(){
+                
+                var href = $(this).attr('href');
+
+                var newHref = '';
+
+                if ( uploadyoda.query.hasOwnProperty('filters') )
+                {
+                    var filterString = uploadyoda.query.filters.join('%2C');
+
+                    newHref += '&filters=' + filterString;
+                    
+                }
+
+                if ( uploadyoda.query.hasOwnProperty('search') )
+                    newHref += '&search=' + uploadyoda.query.search;
+
+                $(this).attr('href', href + newHref);
+
+            });
         }
 
         function updateSearchUI()
@@ -178,6 +204,7 @@ $(function(){
             parseQuery();
             updateFilterUI();
             updateFilterUrls();
+            updateSortUrls();
             updateSearchUI();
             bindEventHandlers();
         };

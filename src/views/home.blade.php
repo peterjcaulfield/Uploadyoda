@@ -49,6 +49,9 @@
             </div>
             <div class="filter-options">
                 <p><strong>Sort by</strong></p>
+                <p><a class="sort-link" href="/uploadyoda?sort=date">Date</a></p>
+                <p><a class="sort-link" href="/uploadyoda?sort=date">Name</a></p>
+                <p><a class="sort-link" href="/uploadyoda?sort=date">Size</a></p>
             </div>
         </div>
     </div>
