@@ -54,8 +54,6 @@ $(function(){
                 
                     var filters = uploadyoda.query.filters.filter(function(filter) { return filter!==uploadyoda.query.filters[i]; } );
 
-                    console.log(filters);
-
                     var formattedLinkParts = [];
 
                     for ( var param in uploadyoda.query )
@@ -100,12 +98,23 @@ $(function(){
                 }
             }
 
-            if ( uploadyoda.query.hasOwnProperty('search') )
-                newHref += '&search=' + uploadyoda.query.search;
+            for ( var param in uploadyoda.query )
+            {
+                if ( param !== 'filters' )
+                    newHref += '&' + param + '=' + uploadyoda.query[param];
+            }
 
             $(this).attr('href', href + newHref);
 
            });
+        }
+
+        function updateSortUI()
+        {
+            if ( uploadyoda.query.hasOwnProperty('sort') )
+            {
+                $('#sort-' + uploadyoda.query.sort).css('font-weight', 'bold');  
+            }
         }
 
         function updateSortUrls()
@@ -121,7 +130,6 @@ $(function(){
                     var filterString = uploadyoda.query.filters.join('%2C');
 
                     newHref += '&filters=' + filterString;
-                    
                 }
 
                 if ( uploadyoda.query.hasOwnProperty('search') )
@@ -204,6 +212,7 @@ $(function(){
             parseQuery();
             updateFilterUI();
             updateFilterUrls();
+            updateSortUI();
             updateSortUrls();
             updateSearchUI();
             bindEventHandlers();

@@ -5,6 +5,7 @@
     $queryString = Request::query();
     unset($queryString['page']);
     $filters = isset($queryString['filters']) ? $queryString['filters'] : '';
+    $sort = isset($queryString['sort']) ? $queryString['sort'] : '';
 ?>
 <script>
     var csrfToken = "{{ csrf_token() }}";
@@ -23,6 +24,9 @@
                 <div class="input-group" id="searchContainer">
                     @if ( $filters !== '' )
                         <input type="hidden" name="filters" value="{{ $filters }}">
+                    @endif
+                    @if ( $sort !== '' )
+                        <input type="hidden" name="sort" value="{{ $sort }}">
                     @endif
                     <input id="searchFilter" type="text" class="form-control" name="search">
                     <span class="input-group-btn">
@@ -49,9 +53,9 @@
             </div>
             <div class="filter-options">
                 <p><strong>Sort by</strong></p>
-                <p><a class="sort-link" href="/uploadyoda?sort=date">Date</a></p>
-                <p><a class="sort-link" href="/uploadyoda?sort=date">Name</a></p>
-                <p><a class="sort-link" href="/uploadyoda?sort=date">Size</a></p>
+                <p><a id="sort-date" class="sort-link" href="/uploadyoda?sort=date">Date</a></p>
+                <p><a id="sort-name" class="sort-link" href="/uploadyoda?sort=name">Name</a></p>
+                <p><a id="sort-size" class="sort-link" href="/uploadyoda?sort=size">Size</a></p>
             </div>
         </div>
     </div>
